@@ -335,9 +335,8 @@ const R = {
 
 /* ── TEMPLATE RENDERERS ── */
 function tBreaking1(d,p){
-  const bg=p.bg?`url("${p.bg}") center/cover`:'linear-gradient(160deg,#1a0000,#2d0000)';
   const ac=d.accent||'#e63946';
-  return `<div style="width:100%;height:100%;background:${bg};position:relative;overflow:hidden;font-family:'${d._font||'DM Sans'}',sans-serif;">
+  return `<div data-photo="bg" style="width:100%;height:100%;background:linear-gradient(160deg,#1a0000,#2d0000);position:relative;overflow:hidden;font-family:'${d._font||'DM Sans'}',sans-serif;">
     <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.82),rgba(0,0,0,.28));"></div>
     <div style="position:absolute;top:0;left:0;right:0;height:3px;background:${ac};"></div>
     <div style="position:absolute;inset:0;padding:17px;display:flex;flex-direction:column;justify-content:space-between;">
@@ -354,10 +353,9 @@ function tBreaking1(d,p){
   </div>`;
 }
 function tBreaking2(d,p){
-  const img=p.news?`url("${p.news}") center/cover`:'linear-gradient(135deg,#1a1a2e,#16213e)';
   const ac=d.accent||'#e63946';
   return `<div style="width:100%;height:100%;background:#050508;display:flex;font-family:'${d._font||'DM Sans'}',sans-serif;overflow:hidden;">
-    <div style="width:44%;background:${img};position:relative;"><div style="position:absolute;inset:0;background:linear-gradient(to right,rgba(5,5,8,0) 55%,rgba(5,5,8,1));"></div><div style="position:absolute;top:0;left:0;bottom:0;width:3px;background:${ac};"></div></div>
+    <div data-photo="news" style="width:44%;background:linear-gradient(135deg,#1a1a2e,#16213e);position:relative;"><div style="position:absolute;inset:0;background:linear-gradient(to right,rgba(5,5,8,0) 55%,rgba(5,5,8,1));"></div><div style="position:absolute;top:0;left:0;bottom:0;width:3px;background:${ac};"></div></div>
     <div style="flex:1;padding:15px 13px;display:flex;flex-direction:column;justify-content:space-between;">
       <div><div style="font-size:9px;font-weight:700;letter-spacing:1.5px;color:${ac};margin-bottom:3px;">${d.category||'GÜNDEM'}</div><div style="font-size:9px;color:rgba(255,255,255,.38);">🕐 ${d.time||''}</div></div>
       <div><div style="font-size:clamp(12px,3.5vw,17px);font-weight:800;line-height:1.25;color:#fff;margin-bottom:6px;">${d.headline||'Manşet'}</div><div style="font-size:11px;color:rgba(255,255,255,.58);line-height:1.45;">${d.detail||''}</div></div>
@@ -402,10 +400,9 @@ function tMarket3(d,p){
   </div>`;
 }
 function tStory1(d,p){
-  const bg=p.bg?`url("${p.bg}") center/cover`:'linear-gradient(170deg,#0a0010,#001015)';
   const ac=d.accent||'#e63946';
-  return `<div style="width:100%;height:100%;background:${bg};font-family:'${d._font||'DM Sans'}',sans-serif;display:flex;flex-direction:column;justify-content:space-between;padding:17px;position:relative;overflow:hidden;">
-    <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.42) 0%,rgba(0,0,0,.75) 100%);"></div>
+  return `<div data-photo="bg" style="width:100%;height:100%;background:linear-gradient(170deg,#0a0010,#001015);font-family:'${d._font||'DM Sans'}',sans-serif;display:flex;flex-direction:column;justify-content:space-between;padding:17px;position:relative;overflow:hidden;">
+    <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.42) 0%,rgba(0,0,0,.75) 100%);pointer-events:none;"></div>
     <div style="position:relative;"><div style="display:flex;gap:2px;margin-bottom:11px;">${[0,1,2,3].map(i=>`<div style="flex:1;height:2px;border-radius:2px;background:${i<2?'rgba(255,255,255,.88)':'rgba(255,255,255,.22)'}"></div>`).join('')}</div>
     <div style="display:flex;align-items:center;gap:7px;"><div style="width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,${ac},#f4a261);display:flex;align-items:center;justify-content:center;font-size:12px;">📰</div><span style="font-size:11.5px;font-weight:700;">${d.source||'Haber Ağı'}</span><span style="font-size:9.5px;color:rgba(255,255,255,.42);margin-left:auto;">Şimdi</span></div></div>
     <div style="position:relative;text-align:center;"><div style="font-size:9px;font-weight:700;letter-spacing:2px;color:${ac};margin-bottom:8px;">${d.category||'EKONOMİ'}</div><div style="font-size:clamp(15px,5vw,21px);font-weight:800;line-height:1.22;margin-bottom:8px;text-shadow:0 2px 10px rgba(0,0,0,.6);">${d.headline||'Manşet'}</div><div style="font-size:11.5px;color:rgba(255,255,255,.68);line-height:1.5;">${d.detail||''}</div></div>
@@ -413,20 +410,18 @@ function tStory1(d,p){
   </div>`;
 }
 function tReel1(d,p){
-  const bg=p.bg?`url("${p.bg}") center/cover`:'linear-gradient(180deg,#000,#0a0010)';
   const ac=d.accent||'#e63946';
-  return `<div style="width:100%;height:100%;background:${bg};font-family:'${d._font||'DM Sans'}',sans-serif;display:flex;flex-direction:column;justify-content:space-between;padding:18px;position:relative;overflow:hidden;">
-    <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.88) 35%,rgba(0,0,0,.22) 100%);"></div>
+  return `<div data-photo="bg" style="width:100%;height:100%;background:linear-gradient(180deg,#000,#0a0010);font-family:'${d._font||'DM Sans'}',sans-serif;display:flex;flex-direction:column;justify-content:space-between;padding:18px;position:relative;overflow:hidden;">
+    <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.88) 35%,rgba(0,0,0,.22) 100%);pointer-events:none;"></div>
     <div style="position:relative;"><span style="background:${ac};color:#fff;font-size:10.5px;font-weight:800;padding:4px 11px;border-radius:6px;display:inline-block;">⚡ ${d.hook||'SON DAKİKA'}</span></div>
     <div style="position:relative;"><div style="font-size:clamp(14px,4.5vw,21px);font-weight:800;line-height:1.25;color:#fff;margin-bottom:9px;text-shadow:0 2px 10px rgba(0,0,0,.6);">${d.headline||'Konu başlığı'}</div>
     <div style="display:flex;align-items:center;justify-content:space-between;"><span style="font-size:11px;color:${ac};font-weight:700;">👉 ${d.cta||'Takip et!'}</span><span style="font-size:9.5px;color:rgba(255,255,255,.38);font-weight:600;">${d.source||'Haber Ağı'}</span></div></div>
   </div>`;
 }
 function tFeed1(d,p){
-  const img=p.news?`url("${p.news}") center/cover`:'linear-gradient(135deg,#111,#1a1a2e)';
   const ac=d.accent||'#e63946';
   return `<div style="width:100%;height:100%;background:#070709;font-family:'${d._font||'DM Sans'}',sans-serif;display:flex;flex-direction:column;">
-    <div style="height:35%;background:${img};position:relative;flex-shrink:0;"><div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 45%,#070709);"></div><div style="position:absolute;bottom:9px;left:13px;font-size:10px;font-weight:700;letter-spacing:1.5px;color:${ac};">${d.title||'GÜNÜN HABERLERİ'}</div></div>
+    <div data-photo="news" style="height:35%;background:linear-gradient(135deg,#111,#1a1a2e);position:relative;flex-shrink:0;"><div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 45%,#070709);pointer-events:none;"></div><div style="position:absolute;bottom:9px;left:13px;font-size:10px;font-weight:700;letter-spacing:1.5px;color:${ac};">${d.title||'GÜNÜN HABERLERİ'}</div></div>
     <div style="flex:1;padding:9px 13px 13px;display:flex;flex-direction:column;overflow:hidden;">
       ${[[d.h1||'Enflasyon rakamları açıklandı',d.s1||'TÜİK · 08:30'],[d.h2||'Borsa tarihi rekor kırdı',d.s2||'Borsa İstanbul · 10:15'],[d.h3||'Merkez Bankası faizi sabit tuttu',d.s3||'TCMB · 14:00']].map(([h,s],i)=>`<div style="display:flex;gap:9px;align-items:flex-start;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.06);"><div style="background:rgba(255,255,255,.06);color:${ac};font-size:10.5px;font-weight:700;min-width:21px;height:21px;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">${i+1}</div><div><div style="font-size:12px;font-weight:700;line-height:1.3;">${h}</div><div style="font-size:9.5px;color:rgba(255,255,255,.38);margin-top:2px;">${s}</div></div></div>`).join('')}
       <div style="margin-top:auto;padding-top:5px;font-size:9px;color:rgba(255,255,255,.18);font-weight:600;letter-spacing:1px;">${d.source||'Haber Ağı'}</div>
@@ -434,20 +429,18 @@ function tFeed1(d,p){
   </div>`;
 }
 function tPoll1(d,p){
-  const bg=p.bg?`url("${p.bg}") center/cover`:'linear-gradient(160deg,#000a1a,#000f20)';
   const ac=d.accent||'#00b4d8';
-  return `<div style="width:100%;height:100%;background:${bg};font-family:'${d._font||'DM Sans'}',sans-serif;position:relative;overflow:hidden;padding:19px;display:flex;flex-direction:column;justify-content:center;gap:11px;">
-    ${p.bg?'<div style="position:absolute;inset:0;background:rgba(0,0,0,.72);"></div>':''}
+  return `<div data-photo="bg" style="width:100%;height:100%;background:linear-gradient(160deg,#000a1a,#000f20);font-family:'${d._font||'DM Sans'}',sans-serif;position:relative;overflow:hidden;padding:19px;display:flex;flex-direction:column;justify-content:center;gap:11px;">
+    <div class="photo-overlay" style="position:absolute;inset:0;background:rgba(0,0,0,.72);display:none;pointer-events:none;"></div>
     <div style="position:relative;"><div style="font-size:9.5px;font-weight:700;letter-spacing:2px;color:${ac};margin-bottom:6px;">📊 ANKET</div><div style="font-size:clamp(13px,4vw,17px);font-weight:800;line-height:1.3;">${d.q||'Sorunuzu giriniz'}</div></div>
     ${[[d.o1||'Seçenek 1',d.pct1||'64'],[d.o2||'Seçenek 2',d.pct2||'36']].map(([o,pct])=>`<div style="position:relative;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.11);border-radius:9px;padding:10px 13px;overflow:hidden;"><div style="position:absolute;left:0;top:0;bottom:0;width:${pct||50}%;background:${ac}18;border-radius:9px;"></div><div style="position:relative;display:flex;justify-content:space-between;align-items:center;"><span style="font-size:12.5px;font-weight:600;">${o}</span><span style="font-size:13px;font-weight:800;color:${ac};">${pct}%</span></div></div>`).join('')}
     <div style="position:relative;font-size:9px;color:rgba(255,255,255,.22);font-weight:600;letter-spacing:1px;text-align:center;">${d.source||'Haber Ağı'}</div>
   </div>`;
 }
 function tAnalysis1(d,p){
-  const img=p.news?`url("${p.news}") center/cover`:'linear-gradient(135deg,#1a0a2e,#0d001a)';
   const ac=d.accent||'#a855f7';
   return `<div style="width:100%;height:100%;background:#06060e;font-family:'${d._font||'DM Sans'}',sans-serif;display:flex;flex-direction:column;overflow:hidden;">
-    <div style="height:38%;background:${img};position:relative;flex-shrink:0;"><div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,#06060e);"></div><div style="position:absolute;top:13px;left:13px;background:${ac};color:#fff;font-size:9px;font-weight:700;padding:3px 8px;border-radius:4px;letter-spacing:1px;">${d.tag||'ÖZEL ANALİZ'}</div></div>
+    <div data-photo="news" style="height:38%;background:linear-gradient(135deg,#1a0a2e,#0d001a);position:relative;flex-shrink:0;"><div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,#06060e);pointer-events:none;"></div><div style="position:absolute;top:13px;left:13px;background:${ac};color:#fff;font-size:9px;font-weight:700;padding:3px 8px;border-radius:4px;letter-spacing:1px;">${d.tag||'ÖZEL ANALİZ'}</div></div>
     <div style="flex:1;padding:11px 15px 15px;display:flex;flex-direction:column;gap:7px;">
       <div style="font-size:clamp(12px,3.5vw,17px);font-weight:800;line-height:1.25;color:#fff;">${d.headline||'Başlık'}</div>
       <div style="width:34px;height:2px;background:${ac};border-radius:2px;"></div>
@@ -710,7 +703,7 @@ function makePhotoField(f){
     const reader=new FileReader();
     reader.onload=ev=>{
       PHOTOS[f.role]=ev.target.result;
-      pv.style.backgroundImage=`url("${ev.target.result}")`;
+      pv.style.backgroundImage='url('+ev.target.result+')';
       ov.style.display='flex';drop.classList.add('has');
       updatePreview();
     };
@@ -725,7 +718,7 @@ function makePhotoField(f){
     const file=e.dataTransfer.files[0];
     if(!file||!file.type.startsWith('image/'))return;
     const reader=new FileReader();
-    reader.onload=ev=>{PHOTOS[f.role]=ev.target.result;pv.style.backgroundImage=`url("${ev.target.result}")`;ov.style.display='flex';drop.classList.add('has');updatePreview();};
+    reader.onload=ev=>{PHOTOS[f.role]=ev.target.result;pv.style.backgroundImage='url('+ev.target.result+')';ov.style.display='flex';drop.classList.add('has');updatePreview();};
     reader.readAsDataURL(file);
   });
 
@@ -748,7 +741,23 @@ function updatePreview(){
   DATA._font=FONT;
   const inner=document.getElementById('prev-inner');
   inner.style.filter=FILTERCSS[FILTER]||'';
-  inner.innerHTML=CUR.fn(DATA,PHOTOS);
+  inner.innerHTML=CUR.fn(DATA,{});   // render without photos first
+  applyPhotosToDOM(inner, PHOTOS);    // then inject photos safely via JS
+}
+
+// Applies uploaded photos to [data-photo] elements after HTML is set
+// This avoids base64 strings breaking HTML attribute parsing
+function applyPhotosToDOM(container, photos){
+  container.querySelectorAll('[data-photo]').forEach(el=>{
+    const role=el.getAttribute('data-photo');
+    if(!photos[role]) return;
+    el.style.backgroundImage='url('+photos[role]+')';
+    el.style.backgroundSize='cover';
+    el.style.backgroundPosition=photos[role+'_pos']||'center';
+    // tPoll1 dark overlay
+    const ov=el.querySelector('.photo-overlay');
+    if(ov) ov.style.display='block';
+  });
 }
 
 /* ── FORMAT SWITCH ── */
@@ -765,12 +774,19 @@ function doDownload(hq){
   const wrap=document.getElementById('canvas-wrap');
   const scale=hq?SCALE[FMT]:2;
   showToast('⏳ Hazırlanıyor...',false);
+
+  // Re-render with photos for html2canvas (set directly on elements in cloned doc)
+  const capturePhotos=PHOTOS;
   html2canvas(wrap,{
     backgroundColor:'#07070f',scale,
     useCORS:true,allowTaint:true,logging:false,
     onclone(doc){
       const cw=doc.getElementById('canvas-wrap');
-      if(cw){cw.style.borderRadius='0';cw.style.boxShadow='none';}
+      if(cw){
+        cw.style.borderRadius='0';
+        cw.style.boxShadow='none';
+      }
+      // Photos are already set as element styles (not HTML strings), so they carry over fine
     }
   }).then(canvas=>{
     const a=document.createElement('a');
