@@ -1,301 +1,1049 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SahibindenMotors - Profesyonel Galeri</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Haber Ağı — Premium Haber Paneli</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Sora:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --glass-bg: rgba(255,255,255,0.07);
+    --glass-border: rgba(255,255,255,0.15);
+    --glass-shadow: 0 8px 32px rgba(0,0,0,0.35);
+    --accent: #f0c040;
+    --accent2: #4fd1c5;
+    --red: #fc5c7d;
+    --text-primary: #f0eff4;
+    --text-muted: rgba(240,239,244,0.55);
+    --bg1: #0a0e1a;
+    --bg2: #0d1528;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    font-family: 'Sora', sans-serif;
+    background: var(--bg1);
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* ── Animated Background ── */
+  .bg-orbs {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  }
+  .orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: 0.18;
+    animation: drift 18s ease-in-out infinite alternate;
+  }
+  .orb1 { width:600px;height:600px;background:#6c3dff;top:-150px;left:-100px; animation-delay:0s; }
+  .orb2 { width:500px;height:500px;background:#0070f3;bottom:-100px;right:-80px; animation-delay:-6s; }
+  .orb3 { width:350px;height:350px;background:#f0c040;top:40%;left:40%; animation-delay:-3s; }
+  @keyframes drift {
+    from { transform: translate(0,0) scale(1); }
+    to   { transform: translate(40px,30px) scale(1.08); }
+  }
+
+  /* Grid noise overlay */
+  body::before {
+    content:'';
+    position:fixed;inset:0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Cpath d='M0 0h60v60H0z' fill='none'/%3E%3Cpath d='M0 30h60M30 0v60' stroke='rgba(255,255,255,0.025)' stroke-width='1'/%3E%3C/svg%3E");
+    pointer-events:none;
+    z-index:0;
+  }
+
+  /* ── Layout ── */
+  .wrapper { position:relative;z-index:1; display:flex; flex-direction:column; min-height:100vh; }
+
+  /* ── Topbar ── */
+  header {
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 36px;
+    background: rgba(10,14,26,0.6);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--glass-border);
+    position:sticky; top:0; z-index:100;
+  }
+  .logo {
+    display:flex; align-items:center; gap:12px;
+  }
+  .logo-icon {
+    width:38px;height:38px;
+    background: linear-gradient(135deg,#f0c040,#fc5c7d);
+    border-radius:10px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:18px; font-weight:900; color:#0a0e1a;
+    box-shadow: 0 0 20px rgba(240,192,64,0.4);
+  }
+  .logo-text {
+    font-family:'Playfair Display',serif;
+    font-size:22px; font-weight:900;
+    background: linear-gradient(90deg,#f0c040,#f0eff4);
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+    letter-spacing:0.02em;
+  }
+  .logo-sub { font-size:10px; color:var(--text-muted); letter-spacing:3px; text-transform:uppercase; margin-top:-2px; }
+
+  nav { display:flex; gap:8px; }
+  nav button {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    color: var(--text-primary);
+    padding: 8px 18px;
+    border-radius:8px;
+    font-family:'Sora',sans-serif;
+    font-size:13px; cursor:pointer;
+    backdrop-filter:blur(10px);
+    transition: all .2s;
+  }
+  nav button:hover { background: rgba(255,255,255,0.13); border-color:var(--accent); color:var(--accent); }
+  nav button.active { background:rgba(240,192,64,0.15); border-color:var(--accent); color:var(--accent); }
+
+  .header-right { display:flex;align-items:center;gap:14px; }
+  .live-badge {
+    display:flex; align-items:center; gap:6px;
+    background: rgba(252,92,125,0.15);
+    border:1px solid rgba(252,92,125,0.4);
+    padding:5px 12px; border-radius:20px;
+    font-size:11px; font-weight:600; color:var(--red);
+    letter-spacing:1px;
+  }
+  .live-dot { width:7px;height:7px;border-radius:50%;background:var(--red); animation:pulse 1.2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.7)} }
+
+  /* ── Main Content ── */
+  main { flex:1; padding:32px 36px; display:flex; flex-direction:column; gap:28px; }
+
+  /* Section title */
+  .section-header {
+    display:flex; align-items:center; justify-content:space-between; margin-bottom:16px;
+  }
+  .section-title {
+    font-family:'Playfair Display',serif;
+    font-size:18px; font-weight:700;
+    display:flex; align-items:center; gap:10px;
+  }
+  .section-title::before {
+    content:''; width:4px;height:20px;
+    background: linear-gradient(180deg,var(--accent),var(--red));
+    border-radius:2px; display:block;
+  }
+  .section-btn {
+    font-size:12px; color:var(--accent); cursor:pointer;
+    background:none; border:none; font-family:'Sora',sans-serif;
+    text-decoration:underline; text-underline-offset:3px; opacity:.8;
+  }
+  .section-btn:hover { opacity:1; }
+
+  /* ── Glass Card Base ── */
+  .glass {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(16px);
+    border-radius:16px;
+    box-shadow: var(--glass-shadow);
+    transition: transform .2s, box-shadow .2s;
+  }
+  .glass:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 48px rgba(0,0,0,0.45);
+  }
+
+  /* ── Stats Row ── */
+  .stats-row { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+  .stat-card {
+    padding:22px 24px;
+    position:relative; overflow:hidden;
+  }
+  .stat-card::after {
+    content:'';
+    position:absolute; top:0;right:0;
+    width:80px;height:80px;
+    border-radius:50%;
+    filter:blur(30px);
+    opacity:.35;
+  }
+  .stat-card:nth-child(1)::after { background:#f0c040; }
+  .stat-card:nth-child(2)::after { background:#4fd1c5; }
+  .stat-card:nth-child(3)::after { background:#fc5c7d; }
+  .stat-card:nth-child(4)::after { background:#6c3dff; }
+  .stat-label { font-size:11px; text-transform:uppercase; letter-spacing:2px; color:var(--text-muted); margin-bottom:8px; }
+  .stat-value { font-family:'Playfair Display',serif; font-size:32px; font-weight:900; line-height:1; }
+  .stat-sub { font-size:12px; color:var(--text-muted); margin-top:6px; }
+  .stat-trend { color:#4fd1c5; font-weight:600; }
+
+  /* ── Templates Grid ── */
+  .templates-grid { display:grid; grid-template-columns: 2fr 1fr 1fr; grid-template-rows:auto auto; gap:16px; }
+
+  /* Hero template */
+  .tpl-hero {
+    grid-row: 1 / 3;
+    padding:0; overflow:hidden; cursor:pointer; position:relative;
+    min-height:420px; display:flex;flex-direction:column;justify-content:flex-end;
+  }
+  .tpl-hero .tpl-bg {
+    position:absolute;inset:0;
+    background: linear-gradient(135deg,#1a2040 0%,#0d1528 60%,#1a0d28 100%);
+    border-radius:16px;
+  }
+  .tpl-hero .tpl-bg-img {
+    position:absolute;inset:0;border-radius:16px;
+    background: linear-gradient(
+      170deg,
+      rgba(240,192,64,0.08) 0%,
+      rgba(108,61,255,0.12) 50%,
+      rgba(252,92,125,0.08) 100%
+    );
+  }
+  .tpl-hero .decorative-lines {
+    position:absolute;top:20px;right:20px;opacity:0.15;
+  }
+  .tpl-hero-content {
+    position:relative;z-index:2;padding:28px;
+    background: linear-gradient(0deg, rgba(10,14,26,.9) 0%, transparent 100%);
+    border-radius:0 0 16px 16px;
+  }
+  .tpl-category {
+    display:inline-flex; align-items:center; gap:6px;
+    background:rgba(240,192,64,0.15);
+    border:1px solid rgba(240,192,64,0.35);
+    padding:4px 10px; border-radius:20px;
+    font-size:10px; font-weight:600; color:var(--accent);
+    letter-spacing:1.5px; text-transform:uppercase;
+    margin-bottom:12px;
+  }
+  .tpl-title {
+    font-family:'Playfair Display',serif;
+    font-size:22px; font-weight:900; line-height:1.3;
+    margin-bottom:10px;
+  }
+  .tpl-desc { font-size:13px; color:var(--text-muted); line-height:1.6; margin-bottom:16px; }
+  .tpl-meta { display:flex;align-items:center;gap:14px;font-size:11px;color:var(--text-muted); }
+  .tpl-meta span { display:flex;align-items:center;gap:4px; }
+
+  .tpl-actions {
+    display:flex;gap:8px;margin-top:14px;
+  }
+  .btn-primary {
+    background:linear-gradient(135deg,#f0c040,#e0a830);
+    color:#0a0e1a; border:none; padding:9px 20px;
+    border-radius:8px; font-family:'Sora',sans-serif;
+    font-size:12px; font-weight:700; cursor:pointer;
+    transition:all .2s; letter-spacing:.5px;
+    box-shadow:0 4px 16px rgba(240,192,64,.35);
+  }
+  .btn-primary:hover { transform:scale(1.04); box-shadow:0 6px 24px rgba(240,192,64,.5); }
+  .btn-ghost {
+    background:rgba(255,255,255,.08); color:var(--text-primary);
+    border:1px solid var(--glass-border); padding:9px 20px;
+    border-radius:8px; font-family:'Sora',sans-serif;
+    font-size:12px; cursor:pointer; transition:all .2s;
+  }
+  .btn-ghost:hover { background:rgba(255,255,255,.14); }
+
+  /* Small templates */
+  .tpl-small {
+    padding:22px; cursor:pointer; position:relative; overflow:hidden;
+  }
+  .tpl-small::before {
+    content:''; position:absolute;top:-40px;right:-40px;
+    width:120px;height:120px;border-radius:50%;
+    filter:blur(50px); opacity:.2;
+  }
+  .tpl-small:nth-child(2)::before { background:#4fd1c5; }
+  .tpl-small:nth-child(3)::before { background:#fc5c7d; }
+  .tpl-small:nth-child(4)::before { background:#6c3dff; }
+  .tpl-small:nth-child(5)::before { background:#f0c040; }
+  .tpl-small .tpl-title { font-size:15px; margin-bottom:8px; }
+  .tpl-small .tpl-desc { font-size:12px; line-height:1.5; }
+
+  .cat-blue  { background:rgba(79,209,197,.15);border-color:rgba(79,209,197,.35);color:#4fd1c5; }
+  .cat-red   { background:rgba(252,92,125,.15);border-color:rgba(252,92,125,.35);color:#fc5c7d; }
+  .cat-purple{ background:rgba(108,61,255,.15);border-color:rgba(108,61,255,.4);color:#9d7bff; }
+  .cat-green { background:rgba(72,199,142,.15);border-color:rgba(72,199,142,.35);color:#48c78e; }
+
+  /* ── Column Layout ── */
+  .two-col { display:grid; grid-template-columns:1fr 360px; gap:16px; }
+
+  /* ── Template Editor Panel ── */
+  .editor-panel { padding:24px; }
+  .editor-title { font-family:'Playfair Display',serif; font-size:16px; font-weight:700; margin-bottom:20px; }
+
+  .field-group { margin-bottom:16px; }
+  .field-label { font-size:11px; text-transform:uppercase; letter-spacing:1.5px; color:var(--text-muted); margin-bottom:7px; }
+  .field-input {
+    width:100%; background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:8px; padding:10px 14px;
+    color:var(--text-primary); font-family:'Sora',sans-serif;
+    font-size:13px; transition:border-color .2s;
+  }
+  .field-input:focus { outline:none; border-color:var(--accent); background:rgba(255,255,255,.09); }
+  textarea.field-input { resize:vertical; min-height:80px; }
+  select.field-input { cursor:pointer; }
+
+  .field-row { display:grid;grid-template-columns:1fr 1fr;gap:10px; }
+
+  .color-row { display:flex;gap:8px;flex-wrap:wrap; }
+  .color-chip {
+    width:28px;height:28px;border-radius:6px;cursor:pointer;
+    border:2px solid transparent; transition:all .15s;
+  }
+  .color-chip:hover,.color-chip.sel { border-color:#fff; transform:scale(1.15); }
+
+  .export-row { display:flex;flex-direction:column;gap:8px;margin-top:20px; }
+  .btn-export {
+    width:100%; padding:11px; border-radius:8px;
+    font-family:'Sora',sans-serif;font-size:13px;font-weight:600;
+    cursor:pointer; transition:all .2s; letter-spacing:.3px;
+  }
+  .btn-export-primary {
+    background:linear-gradient(135deg,#f0c040,#e0a830);
+    color:#0a0e1a; border:none;
+    box-shadow:0 4px 18px rgba(240,192,64,.3);
+  }
+  .btn-export-primary:hover { box-shadow:0 6px 28px rgba(240,192,64,.5); transform:translateY(-1px); }
+  .btn-export-secondary {
+    background:rgba(79,209,197,.1);
+    color:#4fd1c5; border:1px solid rgba(79,209,197,.3);
+  }
+  .btn-export-secondary:hover { background:rgba(79,209,197,.18); }
+  .btn-export-tertiary {
+    background:rgba(255,255,255,.06);
+    color:var(--text-muted); border:1px solid rgba(255,255,255,.1);
+  }
+
+  /* ── News Feed ── */
+  .feed-list { display:flex;flex-direction:column;gap:12px; }
+  .feed-item {
+    display:flex; gap:14px; padding:16px;
+    cursor:pointer;
+  }
+  .feed-num {
+    font-family:'Playfair Display',serif;
+    font-size:28px;font-weight:900;
+    color:rgba(255,255,255,.08); min-width:32px; line-height:1;
+    margin-top:2px;
+  }
+  .feed-content { flex:1; }
+  .feed-title { font-size:13px;font-weight:600;line-height:1.4;margin-bottom:5px; }
+  .feed-meta { font-size:11px;color:var(--text-muted); display:flex;gap:10px; }
+  .feed-dot { color:var(--glass-border); }
+
+  /* ── Breaking Ticker ── */
+  .ticker-bar {
+    background:rgba(252,92,125,.1);
+    border:1px solid rgba(252,92,125,.25);
+    border-radius:10px; padding:10px 20px;
+    display:flex;align-items:center;gap:14px;
+    overflow:hidden;
+  }
+  .ticker-label {
+    background:var(--red); color:#fff;
+    padding:3px 10px;border-radius:5px;
+    font-size:10px;font-weight:700;letter-spacing:1.5px;
+    white-space:nowrap; flex-shrink:0;
+  }
+  .ticker-track { flex:1; overflow:hidden; }
+  .ticker-text {
+    display:inline-block;
+    font-size:13px; color:var(--text-primary);
+    white-space:nowrap;
+    animation: ticker 28s linear infinite;
+  }
+  @keyframes ticker {
+    0%   { transform:translateX(100%); }
+    100% { transform:translateX(-100%); }
+  }
+
+  /* ── Modal Overlay ── */
+  .modal-overlay {
+    display:none; position:fixed;inset:0;z-index:200;
+    background:rgba(5,8,18,.75); backdrop-filter:blur(8px);
+    align-items:center;justify-content:center;
+  }
+  .modal-overlay.open { display:flex; animation:fadeIn .25s ease; }
+  @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+  .modal {
+    background: rgba(13,21,40,0.95);
+    border:1px solid var(--glass-border);
+    border-radius:20px; padding:36px;
+    max-width:560px; width:90%;
+    box-shadow:0 32px 80px rgba(0,0,0,.6);
+    animation:slideUp .3s ease;
+  }
+  @keyframes slideUp { from{transform:translateY(30px);opacity:0} to{transform:translateY(0);opacity:1} }
+  .modal-header { display:flex;align-items:center;justify-content:space-between;margin-bottom:24px; }
+  .modal-title { font-family:'Playfair Display',serif;font-size:20px;font-weight:900; }
+  .modal-close {
+    width:32px;height:32px;border-radius:8px;
+    background:rgba(255,255,255,.08);border:1px solid var(--glass-border);
+    color:var(--text-primary);font-size:16px;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .preview-box {
+    background:rgba(255,255,255,.04);border:1px solid var(--glass-border);
+    border-radius:12px;padding:24px;margin:20px 0;
+    font-family:'Playfair Display',serif;
+    position:relative;overflow:hidden;
+  }
+  .preview-box::before {
+    content:''; position:absolute;top:-30px;right:-30px;
+    width:120px;height:120px;border-radius:50%;
+    background:var(--accent);filter:blur(50px);opacity:.1;
+  }
+  .preview-label { font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);margin-bottom:10px; }
+  .preview-headline { font-size:18px;font-weight:900;line-height:1.3;margin-bottom:8px; }
+  .preview-body { font-family:'Sora',sans-serif;font-size:12px;color:var(--text-muted);line-height:1.6; }
+
+  /* ── Responsive ── */
+  @media(max-width:1024px){
+    .templates-grid{ grid-template-columns:1fr 1fr; }
+    .tpl-hero{ grid-row:1; grid-column:1/3; min-height:300px; }
+    .two-col{ grid-template-columns:1fr; }
+    .stats-row{ grid-template-columns:1fr 1fr; }
+  }
+  @media(max-width:640px){
+    main{padding:20px 16px;}
+    header{padding:14px 16px;}
+    .stats-row{grid-template-columns:1fr;}
+    .templates-grid{grid-template-columns:1fr;}
+    .tpl-hero{grid-column:1;}
+  }
+
+  /* ── Scrollbar ── */
+  ::-webkit-scrollbar{width:6px;}
+  ::-webkit-scrollbar-track{background:rgba(255,255,255,.03);}
+  ::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:3px;}
+
+  /* Highlight animations on load */
+  .fade-up { animation: fadeUp .6s ease both; }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+  .d1{animation-delay:.05s} .d2{animation-delay:.1s} .d3{animation-delay:.15s} .d4{animation-delay:.2s} .d5{animation-delay:.25s}
+</style>
 </head>
 <body>
-    <div id="mobil-menu-overlay" onclick="mobilMenuKapatAc()"></div>
 
-    <header class="sari-baslik">
-        <div class="header-icerik">
-            <div class="mobil-ust-satir">
-                <div class="hamburger-btn" onclick="mobilMenuKapatAc()">☰</div>
-                <h1 class="logo" id="header-logo">Yükleniyor<span>...</span></h1>
-                <div onclick="ayarlarModalAc()" class="ayarlar-btn masaustu-gizle" title="Ayarlar">⚙️</div>
-            </div>
+<div class="bg-orbs">
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
+</div>
 
-            <div class="arama-cubugu masaustu-goster">
-                <input type="text" placeholder="Kelime veya ilan no ile ara..." disabled>
-                <button>Ara</button>
-            </div>
+<div class="wrapper">
 
-            <div class="kullanici-bilgi">
-                <div class="bilgi-kutu kapasite-kutu">🚗 <span id="kapasite-bilgi">0/2</span></div>
-                <div class="bilgi-kutu gun-kutu">📅 <span class="masaustu-goster-inline">Gün: </span><span id="gun">1</span></div>
-                <div class="bilgi-kutu bakiye">💰 <span id="paramiz">15.000.000</span> ₺</div>
-                <div onclick="ayarlarModalAc()" class="ayarlar-btn masaustu-goster" title="Ayarlar">⚙️</div>
-            </div>
-        </div>
-    </header>
+  <!-- ── HEADER ── -->
+  <header>
+    <div class="logo">
+      <div class="logo-icon">HA</div>
+      <div>
+        <div class="logo-text">Haber Ağı</div>
+        <div class="logo-sub">Premium Panel</div>
+      </div>
+    </div>
+    <nav>
+      <button class="active" onclick="setTab(this,'templates')">Şablonlar</button>
+      <button onclick="setTab(this,'feed')">Haber Akışı</button>
+      <button onclick="setTab(this,'editor')">Editör</button>
+      <button onclick="setTab(this,'stats')">İstatistik</button>
+    </nav>
+    <div class="header-right">
+      <div class="live-badge"><div class="live-dot"></div> CANLI</div>
+    </div>
+  </header>
 
-    <div class="ana-konteyner">
-        <aside class="sol-menu">
-            <h3 class="masaustu-goster">Kategoriler</h3>
-            <h2 class="masaustu-gizle" style="color:#0984e3; margin-top:0; border-bottom:1px solid #eee; padding-bottom:10px;">Menü</h2>
-            <ul>
-                <li onclick="menuDegistir('pazar')" class="aktif" id="menu-pazar">🚗 Vasıta İlanları</li>
-                <li onclick="menuDegistir('garaj')" id="menu-garaj">🏠 Kendi Garajım</li>
-                <li onclick="menuDegistir('dukkan')" id="menu-dukkan">🏢 Dükkan Yönetimi</li>
-                <li onclick="menuDegistir('banka')" id="menu-banka">🏦 Banka İşlemleri</li>
-                <li onclick="menuDegistir('istatistik')" id="menu-istatistik">📊 İstatistikler</li>
-                <li onclick="menuDegistir('sosyal')" id="menu-sosyal" style="background: linear-gradient(90deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);">📱 Sosyal Medya</li>
-            </ul>
-            <button class="gun-atla-btn" onclick="sonrakiGun()">🌙 Uykuya Yat (Sonraki Gün)</button>
-        </aside>
+  <!-- ── BREAKING TICKER ── -->
+  <div style="padding:14px 36px 0; position:relative;z-index:1;" class="fade-up d1">
+    <div class="ticker-bar">
+      <span class="ticker-label">SON DAKİKA</span>
+      <div class="ticker-track">
+        <span class="ticker-text">
+          🔴 Merkez Bankası faiz kararını açıkladı &nbsp;•&nbsp;
+          📊 Borsa rekor kırdı, endeks yüzde 3 yükseldi &nbsp;•&nbsp;
+          🌍 Dünya liderlerinden ortak iklim bildirisi &nbsp;•&nbsp;
+          ⚽ Milli takım hazırlık maçında galip geldi &nbsp;•&nbsp;
+          🚀 Yerli uydu fırlatma tarihi belli oldu &nbsp;•&nbsp;
+          💊 Yeni ilaç Avrupa onayı aldı &nbsp;•&nbsp;
+          🏙️ Büyükşehirde ulaşım reformu hayata geçiyor
+        </span>
+      </div>
+    </div>
+  </div>
 
-        <main class="icerik-alani">
-            <div id="pazar-ekrani" class="sayfa">
-                <h2 class="sayfa-basligi">Piyasadaki Araçlar</h2>
-                <div id="araba-listesi" class="ilan-listesi"></div>
-            </div>
+  <!-- ── MAIN ── -->
+  <main>
 
-            <div id="garaj-ekrani" class="sayfa" style="display: none;">
-                <h2 class="sayfa-basligi">Garajımdaki Araçlar</h2>
-                <div class="uyari-mesaji" id="garaj-bilgi">Garajında henüz araba yok patron. Piyasadan araç toplamalısın!</div>
-                <div id="garaj-listesi" class="ilan-listesi"></div>
-            </div>
-
-            <div id="dukkan-ekrani" class="sayfa" style="display: none;">
-                <h2 class="sayfa-basligi">Dükkan Seviyesi ve Kapasite</h2>
-                <div class="modern-kutu dukkan-kutusu">
-                    <h3 id="dukkan-isim" style="color: #0984e3; font-size: 24px; margin-top: 0;"></h3>
-                    <p>Şu anki kapasiten: <strong id="dukkan-kapasite" style="font-size: 18px;"></strong></p>
-                    <hr>
-                    <div id="yukseltme-alani">
-                        <p style="color: #636e72;">Bir sonraki seviye: <strong id="yeni-seviye-isim" style="color: #2d3436;"></strong></p>
-                        <p style="font-size: 20px;">Gereken Yatırım: <strong id="yeni-seviye-fiyat" style="color: #d63031;"></strong></p>
-                        <button class="btn btn-yesil" style="font-size: 16px; padding: 15px;" onclick="dukkaniYukselt()">🚀 Dükkanı Büyüt ve Seviye Atla!</button>
-                    </div>
-                </div>
-            </div>
-
-            <div id="banka-ekrani" class="sayfa" style="display: none;">
-                <h2 class="sayfa-basligi">Banka İşlemleri</h2>
-                <div class="modern-kutu">
-                    <h3>Güncel Borç: <span id="borc-miktari" style="color: #e74c3c;">0</span> TL</h3>
-                    <p class="alt-bilgi">* Uyarı: Banka, her gece borcunuza %5 gecikme faizi uygular.</p>
-                    <button class="btn btn-yesil" onclick="krediCek(500000)">500.000 TL Kredi Çek</button>
-                    <button class="btn btn-turuncu" onclick="borcOde(500000)">500.000 TL Borç Öde</button>
-                    <button class="btn btn-kirmizi" onclick="borcuKapat()">Tüm Borcu Kapat</button>
-                </div>
-            </div>
-
-            <div id="istatistik-ekrani" class="sayfa" style="display: none;">
-                <h2 class="sayfa-basligi">Galeri İstatistikleri</h2>
-                <div class="modern-kutu">
-                    <p>Satılan Toplam Araç: <b id="ist-satilan" style="color:#3498db; font-size: 20px;">0</b></p>
-                    <p>Toplam Gelir: <b id="ist-gelir" style="color:#27ae60;">0</b> TL</p>
-                    <p>Toplam Gider: <b id="ist-gider" style="color:#e74c3c;">0</b> TL</p>
-                    <hr>
-                    <h3 style="font-size: 26px;">Net Kâr: <span id="ist-net">0</span> TL</h3>
-                </div>
-            </div>
-
-            <div id="sosyal-ekrani" class="sayfa" style="display: none;">
-                <h2 class="sayfa-basligi">📱 Dijital Pazarlama & Sosyal Medya</h2>
-                
-                <div id="sosyal-kurulum" class="modern-kutu" style="text-align: center;">
-                    <h3 style="color: #0984e3;">Sosyal Medyaya Adım At</h3>
-                    <p style="color: #636e72; margin-bottom: 20px;">Yeni nesil müşterilere ulaşmak için dükkanına hesap aç.</p>
-                    <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 20px;">
-                        <select id="sm-platform" style="padding: 10px; border-radius: 8px; border: 1px solid #dfe6e9; outline: none;">
-                            <option value="Instagram">Instagram</option>
-                            <option value="TikTok">TikTok</option>
-                        </select>
-                        <input type="text" id="sm-kullanici-adi" placeholder="@kullaniciadi belirle" style="padding: 10px; border-radius: 8px; border: 1px solid #dfe6e9; outline: none; width: 50%;">
-                    </div>
-                    <button class="btn btn-mavi" style="width: auto; padding: 10px 30px;" onclick="sosyalHesapAc()">Hesabı Oluştur</button>
-                </div>
-
-                <div id="sosyal-yonetim" style="display: none;">
-                    <div class="modern-kutu" style="display: flex; justify-content: space-between; align-items: center; background: linear-gradient(135deg, #74b9ff, #0984e3); color: white;">
-                        <div>
-                            <h2 style="margin: 0; display:flex; align-items:center; gap:5px;" id="profil-ad">@kullanici <span id="mavi-tik-ikon" style="display:none; color:#00d2d3; background:white; border-radius:50%; font-size:16px; padding:2px;">☑️</span></h2>
-                            <span id="profil-platform" style="background: rgba(255,255,255,0.2); padding: 3px 8px; border-radius: 5px; font-size: 12px;">Instagram</span>
-                        </div>
-                        <div style="text-align: right;">
-                            <div style="font-size: 24px; font-weight: bold;" id="profil-takipci">0</div>
-                            <div style="font-size: 12px; opacity: 0.8;">Takipçi</div>
-                        </div>
-                    </div>
-
-                    <div id="sosyal-linc-uyari" style="display:none; background:#ff7675; color:white; padding:10px; border-radius:8px; margin-top:10px; text-align:center; font-weight:bold;">
-                        🚨 Hesabın Linç Yiyor! DM'ler kapandı. Bitiş: <span id="linc-kalan"></span> Gün Sonra.
-                    </div>
-
-                    <div style="display: flex; gap: 15px; margin-top: 15px; flex-wrap: wrap;">
-                        <div class="modern-kutu" style="flex: 1; min-width: 45%; text-align: center;">
-                            <h3>📸 Araç Paylaş</h3>
-                            <p style="font-size: 12px; color: #636e72;">Garajdan araç seçip video çek. Yorumları oku! (Maliyet: 1.500 ₺)</p>
-                            <button class="btn btn-yesil" onclick="postIcinArabaSec()">Gönderi Paylaş</button>
-                        </div>
-                        <div class="modern-kutu" style="flex: 1; min-width: 45%; text-align: center;">
-                            <h3>✨ Mavi Tik Al</h3>
-                            <p style="font-size: 12px; color: #636e72;">Ölücüleri azaltır, prestij katar, teklif fiyatını %10 artırır. (25.000 ₺)</p>
-                            <button class="btn" style="background:#00d2d3; color: white;" onclick="maviTikAl()">Satın Al</button>
-                        </div>
-                        <div class="modern-kutu" style="flex: 1; min-width: 45%; text-align: center;">
-                            <h3>🎁 iPhone Çekilişi</h3>
-                            <p style="font-size: 12px; color: #636e72;">Binlerce takipçi kazandırır. (%15 linç yeme riski var!) (80.000 ₺)</p>
-                            <button class="btn btn-turuncu" onclick="cekilisYap()">Çekiliş Başlat</button>
-                        </div>
-                        <div class="modern-kutu" style="flex: 1; min-width: 45%; text-align: center;">
-                            <h3>💸 Fenomen Reklamı</h3>
-                            <p style="font-size: 12px; color: #636e72;">Ünlüleri dükkana çağır, garantili büyük kitle çek. (50.000 ₺)</p>
-                            <button class="btn btn-mor" style="background: #9b59b6; color: white;" onclick="influencerReklamVer()">Reklam Ver</button>
-                        </div>
-                    </div>
-
-                    <h3 style="margin-top: 25px;">💬 DM Kutusu (Gelen Teklifler)</h3>
-                    <div id="dm-kutusu" class="ilan-listesi"></div>
-                </div>
-            </div>
-            </main>
+    <!-- Stats Row -->
+    <div class="stats-row fade-up d2">
+      <div class="stat-card glass">
+        <div class="stat-label">Bugün Yayınlanan</div>
+        <div class="stat-value" id="stat1">248</div>
+        <div class="stat-sub"><span class="stat-trend">↑ %18</span> dünden fazla</div>
+      </div>
+      <div class="stat-card glass">
+        <div class="stat-label">Aktif Şablon</div>
+        <div class="stat-value" id="stat2">12</div>
+        <div class="stat-sub">5 kategori · 3 format</div>
+      </div>
+      <div class="stat-card glass">
+        <div class="stat-label">HD İndirme</div>
+        <div class="stat-value" id="stat3">1.4K</div>
+        <div class="stat-sub"><span class="stat-trend">↑ %31</span> bu hafta</div>
+      </div>
+      <div class="stat-card glass">
+        <div class="stat-label">Okuyucu</div>
+        <div class="stat-value" id="stat4">89K</div>
+        <div class="stat-sub">anlık ziyaretçi</div>
+      </div>
     </div>
 
-    <div id="post-secim-modal" class="modal">
-        <div class="modal-icerik">
-            <span class="kapat-btn" onclick="modaliKapat('post-secim-modal')">&times;</span>
-            <h2 class="modal-baslik">Videoya Çekilecek Aracı Seç</h2>
-            <div id="post-araba-listesi" class="ilan-listesi"></div>
-        </div>
-    </div>
+    <!-- Templates Section -->
+    <div class="fade-up d3">
+      <div class="section-header">
+        <div class="section-title">Haber Şablonları</div>
+        <button class="section-btn" onclick="openModal('new')">+ Yeni Şablon</button>
+      </div>
 
-    <div id="post-sonuc-modal" class="modal" style="z-index:3500;">
-        <div class="modal-icerik" style="max-width: 400px; text-align:center;">
-            <h2 style="color:#0984e3; margin-top:0;">Gönderi Paylaşıldı!</h2>
-            <div style="font-size: 24px; font-weight:bold; color:#00b894;" id="post-sonuc-takipci">+0 Takipçi</div>
-            <hr style="margin:20px 0; border:none; border-bottom:1px solid #eee;">
-            <h3 style="margin-bottom:10px; font-size:16px;">Gelen Yorumlar:</h3>
-            <div id="post-yorumlar" style="text-align:left; max-height:200px; overflow-y:auto;"></div>
-            <button class="btn btn-mavi" style="margin-top:20px;" onclick="modaliKapat('post-sonuc-modal')">Harika!</button>
-        </div>
-    </div>
+      <div class="templates-grid">
 
-    <div id="baslangic-modal" class="modal" style="display: none; background: rgba(0,0,0,0.9);">
-        <div class="modal-icerik" style="text-align: center; max-width: 450px; padding: 40px; margin-top: 10%;">
-            <h1 style="color: #0984e3; margin-top:0;">SahibindenMotors</h1>
-            <h2 style="color: #2d3436; font-size: 20px;">Kendi Galerini Kur!</h2>
-            <input type="text" id="galeri-adi-input" placeholder="İsmini buraya yaz..." style="width: 100%; padding: 15px; border: 2px solid #dfe6e9; border-radius: 8px; font-size: 16px; margin-bottom: 20px; outline: none;">
-            <button class="btn btn-mavi" style="padding: 15px; font-size: 18px;" onclick="galeriAdiniKaydet()">🚀 Maceraya Başla</button>
-        </div>
-    </div>
-
-    <div id="ilan-detay-modal" class="modal">
-        <div class="modal-icerik ilan-detay-icerik">
-            <span class="kapat-btn" onclick="modaliKapat('ilan-detay-modal')">&times;</span>
-            <div class="ilan-detay-grid">
-                <div class="ilan-sol">
-                    <img id="detay-foto" src="" alt="Araba Görseli" style="width:100%; height:230px; object-fit:cover; border-radius:8px;">
-                    <div class="ilan-aciklama">
-                        <h3 style="margin-top:0; color:#d63031; font-size:16px;">Satıcının Açıklaması</h3>
-                        <p id="detay-aciklama" style="font-size: 13px; line-height: 1.5; color: #636e72;"></p>
-                    </div>
-                </div>
-                <div class="ilan-sag">
-                    <h2 id="detay-baslik" style="margin-top:0; color:#2d3436; font-size:20px;"></h2>
-                    <h1 id="detay-fiyat" style="color: #0984e3; margin: 5px 0 15px 0; font-size: 28px;"></h1>
-                    <ul class="detay-liste">
-                        <li><strong>Marka:</strong> <span id="detay-marka"></span></li>
-                        <li><strong>Seri:</strong> <span id="detay-model"></span></li>
-                        <li><strong>Yıl:</strong> <span id="detay-yil"></span></li>
-                        <li><strong>Kilometre:</strong> <span id="detay-km"></span></li>
-                    </ul>
-                    <h3 style="margin-bottom: 10px; font-size:16px;">🛠️ Oto Rapor Ekspertiz</h3>
-                    <div class="ekspertiz-arabasi">
-                        <div class="eks-row">
-                            <div class="eks-parca" id="eks-solOnCamurluk">Sol Ön Çam.</div>
-                            <div class="eks-parca" id="eks-kaput">Kaput</div>
-                            <div class="eks-parca" id="eks-sagOnCamurluk">Sağ Ön Çam.</div>
-                        </div>
-                        <div class="eks-row">
-                            <div class="eks-parca" id="eks-solOnKapi">Sol Ön Kapı</div>
-                            <div class="eks-parca" id="eks-tavan">Tavan</div>
-                            <div class="eks-parca" id="eks-sagOnKapi">Sağ Ön Kapı</div>
-                        </div>
-                        <div class="eks-row">
-                            <div class="eks-parca" id="eks-solArkaKapi">Sol Arka Kapı</div>
-                            <div class="eks-parca" id="eks-bagaj">Bagaj</div>
-                            <div class="eks-parca" id="eks-sagArkaKapi">Sağ Arka Kapı</div>
-                        </div>
-                        <div class="eks-row">
-                            <div class="eks-parca" id="eks-solArkaCamurluk">Sol Arka Ç.</div>
-                            <div class="eks-parca" style="visibility:hidden;"></div>
-                            <div class="eks-parca" id="eks-sagArkaCamurluk">Sağ Arka Ç.</div>
-                        </div>
-                    </div>
-                    <div class="ekspertiz-lejant">
-                        <span style="color:#2d3436;">⚪ Orijinal</span> <span style="color:#f39c12;">🟡 Lokal</span> <span style="color:#3498db;">🔵 Boyalı</span> <span style="color:#e74c3c;">🔴 Değişen</span>
-                    </div>
-                    <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 20px;">
-                        <button id="detay-tramer-btn" class="btn" style="background:#34495e; color:white; font-size:14px;">💬 5664'e Tramer SMS'i Gönder (150 ₺)</button>
-                        <button id="detay-satici-ara-btn" class="btn btn-yesil" style="font-size:16px;">📞 Satıcıyı Ara (<span id="detay-telefon"></span>)</button>
-                        <button id="detay-hakan-abi-btn" class="btn" style="background:#2d3436; color:#f1c40f; font-size:14px;">👑 Hakan Abi'ye Çöktürt</button>
-                    </div>
-                </div>
+        <!-- HERO -->
+        <div class="tpl-hero glass" onclick="openModal('hero')">
+          <div class="tpl-bg"></div>
+          <div class="tpl-bg-img"></div>
+          <!-- decorative SVG -->
+          <svg class="decorative-lines" width="80" height="80" viewBox="0 0 80 80">
+            <circle cx="40" cy="40" r="38" stroke="rgba(240,192,64,.4)" stroke-width="1" fill="none"/>
+            <circle cx="40" cy="40" r="28" stroke="rgba(240,192,64,.2)" stroke-width="1" fill="none"/>
+            <line x1="40" y1="2" x2="40" y2="78" stroke="rgba(240,192,64,.15)" stroke-width="1"/>
+            <line x1="2" y1="40" x2="78" y2="40" stroke="rgba(240,192,64,.15)" stroke-width="1"/>
+          </svg>
+          <div class="tpl-hero-content">
+            <div class="tpl-category">⭐ Manşet Şablonu</div>
+            <div class="tpl-title" id="hero-title">Büyük Ekonomi Zirvesi: Küresel Liderler Ankara'da Buluşuyor</div>
+            <div class="tpl-desc" id="hero-desc">G20 liderlerinin katılacağı zirve, küresel ekonomik dengeleri yeniden şekillendirecek kritik kararların alınacağı tarihî bir toplantıya sahne olacak.</div>
+            <div class="tpl-meta">
+              <span>📰 Dünya</span>
+              <span>⏱ 3 dk önce</span>
+              <span>👁 12.4K okuma</span>
             </div>
-        </div>
-    </div>
-
-    <div id="telefon-modal" class="modal" style="z-index: 3000;">
-        <div class="modal-icerik telefon-ekrani">
-            <h3 id="tel-aranan-kisi" style="margin-top: 10px; color: #bdc3c7; font-weight: 400; font-size: 16px;">Satıcı Aranıyor...</h3>
-            <div class="tel-profil-resmi">👤</div>
-            <div id="tel-bekleme-animasyonu" class="pulse"></div>
-            <p id="tel-diyalog" style="font-size: 15px; line-height: 1.6; min-height: 80px; margin-bottom: 25px; padding: 0 10px;">Dıt... Dıt... Dıt...</p>
-            <div id="tel-aksiyonlar" style="display: flex; flex-direction: column; gap: 10px; display: none;">
-                <button class="btn btn-yesil" id="tel-satin-al-btn" style="padding: 15px; font-size: 16px;">Satın Al (Noterde)</button>
-                <button class="btn btn-turuncu" id="tel-pazarlik-btn" style="padding: 15px; font-size: 16px;">Pazarlık Yap</button>
+            <div class="tpl-actions">
+              <button class="btn-primary" onclick="event.stopPropagation();openModal('edit-hero')">✏ Düzenle</button>
+              <button class="btn-ghost" onclick="event.stopPropagation();downloadHD('hero')">⬇ HD İndir</button>
             </div>
-            <button class="btn btn-kirmizi" style="margin-top: 20px; border-radius: 30px; padding: 12px; font-size: 16px;" onclick="telefonuKapat()">📞 Kapat</button>
+          </div>
         </div>
+
+        <!-- Small 1 -->
+        <div class="tpl-small glass" onclick="openModal('edit-small1')">
+          <div class="tpl-category cat-blue">📈 Ekonomi</div>
+          <div class="tpl-title" id="s1-title">Dolar Günceli: Merkez Bankası Kararı Sonrası Kur Hareketi</div>
+          <div class="tpl-desc" id="s1-desc">Faiz kararının ardından piyasalardaki anlık tepkiler ve uzman yorumları.</div>
+          <div class="tpl-meta" style="margin-top:10px;">
+            <span>⏱ 18 dk</span>
+            <span>👁 5.2K</span>
+          </div>
+          <div class="tpl-actions" style="margin-top:12px;">
+            <button class="btn-primary" onclick="event.stopPropagation();openModal('edit-s1')">✏ Düzenle</button>
+            <button class="btn-ghost" onclick="event.stopPropagation();downloadHD('s1')">⬇ HD</button>
+          </div>
+        </div>
+
+        <!-- Small 2 -->
+        <div class="tpl-small glass" onclick="openModal('edit-small2')">
+          <div class="tpl-category cat-red">🔥 Son Dakika</div>
+          <div class="tpl-title" id="s2-title">Deprem Uyarı Sistemi Genişletildi: 12 İl Daha Kapsama Alındı</div>
+          <div class="tpl-desc" id="s2-desc">Afet ve Acil Durum Yönetimi, yeni sensör ağını devreye aldığını duyurdu.</div>
+          <div class="tpl-meta" style="margin-top:10px;">
+            <span>⏱ 42 dk</span>
+            <span>👁 9.1K</span>
+          </div>
+          <div class="tpl-actions" style="margin-top:12px;">
+            <button class="btn-primary" onclick="event.stopPropagation();openModal('edit-s2')">✏ Düzenle</button>
+            <button class="btn-ghost" onclick="event.stopPropagation();downloadHD('s2')">⬇ HD</button>
+          </div>
+        </div>
+
+        <!-- Small 3 -->
+        <div class="tpl-small glass" onclick="openModal('edit-small3')">
+          <div class="tpl-category cat-purple">🔬 Teknoloji</div>
+          <div class="tpl-title" id="s3-title">Yapay Zeka Çağı: Türk Girişimi Global Pazara Açılıyor</div>
+          <div class="tpl-desc" id="s3-desc">İstanbul merkezli startup, 50 milyon dolarlık yatırım turunu kapattı.</div>
+          <div class="tpl-meta" style="margin-top:10px;">
+            <span>⏱ 1 saat</span>
+            <span>👁 7.8K</span>
+          </div>
+          <div class="tpl-actions" style="margin-top:12px;">
+            <button class="btn-primary" onclick="event.stopPropagation();openModal('edit-s3')">✏ Düzenle</button>
+            <button class="btn-ghost" onclick="event.stopPropagation();downloadHD('s3')">⬇ HD</button>
+          </div>
+        </div>
+
+        <!-- Small 4 -->
+        <div class="tpl-small glass" onclick="openModal('edit-small4')">
+          <div class="tpl-category cat-green">⚽ Spor</div>
+          <div class="tpl-title" id="s4-title">Şampiyonluk Yarışı Kızıştı: Lider Takım Farkı Koruyor</div>
+          <div class="tpl-desc" id="s4-desc">Süper Lig'de son 5 haftada yaşanan puan kayıpları tabloyu altüst etti.</div>
+          <div class="tpl-meta" style="margin-top:10px;">
+            <span>⏱ 2 saat</span>
+            <span>👁 14K</span>
+          </div>
+          <div class="tpl-actions" style="margin-top:12px;">
+            <button class="btn-primary" onclick="event.stopPropagation();openModal('edit-s4')">✏ Düzenle</button>
+            <button class="btn-ghost" onclick="event.stopPropagation();downloadHD('s4')">⬇ HD</button>
+          </div>
+        </div>
+
+      </div>
     </div>
 
-    <div id="teklif-modal" class="modal">
-        <div class="modal-icerik">
-            <span class="kapat-btn" onclick="modaliKapat('teklif-modal')">&times;</span>
-            <h2 class="modal-baslik">Müşteri Teklifleri</h2>
-            <div id="teklif-listesi"></div>
+    <!-- Two Col: Feed + Quick Editor -->
+    <div class="two-col fade-up d4">
+
+      <!-- Feed -->
+      <div>
+        <div class="section-header">
+          <div class="section-title">Haber Akışı</div>
+          <button class="section-btn">Tümünü Gör</button>
         </div>
+        <div class="feed-list">
+          <div class="feed-item glass" onclick="openModal('feed1')">
+            <div class="feed-num">01</div>
+            <div class="feed-content">
+              <div class="feed-title">Yeni Anayasa Taslağı Meclise Sunuldu — İlk Oylamada Kabul Edildi</div>
+              <div class="feed-meta"><span>Siyaset</span><span class="feed-dot">•</span><span>5 dk önce</span><span class="feed-dot">•</span><span>👁 22K</span></div>
+            </div>
+          </div>
+          <div class="feed-item glass" onclick="openModal('feed2')">
+            <div class="feed-num">02</div>
+            <div class="feed-content">
+              <div class="feed-title">İstanbul'da Metrobüs Hattı 3 Yeni Durağa Kavuşuyor</div>
+              <div class="feed-meta"><span>Şehir</span><span class="feed-dot">•</span><span>22 dk önce</span><span class="feed-dot">•</span><span>👁 8.3K</span></div>
+            </div>
+          </div>
+          <div class="feed-item glass" onclick="openModal('feed3')">
+            <div class="feed-num">03</div>
+            <div class="feed-content">
+              <div class="feed-title">Sağlıkta Dijital Dönüşüm: E-Reçete Sistemi 81 İle Yaygınlaştı</div>
+              <div class="feed-meta"><span>Sağlık</span><span class="feed-dot">•</span><span>45 dk önce</span><span class="feed-dot">•</span><span>👁 6.1K</span></div>
+            </div>
+          </div>
+          <div class="feed-item glass" onclick="openModal('feed4')">
+            <div class="feed-num">04</div>
+            <div class="feed-content">
+              <div class="feed-title">Milli Uzay Programı: İkinci Uydu Yörüngesine Oturdu</div>
+              <div class="feed-meta"><span>Bilim</span><span class="feed-dot">•</span><span>1 saat önce</span><span class="feed-dot">•</span><span>👁 11K</span></div>
+            </div>
+          </div>
+          <div class="feed-item glass" onclick="openModal('feed5')">
+            <div class="feed-num">05</div>
+            <div class="feed-content">
+              <div class="feed-title">Turizm Rekoru: İlk Çeyrekte 12 Milyon Ziyaretçi</div>
+              <div class="feed-meta"><span>Ekonomi</span><span class="feed-dot">•</span><span>2 saat önce</span><span class="feed-dot">•</span><span>👁 4.7K</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Editor -->
+      <div class="editor-panel glass" id="quick-editor">
+        <div class="editor-title">⚡ Hızlı Şablon Editörü</div>
+
+        <div class="field-group">
+          <div class="field-label">Şablon Seç</div>
+          <select class="field-input" id="tpl-select" onchange="loadTemplate(this.value)">
+            <option value="hero">Manşet (Hero)</option>
+            <option value="s1">Ekonomi Şablonu</option>
+            <option value="s2">Son Dakika Şablonu</option>
+            <option value="s3">Teknoloji Şablonu</option>
+            <option value="s4">Spor Şablonu</option>
+          </select>
+        </div>
+
+        <div class="field-group">
+          <div class="field-label">Başlık</div>
+          <input type="text" class="field-input" id="edit-title" placeholder="Haber başlığını yazın...">
+        </div>
+
+        <div class="field-group">
+          <div class="field-label">Alt Başlık / Özet</div>
+          <textarea class="field-input" id="edit-desc" placeholder="Haberin kısa özetini girin..."></textarea>
+        </div>
+
+        <div class="field-row">
+          <div class="field-group">
+            <div class="field-label">Kategori</div>
+            <select class="field-input" id="edit-cat">
+              <option>Dünya</option>
+              <option>Ekonomi</option>
+              <option>Siyaset</option>
+              <option>Spor</option>
+              <option>Teknoloji</option>
+              <option>Sağlık</option>
+              <option>Bilim</option>
+              <option>Kültür</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <div class="field-label">Format</div>
+            <select class="field-input" id="edit-format">
+              <option>16:9 (TV)</option>
+              <option>9:16 (Story)</option>
+              <option>1:1 (Kare)</option>
+              <option>4:3 (Web)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <div class="field-label">Renk Teması</div>
+          <div class="color-row">
+            <div class="color-chip sel" style="background:#f0c040" onclick="selectColor(this,'#f0c040')"></div>
+            <div class="color-chip" style="background:#4fd1c5" onclick="selectColor(this,'#4fd1c5')"></div>
+            <div class="color-chip" style="background:#fc5c7d" onclick="selectColor(this,'#fc5c7d')"></div>
+            <div class="color-chip" style="background:#9d7bff" onclick="selectColor(this,'#9d7bff')"></div>
+            <div class="color-chip" style="background:#48c78e" onclick="selectColor(this,'#48c78e')"></div>
+            <div class="color-chip" style="background:#f97316" onclick="selectColor(this,'#f97316')"></div>
+            <div class="color-chip" style="background:#e0e0e0" onclick="selectColor(this,'#e0e0e0')"></div>
+          </div>
+        </div>
+
+        <div class="export-row">
+          <button class="btn-export btn-export-primary" onclick="applyAndDownload()">⬇ Uygula & HD İndir</button>
+          <button class="btn-export btn-export-secondary" onclick="applyChanges()">✔ Şablona Uygula</button>
+          <button class="btn-export btn-export-tertiary" onclick="resetEditor()">↺ Sıfırla</button>
+        </div>
+      </div>
+
     </div>
 
-    <div id="modifiye-modal" class="modal">
-        <div class="modal-icerik">
-            <span class="kapat-btn" onclick="modaliKapat('modifiye-modal')">&times;</span>
-            <h2 class="modal-baslik">✨ Modifiye Atölyesi</h2>
-            <div id="modifiye-listesi"></div>
-        </div>
-    </div>
+  </main>
+</div>
 
-    <div id="tramer-modal" class="modal" style="z-index: 3500;">
-        <div class="modal-icerik" style="max-width: 350px; background: #f1f2f6; border-radius: 20px; padding: 20px;">
-            <div id="tramer-mesaj-icerik" style="background: white; padding: 15px; border-radius: 12px; font-size: 14px; color: #2d3436; line-height: 1.6;"></div>
-            <button class="btn btn-mavi" style="margin-top: 20px;" onclick="modaliKapat('tramer-modal')">Kapat</button>
-        </div>
+<!-- ── MODAL ── -->
+<div class="modal-overlay" id="modal" onclick="closeModal(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-title">Şablon Düzenle</div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
     </div>
+    <div id="modal-body"></div>
+  </div>
+</div>
 
-    <div id="uyari-modal" class="modal uyari-modal" style="z-index: 4000;">
-        <div class="modal-icerik uyari-icerik">
-            <div id="uyari-ikon" class="uyari-ikon"></div>
-            <h2 id="uyari-baslik" class="modal-baslik" style="border:none; padding-bottom:5px; margin-bottom:5px;">Bilgi</h2>
-            <p id="uyari-mesaj" style="font-size: 16px; color: #636e72; margin-bottom: 25px;">Uyarı mesajı.</p>
-            <button class="btn btn-mavi" style="width: 50%; padding: 12px; font-size: 16px;" onclick="uyariyiKapat()">Tamam</button>
-        </div>
-    </div>
+<!-- ── TOAST ── -->
+<div id="toast" style="
+  position:fixed;bottom:32px;right:32px;z-index:999;
+  background:rgba(240,192,64,.15);border:1px solid rgba(240,192,64,.4);
+  color:var(--accent);padding:12px 22px;border-radius:10px;
+  font-size:13px;font-weight:600;backdrop-filter:blur(16px);
+  opacity:0;transform:translateY(10px);transition:all .3s;pointer-events:none;
+">✔ Başarıyla uygulandı!</div>
 
-    <div id="ayarlar-modal" class="modal">
-        <div class="modal-icerik" style="text-align: center; max-width: 400px;">
-            <span class="kapat-btn" onclick="modaliKapat('ayarlar-modal')">&times;</span>
-            <h2 class="modal-baslik">⚙️ Oyun Ayarları</h2>
-            <p style="color: #636e72; margin-bottom: 25px;">Buradan galerini sıfırlayabilir ve oyuna baştan başlayabilirsin.</p>
-            <button class="btn btn-kirmizi" style="font-size: 16px; padding: 15px;" onclick="oyunuSifirlaEkrani()">🔄 Tüm İlerlemeyi Sil ve Baştan Başla</button>
-        </div>
-    </div>
+<script>
+/* ─ Data ─ */
+const data = {
+  hero: { title:'Büyük Ekonomi Zirvesi: Küresel Liderler Ankara\'da Buluşuyor', desc:'G20 liderlerinin katılacağı zirve, küresel ekonomik dengeleri yeniden şekillendirecek kritik kararların alınacağı tarihî bir toplantıya sahne olacak.' },
+  s1:   { title:'Dolar Günceli: Merkez Bankası Kararı Sonrası Kur Hareketi', desc:'Faiz kararının ardından piyasalardaki anlık tepkiler ve uzman yorumları.' },
+  s2:   { title:'Deprem Uyarı Sistemi Genişletildi: 12 İl Daha Kapsama Alındı', desc:'Afet ve Acil Durum Yönetimi, yeni sensör ağını devreye aldığını duyurdu.' },
+  s3:   { title:'Yapay Zeka Çağı: Türk Girişimi Global Pazara Açılıyor', desc:'İstanbul merkezli startup, 50 milyon dolarlık yatırım turunu kapattı.' },
+  s4:   { title:'Şampiyonluk Yarışı Kızıştı: Lider Takım Farkı Koruyor', desc:'Süper Lig\'de son 5 haftada yaşanan puan kayıpları tabloyu altüst etti.' }
+};
 
-    <script src="app.js"></script>
+let currentColor = '#f0c040';
+
+/* ─ Tab ─ */
+function setTab(btn,tab){
+  document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  if(tab==='editor'){
+    document.getElementById('quick-editor').scrollIntoView({behavior:'smooth'});
+  }
+}
+
+/* ─ Template selector ─ */
+function loadTemplate(val){
+  if(data[val]){
+    document.getElementById('edit-title').value = data[val].title;
+    document.getElementById('edit-desc').value  = data[val].desc;
+  }
+}
+/* init */
+loadTemplate('hero');
+
+/* ─ Color ─ */
+function selectColor(el,col){
+  document.querySelectorAll('.color-chip').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel');
+  currentColor = col;
+}
+
+/* ─ Apply ─ */
+function applyChanges(){
+  const sel   = document.getElementById('tpl-select').value;
+  const title = document.getElementById('edit-title').value;
+  const desc  = document.getElementById('edit-desc').value;
+
+  const ids = {
+    hero: ['hero-title','hero-desc'],
+    s1:   ['s1-title','s1-desc'],
+    s2:   ['s2-title','s2-desc'],
+    s3:   ['s3-title','s3-desc'],
+    s4:   ['s4-title','s4-desc'],
+  };
+
+  if(ids[sel] && title){
+    document.getElementById(ids[sel][0]).textContent = title;
+    document.getElementById(ids[sel][1]).textContent = desc;
+    data[sel] = {title,desc};
+  }
+  showToast('✔ Şablon güncellendi!');
+}
+
+function applyAndDownload(){
+  applyChanges();
+  downloadHD(document.getElementById('tpl-select').value);
+}
+
+function resetEditor(){
+  const sel = document.getElementById('tpl-select').value;
+  loadTemplate(sel);
+}
+
+/* ─ Download (simulated print-to-canvas) ─ */
+function downloadHD(type){
+  showToast('⬇ HD dosya hazırlanıyor…');
+  setTimeout(()=>{
+    const canvas = document.createElement('canvas');
+    canvas.width  = 1920;
+    canvas.height = 1080;
+    const ctx = canvas.getContext('2d');
+
+    /* Background gradient */
+    const grad = ctx.createLinearGradient(0,0,1920,1080);
+    grad.addColorStop(0,'#0a0e1a');
+    grad.addColorStop(0.5,'#0d1528');
+    grad.addColorStop(1,'#1a0d28');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0,0,1920,1080);
+
+    /* Decorative circles */
+    const cg = ctx.createRadialGradient(200,200,10,200,200,400);
+    cg.addColorStop(0,'rgba(108,61,255,0.3)');
+    cg.addColorStop(1,'transparent');
+    ctx.fillStyle = cg;
+    ctx.fillRect(0,0,1920,1080);
+
+    const cg2 = ctx.createRadialGradient(1700,800,10,1700,800,350);
+    cg2.addColorStop(0,'rgba(252,92,125,0.25)');
+    cg2.addColorStop(1,'transparent');
+    ctx.fillStyle = cg2;
+    ctx.fillRect(0,0,1920,1080);
+
+    /* Card glass */
+    ctx.fillStyle = 'rgba(255,255,255,0.06)';
+    roundRect(ctx,80,80,1760,920,32);
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(255,255,255,0.13)';
+    ctx.lineWidth = 2;
+    roundRect(ctx,80,80,1760,920,32);
+    ctx.stroke();
+
+    /* Accent bar */
+    const accentGrad = ctx.createLinearGradient(80,0,80,0);
+    ctx.fillStyle = currentColor;
+    ctx.fillRect(80,80,8,920);
+
+    /* Logo */
+    ctx.fillStyle = currentColor;
+    roundRect(ctx,120,100,70,70,14);
+    ctx.fill();
+    ctx.fillStyle = '#0a0e1a';
+    ctx.font = 'bold 30px serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('HA',155,145);
+
+    ctx.fillStyle = '#f0eff4';
+    ctx.font = 'bold 36px serif';
+    ctx.textAlign = 'left';
+    ctx.fillText('Haber Ağı', 210, 145);
+
+    /* Category badge */
+    ctx.fillStyle = `${currentColor}25`;
+    roundRect(ctx,120,210,220,44,22);
+    ctx.fill();
+    ctx.fillStyle = currentColor;
+    ctx.font = '500 20px sans-serif';
+    ctx.fillText('● ' + (document.getElementById('edit-cat')?.value||'DÜNYA'), 140, 238);
+
+    /* Headline */
+    const title = data[type]?.title || document.getElementById('edit-title').value || 'Haber Başlığı';
+    const desc  = data[type]?.desc  || document.getElementById('edit-desc').value  || '';
+
+    ctx.fillStyle = '#f0eff4';
+    ctx.font = 'bold 72px serif';
+    wrapText(ctx, title, 120, 330, 1400, 90);
+
+    ctx.fillStyle = 'rgba(240,239,244,0.6)';
+    ctx.font = '300 34px sans-serif';
+    wrapText(ctx, desc, 120, 560, 1300, 48);
+
+    /* Bottom meta */
+    ctx.fillStyle = 'rgba(255,255,255,0.25)';
+    ctx.fillRect(120,940,1720,1);
+    ctx.fillStyle = 'rgba(240,239,244,0.45)';
+    ctx.font = '24px sans-serif';
+    ctx.fillText('haberagi.com.tr  •  ' + new Date().toLocaleDateString('tr-TR',{day:'numeric',month:'long',year:'numeric'}), 120, 980);
+
+    /* Download */
+    const link = document.createElement('a');
+    link.download = `haberagi-${type}-hd-1920x1080.png`;
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+    showToast('✔ HD görsel indirildi! (1920×1080)');
+  },600);
+}
+
+function roundRect(ctx,x,y,w,h,r){
+  ctx.beginPath();
+  ctx.moveTo(x+r,y);
+  ctx.lineTo(x+w-r,y);
+  ctx.quadraticCurveTo(x+w,y,x+w,y+r);
+  ctx.lineTo(x+w,y+h-r);
+  ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
+  ctx.lineTo(x+r,y+h);
+  ctx.quadraticCurveTo(x,y+h,x,y+h-r);
+  ctx.lineTo(x,y+r);
+  ctx.quadraticCurveTo(x,y,x+r,y);
+  ctx.closePath();
+}
+
+function wrapText(ctx,text,x,y,maxW,lineH){
+  const words = text.split(' ');
+  let line = '';
+  for(let n=0;n<words.length;n++){
+    const test = line+words[n]+' ';
+    if(ctx.measureText(test).width>maxW && n>0){ ctx.fillText(line,x,y); line=words[n]+' '; y+=lineH; }
+    else { line=test; }
+  }
+  ctx.fillText(line,x,y);
+}
+
+/* ─ Modal ─ */
+function openModal(type){
+  const titles = {
+    hero:'Manşet Şablonu','edit-hero':'Manşet Şablonunu Düzenle',
+    's1':'Ekonomi','edit-s1':'Ekonomi Şablonunu Düzenle',
+    's2':'Son Dakika','edit-s2':'Son Dakika Şablonunu Düzenle',
+    's3':'Teknoloji','edit-s3':'Teknoloji Şablonunu Düzenle',
+    's4':'Spor','edit-s4':'Spor Şablonunu Düzenle',
+    'new':'Yeni Şablon Oluştur',
+    feed1:'Haber 1',feed2:'Haber 2',feed3:'Haber 3',feed4:'Haber 4',feed5:'Haber 5'
+  };
+  document.getElementById('modal-title').textContent = titles[type]||'Detay';
+
+  const key = type.replace('edit-','');
+  const d   = data[key]||{title:'',desc:''};
+
+  if(type==='new'){
+    document.getElementById('modal-body').innerHTML = `
+      <div class="field-group"><div class="field-label">Şablon Adı</div><input class="field-input" placeholder="Yeni şablon adı..."></div>
+      <div class="field-group"><div class="field-label">Kategori</div>
+        <select class="field-input"><option>Dünya</option><option>Ekonomi</option><option>Siyaset</option><option>Spor</option><option>Teknoloji</option></select>
+      </div>
+      <div class="field-group"><div class="field-label">Başlık</div><input class="field-input" placeholder="Haber başlığı..."></div>
+      <div class="field-group"><div class="field-label">Özet</div><textarea class="field-input" placeholder="Haber özeti..."></textarea></div>
+      <div style="display:flex;gap:10px;margin-top:16px;">
+        <button class="btn-primary" onclick="closeModal();showToast('✔ Yeni şablon oluşturuldu!')">Oluştur</button>
+        <button class="btn-ghost" onclick="closeModal()">İptal</button>
+      </div>`;
+  } else if(type.startsWith('feed')){
+    const feedData = [
+      {t:'Yeni Anayasa Taslağı Meclise Sunuldu',d:'İlk oylamada kabul edilen taslak, ikinci tur görüşmeleri için komisyona havale edildi.',c:'Siyaset'},
+      {t:'İstanbul\'da Metrobüs Hattı 3 Yeni Durağa Kavuşuyor',d:'Belediye başkanı, projenin 2024 sonuna kadar tamamlanacağını açıkladı.',c:'Şehir'},
+      {t:'Sağlıkta Dijital Dönüşüm',d:'E-Reçete sistemi artık 81 ilin tamamında kullanılabilir hale geldi.',c:'Sağlık'},
+      {t:'Milli Uzay Programı: İkinci Uydu Yörüngesinde',d:'Türksat 6A başarıyla yörüngeye oturdu, veri iletimi başladı.',c:'Bilim'},
+      {t:'Turizm Rekoru: 12 Milyon Ziyaretçi',d:'İlk çeyrek rakamları, geçen yıla göre yüzde 28 artış gösterdi.',c:'Ekonomi'},
+    ];
+    const idx = parseInt(type.replace('feed',''))-1;
+    const fd  = feedData[idx]||feedData[0];
+    document.getElementById('modal-body').innerHTML = `
+      <div class="tpl-category" style="margin-bottom:14px">${fd.c}</div>
+      <div class="preview-box">
+        <div class="preview-label">HABER ÖNİZLEME</div>
+        <div class="preview-headline">${fd.t}</div>
+        <div class="preview-body">${fd.d}</div>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:4px;">
+        <button class="btn-primary" onclick="closeModal();showToast('⬇ İndiriliyor…')">⬇ HD İndir</button>
+        <button class="btn-ghost" onclick="closeModal()">Kapat</button>
+      </div>`;
+  } else {
+    document.getElementById('modal-body').innerHTML = `
+      <div class="preview-box">
+        <div class="preview-label">ŞU ANKİ İÇERİK</div>
+        <div class="preview-headline">${d.title||'Başlık girilmedi'}</div>
+        <div class="preview-body">${d.desc||'Açıklama yok'}</div>
+      </div>
+      <div class="field-group"><div class="field-label">Başlık</div>
+        <input class="field-input" id="m-title" value="${d.title}">
+      </div>
+      <div class="field-group"><div class="field-label">Açıklama</div>
+        <textarea class="field-input" id="m-desc">${d.desc}</textarea>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:16px;">
+        <button class="btn-primary" onclick="saveModal('${key}')">✔ Kaydet</button>
+        <button class="btn-ghost" onclick="downloadHD('${key}');closeModal()">⬇ HD İndir</button>
+        <button class="btn-ghost" onclick="closeModal()">İptal</button>
+      </div>`;
+  }
+
+  document.getElementById('modal').classList.add('open');
+}
+
+function saveModal(key){
+  const t = document.getElementById('m-title')?.value;
+  const d = document.getElementById('m-desc')?.value;
+  if(t) {
+    const map = {hero:['hero-title','hero-desc'],s1:['s1-title','s1-desc'],s2:['s2-title','s2-desc'],s3:['s3-title','s3-desc'],s4:['s4-title','s4-desc']};
+    if(map[key]){ document.getElementById(map[key][0]).textContent=t; document.getElementById(map[key][1]).textContent=d||''; }
+    data[key]={title:t,desc:d};
+  }
+  closeModal();
+  showToast('✔ Şablon kaydedildi!');
+}
+
+function closeModal(e){
+  if(!e||e.target===document.getElementById('modal'))
+    document.getElementById('modal').classList.remove('open');
+}
+
+/* ─ Toast ─ */
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.opacity='1'; t.style.transform='translateY(0)';
+  setTimeout(()=>{ t.style.opacity='0'; t.style.transform='translateY(10px)'; },2800);
+}
+
+/* ─ Animated counters ─ */
+function animCounter(id,target,suffix=''){
+  const el=document.getElementById(id); let cur=0;
+  const step=Math.ceil(target/40);
+  const iv=setInterval(()=>{ cur+=step; if(cur>=target){cur=target;clearInterval(iv);} el.textContent=cur.toLocaleString('tr-TR')+suffix; },30);
+}
+window.addEventListener('load',()=>{
+  animCounter('stat1',248);
+  animCounter('stat2',12);
+  animCounter('stat3',1400);
+  animCounter('stat4',89000);
+  setTimeout(()=>{ document.getElementById('stat3').textContent='1.4K'; document.getElementById('stat4').textContent='89K'; },1500);
+});
+</script>
 </body>
 </html>
