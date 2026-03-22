@@ -184,6 +184,99 @@ body{background:var(--bg);color:var(--txt);font-family:'DM Sans',sans-serif;disp
 .rss-card-title{font-size:13px;font-weight:700;line-height:1.35;color:#fff;margin-bottom:4px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
 .rss-card-meta{font-size:10px;color:var(--mut);}
 .rss-card-actions{display:flex;gap:6px;margin-top:8px;}
+
+/* Live Data & Earthquake */
+.ld-tile{background:var(--s);border:1px solid var(--b);border-radius:12px;padding:14px 16px;transition:.17s;}
+.ld-tile:hover{border-color:var(--b2);transform:translateY(-2px);}
+.ld-name{font-size:9.5px;color:var(--mut);font-weight:600;margin-bottom:3px;}
+.ld-val{font-size:20px;font-family:'Bebas Neue';margin-bottom:2px;}
+.ld-pct{font-size:11px;font-weight:700;}
+.ld-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px;}
+.eq-card{display:flex;align-items:center;gap:12px;background:var(--s);border:1px solid var(--b);border-radius:10px;padding:11px 14px;transition:.17s;}
+.eq-card:hover{border-color:var(--b2);}
+.eq-mag{font-size:22px;font-family:'Bebas Neue';min-width:38px;text-align:center;}
+.eq-mag.low{color:#06d6a0;}
+.eq-mag.mid{color:#ffd60a;}
+.eq-mag.high{color:#f4a261;}
+.eq-mag.vhigh{color:#e63946;}
+.eq-info{flex:1;}
+.eq-loc{font-size:12.5px;font-weight:700;line-height:1.3;}
+.eq-meta{font-size:10px;color:var(--mut);margin-top:2px;}
+.eq-use-btn{font-size:10px;padding:4px 9px;}
+.eq-depth{display:inline-block;padding:2px 7px;border-radius:4px;font-size:9px;font-weight:700;background:rgba(255,255,255,.06);color:var(--mut);margin-left:6px;}
+.live-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:14px;font-size:9.5px;font-weight:700;background:rgba(230,57,70,.1);border:1px solid rgba(230,57,70,.22);color:var(--red);}
+
+/* Photo search in editor */
+.ph-search-wrap{margin-top:6px;}
+.ph-search-inp{width:100%;background:rgba(255,255,255,.05);border:1px solid var(--b);border-radius:7px;padding:6px 9px;font-size:11.5px;color:#fff;font-family:'DM Sans';outline:none;transition:.14s;margin-bottom:5px;}
+.ph-search-inp:focus{border-color:rgba(230,57,70,.4);}
+.ph-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;max-height:160px;overflow-y:auto;margin-top:4px;}
+.ph-thumb{height:52px;border-radius:5px;background-size:cover;background-position:center;cursor:pointer;border:2px solid transparent;transition:.14s;position:relative;overflow:hidden;}
+.ph-thumb:hover{border-color:var(--red);transform:scale(1.04);}
+.ph-attrib{font-size:8px;color:rgba(255,255,255,.35);margin-top:3px;text-align:center;}
+
+/* ── Gradient / Texture / Vignette ── */
+.grad-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:4px;}
+.grad-btn{height:38px;border-radius:6px;cursor:pointer;border:2px solid transparent;transition:.14s;position:relative;overflow:hidden;display:flex;align-items:flex-end;padding:3px;}
+.grad-btn:hover{border-color:rgba(255,255,255,.3);}
+.grad-btn.on{border-color:var(--red);}
+.grad-btn span{font-size:8px;color:#fff;font-weight:700;text-shadow:0 1px 3px rgba(0,0,0,.8);line-height:1;z-index:1;position:relative;width:100%;}
+.tex-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-top:4px;}
+.tex-btn{height:32px;border-radius:6px;cursor:pointer;border:2px solid transparent;transition:.14s;font-size:9px;font-weight:700;color:var(--mut);display:flex;align-items:center;justify-content:center;}
+.tex-btn:hover{border-color:rgba(255,255,255,.3);color:#fff;}
+.tex-btn.on{border-color:var(--red);color:#fff;}
+.vig-row{display:flex;gap:4px;margin-top:4px;flex-wrap:wrap;}
+.vig-btn{flex:1;min-width:0;padding:5px 4px;border-radius:6px;cursor:pointer;border:2px solid transparent;font-size:9.5px;font-weight:600;color:var(--mut);background:var(--s);text-align:center;transition:.14s;white-space:nowrap;}
+.vig-btn:hover{color:#fff;border-color:rgba(255,255,255,.25);}
+.vig-btn.on{border-color:var(--red);color:#fff;background:rgba(230,57,70,.1);}
+
+/* ── Safe Zone overlay ── */
+.sz-overlay{position:absolute;inset:0;pointer-events:none;z-index:200;}
+.sz-inner{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;}
+.sz-ig-sq{position:absolute;border:1px dashed rgba(255,255,255,.5);box-shadow:0 0 0 1px rgba(0,0,0,.4);}
+.sz-label{position:absolute;font-size:8px;font-weight:700;color:rgba(255,255,255,.7);background:rgba(0,0,0,.55);padding:1px 4px;border-radius:3px;letter-spacing:.5px;}
+
+/* ── Share Modal ── */
+.share-mbk{position:fixed;inset:0;background:rgba(0,0,0,.88);backdrop-filter:blur(12px);z-index:400;display:none;align-items:center;justify-content:center;}
+.share-mbk.on{display:flex;}
+.share-modal{background:#09091a;border:1px solid var(--b2);border-radius:20px;width:640px;max-width:95vw;max-height:90vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 40px 100px rgba(0,0,0,.85);}
+.share-hdr{display:flex;align-items:center;gap:10px;padding:16px 20px;border-bottom:1px solid var(--b);flex-shrink:0;}
+.share-hdr h2{font-size:15px;font-weight:700;flex:1;}
+.share-tabs{display:flex;border-bottom:1px solid var(--b);flex-shrink:0;}
+.share-tab{flex:1;padding:11px;font-size:13px;font-weight:600;cursor:pointer;background:none;border:none;color:var(--mut);transition:.15s;border-bottom:2px solid transparent;font-family:'DM Sans';}
+.share-tab:hover{color:#fff;}
+.share-tab.on{color:#fff;border-bottom-color:var(--red);}
+.share-tab.on.ig-tab{border-bottom-color:#e1306c;color:#e1306c;}
+.share-tab.on.tw-tab{border-bottom-color:#1d9bf0;color:#1d9bf0;}
+.share-body{flex:1;overflow-y:auto;padding:20px;}
+.share-ftr{padding:14px 20px;border-top:1px solid var(--b);display:flex;gap:8px;justify-content:flex-end;flex-shrink:0;}
+.share-prev{width:100%;height:152px;border-radius:10px;overflow:hidden;margin-bottom:14px;position:relative;background:var(--s);}
+.share-prev>div{width:100%;height:100%;pointer-events:none;transform-origin:top left;}
+.share-input{width:100%;background:rgba(255,255,255,.05);border:1px solid var(--b);border-radius:9px;padding:10px 12px;font-size:13px;color:#fff;font-family:'DM Sans';outline:none;resize:none;transition:.15s;}
+.share-input:focus{border-color:rgba(230,57,70,.45);}
+.char-ctr{font-size:10.5px;color:var(--mut);text-align:right;margin-top:4px;}
+.char-ctr.warn{color:#ffd60a;}.char-ctr.over{color:var(--red);}
+.htags{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px;}
+.htag{display:inline-flex;align-items:center;gap:3px;padding:3px 9px;border-radius:14px;background:rgba(255,255,255,.06);border:1px solid var(--b);font-size:10.5px;cursor:pointer;transition:.13s;color:var(--mut);}
+.htag:hover{color:#fff;border-color:var(--b2);}
+.htag.on{background:rgba(230,57,70,.1);border-color:rgba(230,57,70,.3);color:var(--red);}
+.cred-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:10px;}
+.ci{background:rgba(255,255,255,.05);border:1px solid var(--b);border-radius:8px;padding:7px 10px;font-size:11.5px;color:#fff;font-family:'DM Sans';outline:none;width:100%;transition:.15s;}
+.ci:focus{border-color:rgba(230,57,70,.4);}
+.sbar{padding:9px 13px;border-radius:9px;font-size:12px;font-weight:600;display:none;align-items:center;gap:8px;margin-top:10px;}
+.sbar.on{display:flex;}
+.sbar.info{background:rgba(0,180,216,.1);border:1px solid rgba(0,180,216,.22);color:#00b4d8;}
+.sbar.ok{background:rgba(6,214,160,.1);border:1px solid rgba(6,214,160,.22);color:#06d6a0;}
+.sbar.err{background:rgba(230,57,70,.1);border:1px solid rgba(230,57,70,.22);color:var(--red);}
+.spin{animation:sp .7s linear infinite;display:inline-block;}
+@keyframes sp{to{transform:rotate(360deg)}}
+.sett-row{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--mut);cursor:pointer;margin-bottom:10px;user-select:none;}
+.sett-row:hover{color:#fff;}
+.sett-panel{display:none;}
+.sett-panel.on{display:block;}
+.step{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border-radius:9px;background:var(--s);border:1px solid var(--b);margin-bottom:7px;}
+.snum{width:21px;height:21px;border-radius:50%;background:var(--red);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.stxt{font-size:12px;line-height:1.5;color:rgba(255,255,255,.8);}
 </style>
 </head>
 <body>
@@ -196,6 +289,8 @@ body{background:var(--bg);color:var(--txt);font-family:'DM Sans',sans-serif;disp
   <button class="ni" data-page="markets"><span class="ic">📈</span>Piyasalar</button>
   <button class="ni" data-page="breaking"><span class="ic">🔴</span>Son Dakika</button>
   <div class="nl">Araçlar</div>
+  <button class="ni" data-page="livedata"><span class="ic">💹</span>Canlı Piyasa</button>
+  <button class="ni" data-page="earthquake"><span class="ic">🌍</span>Deprem Takip</button>
   <button class="ni" data-page="rss"><span class="ic">📡</span>RSS Haber Çek</button>
   <button class="ni" data-page="schedule"><span class="ic">📅</span>Yayın Takvimi</button>
   <button class="ni" data-page="analytics"><span class="ic">📊</span>Analitik</button>
@@ -253,6 +348,59 @@ body{background:var(--bg);color:var(--txt);font-family:'DM Sans',sans-serif;disp
   <div class="tb"><h1>Son Dakika <span>Editörü</span></h1></div>
   <div style="padding:18px 22px 0;"><div class="tgrid" id="brk-grid"></div></div>
 </div>
+<!-- LIVE DATA PAGE -->
+<div class="page" id="pg-livedata">
+  <div class="tb">
+    <h1>Canlı <span>Piyasa & TCMB</span></h1>
+    <span class="live-badge"><span class="ldot"></span>Canlı</span>
+    <button class="btn btn-g" id="ld-refresh-btn" style="font-size:10.5px;margin-left:8px;">↻ Yenile</button>
+  </div>
+  <div style="padding:18px 22px 0;">
+    <div id="ld-error" style="display:none;padding:12px 14px;background:rgba(230,57,70,.08);border:1px solid rgba(230,57,70,.2);border-radius:10px;color:var(--red);font-size:12px;margin-bottom:14px;"></div>
+
+    <div class="sh"><h2>Döviz & Emtia <span style="font-size:10px;color:var(--mut);font-weight:400;margin-left:6px;">Frankfurter · ECB</span></h2></div>
+    <div class="ld-grid" id="ld-forex">
+      <div class="ld-tile"><div class="ld-name">Yükleniyor...</div><div class="ld-val">—</div></div>
+    </div>
+
+    <div class="sh" style="margin-top:4px;"><h2>Kripto Para <span style="font-size:10px;color:var(--mut);font-weight:400;margin-left:6px;">CoinGecko</span></h2></div>
+    <div class="ld-grid" id="ld-crypto">
+      <div class="ld-tile"><div class="ld-name">Yükleniyor...</div><div class="ld-val">—</div></div>
+    </div>
+
+    <div class="sh" style="margin-top:4px;"><h2>TCMB Resmi Kurlar <span style="font-size:10px;color:var(--mut);font-weight:400;margin-left:6px;">Türkiye Cumhuriyet Merkez Bankası</span></h2></div>
+    <div class="ld-grid" id="ld-tcmb">
+      <div class="ld-tile"><div class="ld-name">Yükleniyor...</div><div class="ld-val">—</div></div>
+    </div>
+
+    <div class="sh" style="margin-top:4px;"><h2>Şablona Aktar</h2></div>
+    <p style="font-size:12px;color:var(--mut);margin-bottom:14px;">Güncel piyasa verilerini otomatik doldurmak için bir şablon seçin:</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;" id="ld-tmpl-btns"></div>
+  </div>
+</div>
+
+<!-- EARTHQUAKE PAGE -->
+<div class="page" id="pg-earthquake">
+  <div class="tb">
+    <h1>Deprem <span>Takip</span></h1>
+    <span class="live-badge"><span class="ldot"></span>USGS · Kandilli</span>
+    <button class="btn btn-g" id="eq-refresh-btn" style="font-size:10.5px;margin-left:8px;">↻ Yenile</button>
+  </div>
+  <div style="padding:18px 22px 0;">
+    <div style="display:flex;gap:8px;margin-bottom:16px;">
+      <button class="tab on" data-eqfilt="all" id="eq-tab-all">Tümü</button>
+      <button class="tab" data-eqfilt="turkey" id="eq-tab-turkey">🇹🇷 Türkiye & Çevresi</button>
+      <button class="tab" data-eqfilt="m3" id="eq-tab-m3">M ≥ 3.0</button>
+      <button class="tab" data-eqfilt="m5" id="eq-tab-m5">M ≥ 5.0</button>
+    </div>
+    <div id="eq-loading" style="display:none;text-align:center;padding:30px;color:var(--mut);">
+      <div style="font-size:28px;margin-bottom:10px;">⏳</div><div>Deprem verileri yükleniyor...</div>
+    </div>
+    <div id="eq-error" style="display:none;padding:12px 14px;background:rgba(230,57,70,.08);border:1px solid rgba(230,57,70,.2);border-radius:10px;color:var(--red);font-size:12px;margin-bottom:14px;"></div>
+    <div style="display:flex;flex-direction:column;gap:8px;" id="eq-results"></div>
+  </div>
+</div>
+
 <div class="page" id="pg-rss">
   <div class="tb"><h1>RSS <span>Haber Çek</span></h1><span id="rss-status" style="font-size:11px;color:var(--mut);"></span></div>
   <div style="padding:18px 22px 0;">
@@ -313,12 +461,34 @@ body{background:var(--bg);color:var(--txt);font-family:'DM Sans',sans-serif;disp
       <button class="btn btn-g" style="font-size:10.5px;" id="m-copy">📋 Caption</button>
       <button class="btn btn-g" style="font-size:10.5px;" id="m-dl">⬇ PNG (2×)</button>
       <button class="btn btn-r" style="font-size:10.5px;" id="m-dlhq">⬇ Tam Kalite (1080px)</button>
+      <button class="btn" style="font-size:10.5px;background:linear-gradient(135deg,#833ab4,#e1306c,#f77737);color:#fff;box-shadow:0 3px 12px rgba(225,48,108,.3);" id="m-ig">📸 Instagram</button>
+      <button class="btn" style="font-size:10.5px;background:#1d9bf0;color:#fff;box-shadow:0 3px 12px rgba(29,155,240,.3);" id="m-tw">𝕏 Twitter</button>
     </div>
   </div>
 </div>
 
 <!-- Offscreen full-res render target -->
 <div id="offscreen-render"></div>
+
+<!-- SHARE MODAL -->
+<div class="share-mbk" id="share-modal">
+  <div class="share-modal">
+    <div class="share-hdr">
+      <h2 id="share-title">İçeriği Paylaş</h2>
+      <div class="mcls" id="share-close">✕</div>
+    </div>
+    <div class="share-tabs">
+      <button class="share-tab ig-tab on" data-stab="ig">📸 Instagram</button>
+      <button class="share-tab tw-tab" data-stab="tw">𝕏 Twitter / X</button>
+    </div>
+    <div class="share-body" id="share-body">
+      <!-- filled by JS -->
+    </div>
+    <div class="share-ftr" id="share-ftr">
+      <!-- filled by JS -->
+    </div>
+  </div>
+</div>
 
 <div class="toast" id="toast"></div>
 
@@ -665,6 +835,10 @@ const TMPL=[
    STATE & CONSTANTS
 ══════════════════════════════════════════ */
 let CUR=null,DATA={},PHOTOS={},FMT='sq',FONT='DM Sans',FILTER='Yok',TS=1.0;
+let GRAD='none', GRAD_COLOR='#000000', GRAD_OPACITY=0.5;
+let TEXTURE='none';
+let VIG='none';
+let SAFEZONE=false;
 
 const FMT_DIMS={sq:[1080,1080],pt:[1080,1350],p2:[1080,1440],st:[1080,1920],ls:[1280,720]};
 const FMT_LABELS={sq:'📐 1080 × 1080 px · Instagram Post',pt:'📐 1080 × 1350 px · Instagram Portrait',p2:'📐 1080 × 1440 px · Portrait Geniş',st:'📐 1080 × 1920 px · Story/Reel',ls:'📐 1280 × 720 px · 16:9'};
@@ -747,6 +921,8 @@ function showPage(id){
   if(id==='markets'){renderMkt('full-mkt',8);initGrid('mkt-grid',TMPL.filter(t=>t.cat==='market'));}
   if(id==='breaking')initGrid('brk-grid',TMPL.filter(t=>t.cat==='breaking'));
   if(id==='rss')initRSSPage();
+  if(id==='livedata')loadLiveData();
+  if(id==='earthquake')loadEarthquakes();
 }
 document.querySelectorAll('.ni[data-page]').forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.page)));
 
@@ -756,6 +932,7 @@ document.querySelectorAll('.ni[data-page]').forEach(b=>b.addEventListener('click
 function openEditor(id){
   const t=TMPL.find(x=>x.id===id);if(!t)return;
   CUR=t;DATA={};PHOTOS={};FONT='DM Sans';FILTER='Yok';TS=1.0;
+  GRAD='none';GRAD_COLOR='#000000';GRAD_OPACITY=0.5;TEXTURE='none';VIG='none';
   t.fields.forEach(f=>{if(f.t!=='ph')DATA[f.k]=f.d;});
   document.getElementById('m-title').textContent=t.name+' – Düzenle';
   buildTools();updatePreview();
@@ -775,7 +952,31 @@ function buildTools(){
     textFs.forEach(f=>{const w=el('div','fl');const lbl=el('label');lbl.textContent=f.l;w.appendChild(lbl);const inp=f.t==='ta'?el('textarea'):el('input');if(f.t==='tx')inp.type='text';inp.value=f.d;inp.dataset.k=f.k;inp.addEventListener('input',()=>{DATA[f.k]=inp.value;updatePreview();});w.appendChild(inp);s.body.appendChild(w);});
     panel.appendChild(s.root);
   }
-  if(photoFs.length){const s=mkSec('🖼 Fotoğraflar');photoFs.forEach(f=>s.body.appendChild(mkPhotoField(f)));panel.appendChild(s.root);}
+  if(photoFs.length){
+    const s=mkSec('🖼 Fotoğraflar');
+    photoFs.forEach(f=>s.body.appendChild(mkPhotoField(f)));
+
+    // Photo search section
+    const searchDiv=el('div','fl');searchDiv.style.marginTop='10px';
+    const slbl=el('label');slbl.textContent='🔍 Fotoğraf Ara (Unsplash)';
+    const sinp=el('input','ph-search-inp');sinp.placeholder='örn: economy, city, news...';sinp.type='text';
+    const sgrid=el('div','ph-grid');
+    const sattrib=el('div','ph-attrib');sattrib.textContent='Unsplash üzerinden · Ücretsiz';
+    const sspin=el('div');sspin.style.cssText='font-size:10px;color:var(--mut);display:none;';sspin.textContent='Aranıyor...';
+
+    let phSearchTimer=null;
+    sinp.addEventListener('input',()=>{
+      clearTimeout(phSearchTimer);
+      if(!sinp.value.trim()){sgrid.innerHTML='';return;}
+      sspin.style.display='block';
+      phSearchTimer=setTimeout(()=>searchPhotos(sinp.value.trim(),sgrid,sspin,photoFs),700);
+    });
+    sinp.addEventListener('keydown',e=>{if(e.key==='Enter'){clearTimeout(phSearchTimer);searchPhotos(sinp.value.trim(),sgrid,sspin,photoFs);}});
+
+    searchDiv.appendChild(slbl);searchDiv.appendChild(sinp);searchDiv.appendChild(sspin);searchDiv.appendChild(sgrid);searchDiv.appendChild(sattrib);
+    s.body.appendChild(searchDiv);
+    panel.appendChild(s.root);
+  }
   if(colorFs.length){
     const s=mkSec('🎨 Renk & Stil');
     colorFs.forEach(f=>{
@@ -789,6 +990,126 @@ function buildTools(){
   }
   // Filter
   {const s=mkSec('🔮 Filtre');const w=el('div','fl');const lbl=el('label');lbl.textContent='Fotoğraf Filtresi';w.appendChild(lbl);const pills=el('div','fpills');Object.keys(FILTERCSS).forEach(name=>{const btn=el('button','fp'+(name==='Yok'?' on':''));btn.textContent=name;btn.addEventListener('click',()=>{pills.querySelectorAll('.fp').forEach(b=>b.classList.remove('on'));btn.classList.add('on');FILTER=name;updatePreview();});pills.appendChild(btn);});w.appendChild(pills);s.body.appendChild(w);panel.appendChild(s.root);}
+
+  // Gradient & Texture
+  {
+    const s=mkSec('🌈 Gradyan & Doku');
+
+    // Gradient presets
+    const gw=el('div','fl');
+    const gl=el('label');gl.textContent='Işık & Gradyan';gw.appendChild(gl);
+    const GRADS=[
+      {id:'none',       label:'Yok',      css:'background:#1a1a1a;'},
+      {id:'top',        label:'↓ Üst',    css:'background:linear-gradient(to bottom,rgba(0,0,0,.85),transparent);'},
+      {id:'bottom',     label:'↑ Alt',    css:'background:linear-gradient(to top,rgba(0,0,0,.85),transparent);'},
+      {id:'left',       label:'→ Sol',    css:'background:linear-gradient(to right,rgba(0,0,0,.85),transparent);'},
+      {id:'cinema',     label:'Sinema',   css:'background:linear-gradient(to bottom,rgba(0,0,0,.7) 0%,transparent 40%,transparent 60%,rgba(0,0,0,.7) 100%);'},
+      {id:'radial',     label:'Işıma',    css:'background:radial-gradient(ellipse at center,rgba(255,255,255,.18),rgba(0,0,0,.6));'},
+      {id:'diag',       label:'Diagonal', css:'background:linear-gradient(135deg,rgba(0,0,0,.75),transparent);'},
+      {id:'color',      label:'Renk',     css:'background:linear-gradient(to top,rgba(230,57,70,.7),transparent);'},
+      {id:'golden',     label:'Altın',    css:'background:linear-gradient(to top,rgba(255,214,10,.6),transparent);'},
+    ];
+    const ggrid=el('div','grad-grid');
+    GRADS.forEach(g=>{
+      const btn=el('div','grad-btn'+(GRAD===g.id?' on':''));
+      btn.style.cssText=g.css;
+      const sp=el('span');sp.textContent=g.label;btn.appendChild(sp);
+      btn.addEventListener('click',()=>{
+        ggrid.querySelectorAll('.grad-btn').forEach(b=>b.classList.remove('on'));
+        btn.classList.add('on');GRAD=g.id;updatePreview();
+      });
+      ggrid.appendChild(btn);
+    });
+    gw.appendChild(ggrid);
+
+    // Grad color + opacity (shown when grad=color)
+    const gcRow=el('div');gcRow.style.cssText='display:flex;gap:6px;align-items:center;margin-top:6px;';
+    const gcLbl=el('label');gcLbl.style.cssText='font-size:10px;color:var(--mut);margin:0;flex:1;';gcLbl.textContent='Renk & Yoğunluk';
+    const gcPk=el('input');gcPk.type='color';gcPk.value=GRAD_COLOR;
+    gcPk.addEventListener('input',()=>{GRAD_COLOR=gcPk.value;updatePreview();});
+    const gcOp=el('input');gcOp.type='range';gcOp.min=10;gcOp.max=95;gcOp.value=Math.round(GRAD_OPACITY*100);
+    gcOp.style.cssText='flex:1;accent-color:var(--red);cursor:pointer;';
+    gcOp.addEventListener('input',()=>{GRAD_OPACITY=gcOp.value/100;updatePreview();});
+    gcRow.appendChild(gcLbl);gcRow.appendChild(gcPk);gcRow.appendChild(gcOp);
+    gw.appendChild(gcRow);
+    s.body.appendChild(gw);
+
+    // Texture
+    const tw=el('div','fl');tw.style.marginTop='10px';
+    const tl=el('label');tl.textContent='Yüzey Dokusu';tw.appendChild(tl);
+    const TEXTURES=[
+      {id:'none',  label:'Yok'},
+      {id:'noise', label:'Noise'},
+      {id:'grid',  label:'Izgara'},
+      {id:'dots',  label:'Nokta'},
+      {id:'lines', label:'Çizgi'},
+      {id:'diag',  label:'Diagonal'},
+      {id:'cross', label:'Çapraz'},
+      {id:'hex',   label:'Altıgen'},
+    ];
+    const tgrid=el('div','tex-grid');
+    TEXTURES.forEach(t=>{
+      const btn=el('div','tex-btn'+(TEXTURE===t.id?' on':''));
+      btn.textContent=t.label;
+      // show a mini preview bg
+      btn.style.background=getTextureBg(t.id,'rgba(255,255,255,.06)','rgba(255,255,255,.03)');
+      btn.addEventListener('click',()=>{
+        tgrid.querySelectorAll('.tex-btn').forEach(b=>b.classList.remove('on'));
+        btn.classList.add('on');TEXTURE=t.id;updatePreview();
+      });
+      tgrid.appendChild(btn);
+    });
+    tw.appendChild(tgrid);
+    s.body.appendChild(tw);
+    panel.appendChild(s.root);
+  }
+
+  // Vignette & Light Effects
+  {
+    const s=mkSec('✨ Vignette & Işık');
+    const vw=el('div','fl');
+    const vl=el('label');vl.textContent='Vignette';vw.appendChild(vl);
+    const VIGS=[
+      {id:'none',   label:'Yok'},
+      {id:'soft',   label:'Hafif'},
+      {id:'mid',    label:'Orta'},
+      {id:'hard',   label:'Güçlü'},
+      {id:'cinema', label:'Sinema'},
+      {id:'warm',   label:'Sıcak'},
+      {id:'cold',   label:'Soğuk'},
+      {id:'white',  label:'Beyaz'},
+    ];
+    const vrow=el('div','vig-row');
+    VIGS.forEach(v=>{
+      const btn=el('div','vig-btn'+(VIG===v.id?' on':''));
+      btn.textContent=v.label;
+      btn.addEventListener('click',()=>{
+        vrow.querySelectorAll('.vig-btn').forEach(b=>b.classList.remove('on'));
+        btn.classList.add('on');VIG=v.id;updatePreview();
+      });
+      vrow.appendChild(btn);
+    });
+    vw.appendChild(vrow);
+    s.body.appendChild(vw);
+
+    // Safe Zone toggle
+    const szw=el('div','fl');szw.style.marginTop='10px';
+    const szl=el('label');szl.textContent='Safe Zone Göster';szw.appendChild(szl);
+    const szRow=el('div');szRow.style.cssText='display:flex;gap:6px;margin-top:4px;';
+    [['Kapalı',false],['IG',true]].forEach(([lbl2,val])=>{
+      const btn=el('button','fp'+(!val&&!SAFEZONE?' on':(val&&SAFEZONE?' on':'')));
+      btn.textContent=lbl2;
+      btn.addEventListener('click',()=>{
+        szRow.querySelectorAll('.fp').forEach(b=>b.classList.remove('on'));
+        btn.classList.add('on');SAFEZONE=val;
+        updateSafeZone();
+      });
+      szRow.appendChild(btn);
+    });
+    szw.appendChild(szRow);
+    s.body.appendChild(szw);
+    panel.appendChild(s.root);
+  }
   // Font + Size
   {const s=mkSec('🔤 Yazı Tipi & Boyutu');
    // Font picker
@@ -827,6 +1148,116 @@ function mkPhotoField(f){
 }
 
 /* ══════════════════════════════════════════
+   GRADIENT / TEXTURE / VIGNETTE HELPERS
+══════════════════════════════════════════ */
+function getGradientCSS(type,color,opacity){
+  const a=opacity||0.5;
+  const hex2rgb=h=>{const r=parseInt(h.slice(1,3),16),g=parseInt(h.slice(3,5),16),b=parseInt(h.slice(5,7),16);return`${r},${g},${b}`;};
+  const c=color||'#000000';
+  const rgb=hex2rgb(c);
+  switch(type){
+    case'top':    return`linear-gradient(to bottom,rgba(0,0,0,.82) 0%,rgba(0,0,0,.1) 50%,transparent 100%)`;
+    case'bottom': return`linear-gradient(to top,rgba(0,0,0,.88) 0%,rgba(0,0,0,.15) 55%,transparent 100%)`;
+    case'left':   return`linear-gradient(to right,rgba(0,0,0,.82) 0%,rgba(0,0,0,.1) 55%,transparent 100%)`;
+    case'cinema': return`linear-gradient(to bottom,rgba(0,0,0,.78) 0%,transparent 35%,transparent 65%,rgba(0,0,0,.78) 100%)`;
+    case'radial': return`radial-gradient(ellipse at center,rgba(255,255,255,.16) 0%,rgba(0,0,0,.65) 100%)`;
+    case'diag':   return`linear-gradient(135deg,rgba(0,0,0,.78) 0%,transparent 60%)`;
+    case'color':  return`linear-gradient(to top,rgba(${rgb},${a}) 0%,rgba(${rgb},${a*0.4}) 50%,transparent 100%)`;
+    case'golden': return`linear-gradient(to top,rgba(180,130,0,.65) 0%,transparent 70%)`;
+    default:      return'none';
+  }
+}
+
+function getTextureBg(type,c1,c2){
+  const col1=c1||'rgba(255,255,255,.06)';
+  const col2=c2||'rgba(255,255,255,.03)';
+  switch(type){
+    case'noise':  return`url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E")`;
+    case'grid':   return`repeating-linear-gradient(${col1} 0 1px,transparent 1px 40px),repeating-linear-gradient(90deg,${col1} 0 1px,transparent 1px 40px)`;
+    case'dots':   return`radial-gradient(circle,${col1} 1.5px,transparent 1.5px)`;
+    case'lines':  return`repeating-linear-gradient(0deg,transparent,transparent 28px,${col1} 28px,${col1} 29px)`;
+    case'diag':   return`repeating-linear-gradient(45deg,${col1},${col1} 1px,transparent 0,transparent 50%)`;
+    case'cross':  return`repeating-linear-gradient(${col1} 0 1px,transparent 1px 30px),repeating-linear-gradient(90deg,${col1} 0 1px,transparent 1px 30px)`;
+    case'hex':    return`url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='49'%3E%3Cpath d='M14 0l14 8v16l-14 8L0 24V8z' fill='none' stroke='rgba(255,255,255,0.05)' stroke-width='1'/%3E%3C/svg%3E")`;
+    default:      return'none';
+  }
+}
+
+function getVignetteBg(type){
+  switch(type){
+    case'soft':   return'radial-gradient(ellipse at center,transparent 55%,rgba(0,0,0,.45) 100%)';
+    case'mid':    return'radial-gradient(ellipse at center,transparent 40%,rgba(0,0,0,.70) 100%)';
+    case'hard':   return'radial-gradient(ellipse at center,transparent 28%,rgba(0,0,0,.88) 100%)';
+    case'cinema': return'radial-gradient(ellipse 120% 90% at center,transparent 30%,rgba(0,0,0,.92) 100%)';
+    case'warm':   return'radial-gradient(ellipse at center,transparent 40%,rgba(80,20,0,.65) 100%)';
+    case'cold':   return'radial-gradient(ellipse at center,transparent 40%,rgba(0,10,60,.62) 100%)';
+    case'white':  return'radial-gradient(ellipse at center,transparent 45%,rgba(255,255,255,.55) 100%)';
+    default:      return'none';
+  }
+}
+
+function buildVisualOverlay(sz){
+  // sz=1 for preview, sz=3.375 for export
+  const layers=[];
+
+  // 1. Gradient layer
+  const gradCss=getGradientCSS(GRAD,GRAD_COLOR,GRAD_OPACITY);
+  if(gradCss!=='none'){
+    layers.push(`<div style="position:absolute;inset:0;background:${gradCss};pointer-events:none;z-index:10;"></div>`);
+  }
+
+  // 2. Texture layer
+  const texBg=getTextureBg(TEXTURE);
+  if(texBg!=='none'){
+    const tsize=TEXTURE==='dots'?`background-size:${16*sz}px ${16*sz}px`:
+                TEXTURE==='grid'?`background-size:${40*sz}px ${40*sz}px`:
+                TEXTURE==='lines'?`background-size:100% ${29*sz}px`:
+                TEXTURE==='cross'?`background-size:${30*sz}px ${30*sz}px`:
+                TEXTURE==='diag'?`background-size:${8*sz}px ${8*sz}px`:'';
+    layers.push(`<div style="position:absolute;inset:0;background:${texBg};${tsize};pointer-events:none;z-index:11;opacity:.7;"></div>`);
+  }
+
+  // 3. Vignette layer
+  const vigBg=getVignetteBg(VIG);
+  if(vigBg!=='none'){
+    layers.push(`<div style="position:absolute;inset:0;background:${vigBg};pointer-events:none;z-index:12;"></div>`);
+  }
+
+  return layers.join('');
+}
+
+/* ── Safe Zone overlay (preview only, excluded from download) ── */
+function updateSafeZone(){
+  const wrap=document.getElementById('canvas-wrap');
+  if(!wrap)return;
+  let szEl=wrap.querySelector('.sz-overlay');
+  if(szEl)szEl.remove();
+  if(!SAFEZONE)return;
+
+  // Calculate safe zones as % of canvas
+  szEl=document.createElement('div');
+  szEl.className='sz-overlay';
+  szEl.setAttribute('data-no-export','1');
+
+  // Instagram standard safe area: ~91% width, ~91% height
+  const zones=[
+    {label:'IG 1:1',top:'4.5%',left:'4.5%',right:'4.5%',bottom:'4.5%',color:'rgba(0,180,216,.7)'},
+    {label:'Metin Güvenli',top:'12%',left:'8%',right:'8%',bottom:'12%',color:'rgba(6,214,160,.55)'},
+  ];
+
+  zones.forEach(z=>{
+    const d=document.createElement('div');
+    d.style.cssText=`position:absolute;top:${z.top};left:${z.left};right:${z.right};bottom:${z.bottom};border:1px dashed ${z.color};box-shadow:inset 0 0 0 1px rgba(0,0,0,.3);border-radius:2px;pointer-events:none;`;
+    const lbl=document.createElement('div');
+    lbl.style.cssText=`position:absolute;top:-1px;left:4px;font-size:7px;font-weight:700;color:${z.color};background:rgba(0,0,0,.6);padding:1px 4px;border-radius:2px;letter-spacing:.5px;white-space:nowrap;`;
+    lbl.textContent=z.label;
+    d.appendChild(lbl);szEl.appendChild(d);
+  });
+
+  wrap.appendChild(szEl);
+}
+
+/* ══════════════════════════════════════════
    PREVIEW (small, sz=1)
 ══════════════════════════════════════════ */
 function updatePreview(){
@@ -834,9 +1265,10 @@ function updatePreview(){
   DATA._font=FONT;
   const inner=document.getElementById('prev-inner');
   inner.style.filter=FILTERCSS[FILTER]||'';
-  inner.innerHTML=CUR.fn(DATA,{},SZ_PREVIEW);
+  inner.innerHTML=CUR.fn(DATA,{},SZ_PREVIEW)+buildVisualOverlay(SZ_PREVIEW);
   applyPhotos(inner,PHOTOS);
   applyTextScale(inner,TS);
+  updateSafeZone();
 }
 
 /* ══════════════════════════════════════════
@@ -845,11 +1277,11 @@ function updatePreview(){
 ══════════════════════════════════════════ */
 function renderOffscreen(t,data,photos,fmt,font,filter){
   const [w,h]=FMT_DIMS[fmt]||[1080,1080];
-  const sz=w/PREVIEW_PX; // real scale ratio
+  const sz=w/PREVIEW_PX;
   const container=document.getElementById('offscreen-render');
   container.style.cssText=`position:fixed;left:-${w+100}px;top:0;width:${w}px;height:${h}px;overflow:hidden;`;
   data._font=font;
-  container.innerHTML=t.fn(data,{},sz);
+  container.innerHTML=t.fn(data,{},sz)+buildVisualOverlay(sz);
   container.style.filter=FILTERCSS[filter]||'';
   applyPhotos(container,photos);
   applyTextScale(container,TS);
@@ -944,7 +1376,7 @@ document.getElementById('fmt-row').addEventListener('click',e=>{
 ══════════════════════════════════════════ */
 document.getElementById('m-close').addEventListener('click',()=>document.getElementById('modal').classList.remove('on'));
 document.getElementById('modal').addEventListener('click',e=>{if(e.target.id==='modal')document.getElementById('modal').classList.remove('on');});
-document.getElementById('m-reset').addEventListener('click',()=>{if(!CUR)return;DATA={};PHOTOS={};FONT='DM Sans';FILTER='Yok';TS=1.0;CUR.fields.forEach(f=>{if(f.t!=='ph')DATA[f.k]=f.d;});buildTools();updatePreview();});
+document.getElementById('m-reset').addEventListener('click',()=>{if(!CUR)return;DATA={};PHOTOS={};FONT='DM Sans';FILTER='Yok';TS=1.0;GRAD='none';GRAD_COLOR='#000000';GRAD_OPACITY=0.5;TEXTURE='none';VIG='none';CUR.fields.forEach(f=>{if(f.t!=='ph')DATA[f.k]=f.d;});buildTools();updatePreview();});
 document.getElementById('m-dl').addEventListener('click',()=>doDownload(false));
 document.getElementById('m-dlhq').addEventListener('click',()=>doDownload(true));
 document.getElementById('m-copy').addEventListener('click',()=>{
@@ -952,6 +1384,19 @@ document.getElementById('m-copy').addEventListener('click',()=>{
   navigator.clipboard.writeText(txt).then(()=>showToast('📋 Caption kopyalandı!'));
 });
 document.getElementById('new-btn').addEventListener('click',()=>showPage('templates'));
+
+/* Live data refresh */
+document.addEventListener('click',e=>{
+  if(e.target.id==='ld-refresh-btn') loadLiveData();
+  if(e.target.id==='eq-refresh-btn') loadEarthquakes();
+  // Earthquake filter tabs
+  if(e.target.dataset?.eqfilt){
+    EQ_FILTER=e.target.dataset.eqfilt;
+    document.querySelectorAll('[data-eqfilt]').forEach(t=>t.classList.remove('on'));
+    e.target.classList.add('on');
+    renderEarthquakes();
+  }
+});
 
 /* ══════════════════════════════════════════
    TABS & SEARCH
@@ -987,283 +1432,961 @@ function showToast(msg,auto=true){
 function initTicker(){const e=document.getElementById('ticker');if(!e)return;const items=TICKERDATA.map(i=>`<span>${i}</span>`).join('');e.innerHTML=items+items;}
 
 /* ══════════════════════════════════════════
+   FETCH HELPER — cross-browser timeout
+══════════════════════════════════════════ */
+function fetchT(url,ms=10000){
+  const ctrl=new AbortController();
+  const tid=setTimeout(()=>ctrl.abort(),ms);
+  return fetch(url,{signal:ctrl.signal}).finally(()=>clearTimeout(tid));
+}
+
+/* ══════════════════════════════════════════
    RSS SYSTEM
 ══════════════════════════════════════════ */
 const RSS_SOURCES=[
-  {name:'TRT Haber',    url:'https://www.trthaber.com/sondakika.rss',       cat:'Genel'},
-  {name:'Hürriyet',     url:'https://www.hurriyet.com.tr/rss/anasayfa',     cat:'Genel'},
-  {name:'CNN Türk',     url:'https://www.cnnturk.com/feed/rss/news',         cat:'Genel'},
-  {name:'NTV',          url:'https://www.ntv.com.tr/son-dakika.rss',         cat:'Genel'},
-  {name:'Sabah',        url:'https://www.sabah.com.tr/rss/anasayfa.xml',    cat:'Genel'},
-  {name:'Sözcü',        url:'https://www.sozcu.com.tr/rss.xml',              cat:'Genel'},
-  {name:'Bloomberg HT', url:'https://www.bloomberght.com/rss',              cat:'Ekonomi'},
-  {name:'Dünya Gazetesi',url:'https://www.dunya.com/rss',                   cat:'Ekonomi'},
-  {name:'Anadolu Ajansı',url:'https://www.aa.com.tr/tr/rss/default?cat=guncel', cat:'Güncel'},
-  {name:'DHA',          url:'https://www.dha.com.tr/rss',                   cat:'Güncel'},
-];
-
-const CORS_PROXIES=[
-  'https://api.allorigins.win/get?url=',
-  'https://api.codetabs.com/v1/proxy?quest=',
+  {name:'TRT Haber',     url:'https://www.trthaber.com/sondakika.rss'},
+  {name:'Hürriyet',      url:'https://www.hurriyet.com.tr/rss/anasayfa'},
+  {name:'CNN Türk',      url:'https://www.cnnturk.com/feed/rss/news'},
+  {name:'NTV',           url:'https://www.ntv.com.tr/son-dakika.rss'},
+  {name:'Sabah',         url:'https://www.sabah.com.tr/rss/anasayfa.xml'},
+  {name:'Sözcü',         url:'https://www.sozcu.com.tr/rss.xml'},
+  {name:'Bloomberg HT',  url:'https://www.bloomberght.com/rss'},
+  {name:'Dünya',         url:'https://www.dunya.com/rss'},
+  {name:'AA Güncel',     url:'https://www.aa.com.tr/tr/rss/default?cat=guncel'},
+  {name:'BBC Türkçe',    url:'https://feeds.bbci.co.uk/turkish/rss.xml'},
 ];
 
 let RSS_ITEMS=[];
-let rssActiveSrc=null;
 
 function initRSSPage(){
-  // Source buttons
   const btnContainer=document.getElementById('rss-source-btns');
+  if(!btnContainer)return;
   btnContainer.innerHTML='';
-  RSS_SOURCES.forEach((src,i)=>{
+  RSS_SOURCES.forEach(src=>{
     const btn=document.createElement('button');
-    btn.className='rss-src-btn';
-    btn.textContent=src.name;
+    btn.className='rss-src-btn';btn.textContent=src.name;
     btn.addEventListener('click',()=>{
       document.querySelectorAll('.rss-src-btn').forEach(b=>b.classList.remove('on'));
       btn.classList.add('on');
-      rssActiveSrc=src;
       document.getElementById('rss-custom-url').value='';
-      fetchRSS(src.url, src.name);
+      fetchRSS(src.url,src.name);
     });
     btnContainer.appendChild(btn);
   });
 
-  // Template selector
   const sel=document.getElementById('rss-tmpl-sel');
-  sel.innerHTML='';
-  // Template categories that make sense for news
-  const newsTmpls=TMPL.filter(t=>['breaking1','breaking2','breaking3','story1','reel1','feed1','analysis1','summary1','magazine1'].includes(t.id));
-  newsTmpls.forEach(t=>{
-    const opt=document.createElement('option');
-    opt.value=t.id;opt.textContent=t.name;
-    sel.appendChild(opt);
-  });
+  if(sel){
+    sel.innerHTML='';
+    TMPL.filter(t=>['breaking1','breaking2','breaking3','story1','reel1','feed1','analysis1','summary1','magazine1'].includes(t.id))
+      .forEach(t=>{const o=document.createElement('option');o.value=t.id;o.textContent=t.name;sel.appendChild(o);});
+  }
 
-  // Fetch button
-  document.getElementById('rss-fetch-btn').onclick=()=>{
+  const fetchBtn=document.getElementById('rss-fetch-btn');
+  if(fetchBtn) fetchBtn.onclick=()=>{
     const url=document.getElementById('rss-custom-url').value.trim();
-    if(!url){showToast('❌ Bir URL girin veya yukarıdan kaynak seçin');return;}
+    if(!url){showToast('❌ RSS URL girin');return;}
     document.querySelectorAll('.rss-src-btn').forEach(b=>b.classList.remove('on'));
-    rssActiveSrc=null;
     fetchRSS(url,'Özel Kaynak');
   };
 }
 
-async function fetchRSS(feedUrl, sourceName){
+async function fetchRSS(feedUrl,sourceName){
   const loading=document.getElementById('rss-loading');
-  const error=document.getElementById('rss-error');
-  const results=document.getElementById('rss-results');
+  const errEl=document.getElementById('rss-error');
   const status=document.getElementById('rss-status');
+  if(loading)loading.style.display='block';
+  if(errEl)errEl.style.display='none';
+  if(status)status.textContent='Yükleniyor...';
+  renderRSSResults([]);
 
-  loading.style.display='block';
-  error.style.display='none';
-  results.innerHTML='';
-  status.textContent='Bağlanılıyor...';
+  // rss2json — free, no CORS issues
+  const apiUrl='https://api.rss2json.com/v1/api.json?rss_url='+encodeURIComponent(feedUrl)+'&api_key=&count=30';
 
-  let xml=null;
-  let lastErr='';
+  try{
+    const r=await fetchT(apiUrl,12000);
+    const d=await r.json();
+    if(loading)loading.style.display='none';
 
-  // Try each proxy in order
-  for(const proxy of CORS_PROXIES){
-    try{
-      const res=await fetch(proxy+encodeURIComponent(feedUrl),{signal:AbortSignal.timeout(8000)});
-      if(!res.ok) continue;
-      const json=await res.json();
-      // allorigins returns {contents:'...'}; codetabs returns plain text
-      const raw=json.contents||json;
-      const parser=new DOMParser();
-      xml=parser.parseFromString(typeof raw==='string'?raw:JSON.stringify(raw),'text/xml');
-      if(xml.querySelector('parsererror')){xml=null;continue;}
-      break;
-    }catch(e){lastErr=e.message;continue;}
+    if(d.status!=='ok'){
+      // Fallback: try allorigins proxy + DOMParser
+      await fetchRSSFallback(feedUrl,sourceName);
+      return;
+    }
+
+    RSS_ITEMS=(d.items||[]).map(item=>({
+      title:item.title||'',
+      desc:(item.description||'').replace(/<[^>]+>/g,'').trim().slice(0,220),
+      link:item.link||item.guid||'',
+      img:item.thumbnail||item.enclosure?.link||extractImgFromHtml(item.description||''),
+      timeStr:item.pubDate?new Date(item.pubDate).toLocaleString('tr-TR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'',
+      category:item.categories?.[0]||'',
+      source:sourceName,
+    })).filter(i=>i.title);
+
+    if(status)status.textContent=RSS_ITEMS.length+' haber · '+sourceName;
+    renderRSSResults(RSS_ITEMS);
+
+  }catch(e){
+    if(loading)loading.style.display='none';
+    await fetchRSSFallback(feedUrl,sourceName);
   }
+}
 
-  loading.style.display='none';
+async function fetchRSSFallback(feedUrl,sourceName){
+  const errEl=document.getElementById('rss-error');
+  const status=document.getElementById('rss-status');
+  try{
+    const proxyUrl='https://api.allorigins.win/get?url='+encodeURIComponent(feedUrl);
+    const r=await fetchT(proxyUrl,12000);
+    const j=await r.json();
+    const raw=j.contents||'';
+    const xml=(new DOMParser()).parseFromString(raw,'text/xml');
+    if(xml.querySelector('parsererror'))throw new Error('XML parse hatası');
+    const items=[...xml.querySelectorAll('item,entry')];
+    if(!items.length)throw new Error('Haber bulunamadı');
 
-  if(!xml){
-    error.textContent='RSS çekilemedi. Kaynak CORS engeliyor olabilir. Farklı bir kaynak deneyin. ('+lastErr+')';
-    error.style.display='block';
-    status.textContent='';
-    return;
+    RSS_ITEMS=items.map(item=>{
+      const g=(...ss)=>{for(const s of ss){const e=item.querySelector(s);if(e)return(e.textContent||e.getAttribute('url')||'').trim();}return'';};
+      let img='';
+      const enc=item.querySelector('enclosure');if(enc)img=enc.getAttribute('url')||'';
+      if(!img){const mc=item.querySelector('content');if(mc)img=mc.getAttribute('url')||'';}
+      if(!img)img=extractImgFromHtml(g('description','summary'));
+      if(!img){const m=item.querySelector('[medium="image"]');if(m)img=m.getAttribute('url')||'';}
+      const pub=g('pubDate','published','updated');
+      return{title:g('title'),desc:g('description','summary').replace(/<[^>]+>/g,'').trim().slice(0,220),
+        link:g('link','guid'),img,timeStr:pub?new Date(pub).toLocaleString('tr-TR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'',
+        category:g('category'),source:sourceName};
+    }).filter(i=>i.title);
+
+    if(status)status.textContent=RSS_ITEMS.length+' haber · '+sourceName;
+    renderRSSResults(RSS_ITEMS);
+  }catch(e2){
+    if(errEl){errEl.textContent='RSS çekilemedi: '+e2.message+'. Farklı kaynak deneyin.';errEl.style.display='block';}
+    if(status)status.textContent='';
   }
+}
 
-  const items=[...xml.querySelectorAll('item,entry')];
-  if(!items.length){
-    error.textContent='Bu RSS kaynağında haber bulunamadı.';
-    error.style.display='block';
-    status.textContent='';
-    return;
-  }
+function extractImgFromHtml(html){
+  const m=(html||'').match(/<img[^>]+src=["']([^"']+)["']/i);
+  return m?m[1]:'';
+}
 
-  RSS_ITEMS=items.map(item=>{
-    const get=(selectors)=>{
-      for(const s of selectors){
-        const el=item.querySelector(s);
-        if(el) return (el.textContent||el.getAttribute('url')||'').trim();
-      }
-      return '';
-    };
-    // Try to extract image from enclosure, media:content, or og:image in description
-    let img='';
-    const enc=item.querySelector('enclosure[type^="image"],enclosure');
-    if(enc) img=enc.getAttribute('url')||'';
-    if(!img){const mc=item.querySelector('content');if(mc) img=mc.getAttribute('url')||'';}
-    if(!img){const desc=get(['description','content\\:encoded','summary']);const m=desc.match(/<img[^>]+src=["']([^"']+)["']/i);if(m) img=m[1];}
-    if(!img){const thumb=item.querySelector('[medium="image"]');if(thumb) img=thumb.getAttribute('url')||'';}
-
-    const title=get(['title']);
-    const desc=get(['description','summary']).replace(/<[^>]+>/g,'').trim().slice(0,220);
-    const link=get(['link','guid']);
-    const pubDate=get(['pubDate','published','updated']);
-    const category=get(['category']);
-    const timeStr=pubDate?new Date(pubDate).toLocaleString('tr-TR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'';
-
-    return {title,desc,link,img,pubDate,timeStr,category,source:sourceName};
-  }).filter(i=>i.title);
-
-  status.textContent=`${RSS_ITEMS.length} haber bulundu · ${sourceName}`;
-  renderRSSResults(RSS_ITEMS);
+/* ── RSS Auto Template Suggest ── */
+const SUGGEST_RULES=[
+  {kw:['deprem','tsunami','sel','yangın','felaket','ölü','yaralı','patlama'],id:'breaking1',lbl:'Son Dakika'},
+  {kw:['dolar','euro','faiz','enflasyon','merkez bankası','borsa','bist','altın','döviz','piyasa'],id:'market1',lbl:'Piyasa Özeti'},
+  {kw:['bitcoin','ethereum','kripto','coin','blockchain'],id:'market2',lbl:'Kripto Tracker'},
+  {kw:['seçim','cumhurbaşkan','meclis','hükümet','bakan','parti'],id:'breaking2',lbl:'Son Dakika Bölünmüş'},
+  {kw:['spor','maç','gol','şampiyon','lig','futbol','basket'],id:'sport1',lbl:'Spor Skoru'},
+  {kw:['hava','sıcaklık','yağış','kar','fırtına','meteoroloji'],id:'weather1',lbl:'Hava Durumu'},
+  {kw:['analiz','rapor','değerlendirme','uzman','araştırma'],id:'analysis1',lbl:'Analiz Raporu'},
+];
+function suggestTemplate(title,desc){
+  const txt=(title+' '+(desc||'')).toLowerCase();
+  let best=null,bestScore=0;
+  SUGGEST_RULES.forEach(r=>{const s=r.kw.filter(k=>txt.includes(k)).length;if(s>bestScore){bestScore=s;best=r;}});
+  return best;
 }
 
 function renderRSSResults(items){
   const results=document.getElementById('rss-results');
+  if(!results)return;
   results.innerHTML='';
+  if(!items.length)return;
 
-  items.forEach((item,idx)=>{
-    const card=document.createElement('div');
-    card.className='rss-card';
+  items.forEach(item=>{
+    const sugg=suggestTemplate(item.title,item.desc);
+    const card=document.createElement('div');card.className='rss-card';
 
-    // Image
-    const imgDiv=document.createElement('div');
-    imgDiv.className='rss-card-img';
-    if(item.img){
-      // Use image proxy to avoid mixed content issues
-      imgDiv.style.backgroundImage='url(https://wsrv.nl/?url='+encodeURIComponent(item.img)+'&w=160&h=128&fit=cover)';
-    } else {
-      imgDiv.style.background='linear-gradient(135deg,#1a1a2e,#16213e)';
-      imgDiv.innerHTML='<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:22px;opacity:.4;">📰</div>';
+    const imgDiv=document.createElement('div');imgDiv.className='rss-card-img';
+    if(item.img)imgDiv.style.backgroundImage='url(https://wsrv.nl/?url='+encodeURIComponent(item.img)+'&w=160&h=128&fit=cover)';
+    else{imgDiv.style.background='linear-gradient(135deg,#1a1a2e,#16213e)';imgDiv.innerHTML='<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:22px;opacity:.4;">📰</div>';}
+
+    const body=document.createElement('div');body.className='rss-card-body';
+    const cat=document.createElement('div');cat.className='rss-card-cat';cat.textContent=(item.category||item.source||'HABER').toUpperCase().slice(0,30);
+    const titleEl=document.createElement('div');titleEl.className='rss-card-title';titleEl.textContent=item.title;
+    const meta=document.createElement('div');meta.className='rss-card-meta';meta.textContent=(item.timeStr||'')+(item.source?' · '+item.source:'');
+    const actions=document.createElement('div');actions.className='rss-card-actions';
+
+    if(sugg){
+      const badge=document.createElement('span');
+      badge.style.cssText='font-size:9px;padding:2px 7px;background:rgba(0,180,216,.1);border:1px solid rgba(0,180,216,.22);border-radius:10px;color:#00b4d8;font-weight:600;align-self:center;white-space:nowrap;';
+      badge.textContent='✨ '+sugg.lbl;actions.appendChild(badge);
     }
 
-    // Body
-    const body=document.createElement('div');
-    body.className='rss-card-body';
+    const useBtn=document.createElement('button');useBtn.className='btn btn-r';
+    useBtn.style.cssText='font-size:10px;padding:4px 10px;';useBtn.textContent='✏️ Şablona Aktar';
+    useBtn.addEventListener('click',()=>{
+      if(sugg){const sel=document.getElementById('rss-tmpl-sel');if(sel)sel.value=sugg.id;}
+      openRSSinEditor(item);
+    });
+    actions.appendChild(useBtn);
 
-    const cat=document.createElement('div');
-    cat.className='rss-card-cat';
-    cat.textContent=(item.category||item.source||'HABER').toUpperCase().slice(0,30);
-
-    const title=document.createElement('div');
-    title.className='rss-card-title';
-    title.textContent=item.title;
-
-    const meta=document.createElement('div');
-    meta.className='rss-card-meta';
-    meta.textContent=(item.timeStr||'')+(item.source?' · '+item.source:'');
-
-    const actions=document.createElement('div');
-    actions.className='rss-card-actions';
-
-    // Use in template button
-    const useBtn=document.createElement('button');
-    useBtn.className='btn btn-r';
-    useBtn.style.cssText='font-size:10px;padding:4px 10px;';
-    useBtn.textContent='✏️ Şablona Aktar';
-    useBtn.addEventListener('click',()=>openRSSinEditor(item));
-
-    // Open link button
     if(item.link){
-      const linkBtn=document.createElement('a');
-      linkBtn.href=item.link;linkBtn.target='_blank';
-      linkBtn.className='btn btn-g';
-      linkBtn.style.cssText='font-size:10px;padding:4px 10px;text-decoration:none;';
-      linkBtn.textContent='🔗 Habere Git';
-      actions.appendChild(useBtn);actions.appendChild(linkBtn);
-    } else {
-      actions.appendChild(useBtn);
+      const lb=document.createElement('a');lb.href=item.link;lb.target='_blank';
+      lb.className='btn btn-g';lb.style.cssText='font-size:10px;padding:4px 10px;text-decoration:none;';
+      lb.textContent='🔗 Git';actions.appendChild(lb);
     }
 
-    body.appendChild(cat);body.appendChild(title);body.appendChild(meta);body.appendChild(actions);
-    card.appendChild(imgDiv);card.appendChild(body);
-    results.appendChild(card);
+    body.appendChild(cat);body.appendChild(titleEl);body.appendChild(meta);body.appendChild(actions);
+    card.appendChild(imgDiv);card.appendChild(body);results.appendChild(card);
   });
 }
 
 async function openRSSinEditor(item){
-  const selId=document.getElementById('rss-tmpl-sel').value;
+  const selId=document.getElementById('rss-tmpl-sel')?.value;
   const tmpl=TMPL.find(t=>t.id===selId)||TMPL.find(t=>t.id==='breaking1');
-  if(!tmpl) return;
-
-  // Open editor with this template
+  if(!tmpl)return;
   openEditor(tmpl.id);
 
-  // Map RSS fields to template fields intelligently
   const mapping={
-    headline: item.title,
-    h1: item.title,
-    masthead: item.source||'Haber Ağı',
-    sub: item.desc||'',
-    detail: item.desc||'',
-    body: item.desc||'',
-    category: (item.category||'GÜNDEM').toUpperCase().slice(0,20),
-    cat: (item.category||'GÜNDEM').toUpperCase().slice(0,20),
-    tag: (item.category||'GÜNDEM').toUpperCase().slice(0,20),
-    source: item.source||'Haber Ağı',
-    time: item.timeStr||new Date().toLocaleTimeString('tr-TR',{hour:'2-digit',minute:'2-digit'}),
-    date: new Date().toLocaleDateString('tr-TR',{day:'numeric',month:'long',year:'numeric'}),
-    topic: (item.category||'HABERLER').toUpperCase(),
-    p1: item.title,
+    headline:item.title,h1:item.title,masthead:item.source||'Haber Ağı',
+    sub:item.desc,detail:item.desc,body:item.desc,
+    category:(item.category||'GÜNDEM').toUpperCase().slice(0,20),
+    cat:(item.category||'GÜNDEM').toUpperCase().slice(0,20),
+    tag:(item.category||'GÜNDEM').toUpperCase().slice(0,20),
+    source:item.source||'Haber Ağı',
+    time:item.timeStr?.split(' ')[1]||new Date().toLocaleTimeString('tr-TR',{hour:'2-digit',minute:'2-digit'}),
+    date:new Date().toLocaleDateString('tr-TR',{day:'numeric',month:'long',year:'numeric'}),
+    p1:item.title,
   };
 
-  // Apply mappings to DATA
-  Object.entries(mapping).forEach(([k,v])=>{if(DATA.hasOwnProperty(k)) DATA[k]=v;});
+  const applyMapping=()=>{
+    Object.entries(mapping).forEach(([k,v])=>{if(DATA.hasOwnProperty(k))DATA[k]=v;});
+    document.querySelectorAll('#tools input[type=text],#tools textarea').forEach(inp=>{
+      const k=inp.dataset?.k;if(k&&DATA[k]!==undefined)inp.value=DATA[k];
+    });
+    updatePreview();
+  };
 
-  // If there's an image, fetch and apply it
   if(item.img){
     showToast('🖼 Fotoğraf yükleniyor...',false);
     try{
-      const proxyUrl='https://wsrv.nl/?url='+encodeURIComponent(item.img)+'&w=1080&h=1080&fit=cover&output=jpg';
-      const resp=await fetch(proxyUrl,{signal:AbortSignal.timeout(10000)});
+      const pUrl='https://wsrv.nl/?url='+encodeURIComponent(item.img)+'&w=1080&h=1080&fit=cover&output=jpg';
+      const resp=await fetchT(pUrl,10000);
       if(resp.ok){
         const blob=await resp.blob();
         const reader=new FileReader();
         reader.onload=ev=>{
-          // Apply to all photo roles the template supports
-          const photoFields=tmpl.fields.filter(f=>f.t==='ph');
-          photoFields.forEach(pf=>{PHOTOS[pf.role]=ev.target.result;});
-          buildTools();
-          updatePreview();
-          // Re-apply text data after buildTools refresh
-          Object.entries(mapping).forEach(([k,v])=>{if(DATA.hasOwnProperty(k)) DATA[k]=v;});
-          // Refresh input fields in tools panel
-          document.querySelectorAll('#tools input[type=text],#tools textarea').forEach(inp=>{
-            const key=inp.dataset?.k;
-            if(key&&DATA[key]!==undefined) inp.value=DATA[key];
-          });
-          updatePreview();
+          tmpl.fields.filter(f=>f.t==='ph').forEach(pf=>{PHOTOS[pf.role]=ev.target.result;});
+          buildTools();applyMapping();
           showToast('✅ Haber ve fotoğraf yüklendi!');
         };
-        reader.readAsDataURL(blob);
-        return;
+        reader.readAsDataURL(blob);return;
       }
-    }catch(e){/* image failed, continue without it */}
+    }catch(e){}
   }
-
-  // No image or image failed — just rebuild tools and update
-  buildTools();
-  // Re-apply text data after buildTools
-  Object.entries(mapping).forEach(([k,v])=>{if(DATA.hasOwnProperty(k)) DATA[k]=v;});
-  document.querySelectorAll('#tools input[type=text],#tools textarea').forEach(inp=>{
-    const key=inp.dataset?.k;
-    if(key&&DATA[key]!==undefined) inp.value=DATA[key];
-  });
-  updatePreview();
+  buildTools();applyMapping();
   showToast('✅ Haber şablona aktarıldı!');
 }
+
+/* ══════════════════════════════════════════
+   PHOTO SEARCH — Picsum + loremflickr
+══════════════════════════════════════════ */
+async function searchPhotos(query,grid,spinner,photoFields){
+  grid.innerHTML='';spinner.style.display='block';
+  // loremflickr gives keyword-matched photos — 12 different seeds
+  const imgs=Array.from({length:12},(_,i)=>`https://loremflickr.com/320/240/${encodeURIComponent(query)}?lock=${i+1}`);
+  spinner.style.display='none';
+  imgs.forEach(url=>{
+    const thumb=document.createElement('div');
+    thumb.className='ph-thumb';
+    thumb.style.backgroundImage='url('+url+')';
+    thumb.title='Tıkla → uygula';
+    thumb.addEventListener('click',()=>{
+      grid.querySelectorAll('.ph-thumb').forEach(t=>t.style.borderColor='transparent');
+      thumb.style.borderColor='var(--red)';
+      applySearchPhoto(url,photoFields);
+    });
+    grid.appendChild(thumb);
+  });
+}
+
+function applySearchPhoto(url,photoFields){
+  showToast('🖼 Fotoğraf uygulanıyor...',false);
+  const proxy='https://wsrv.nl/?url='+encodeURIComponent(url)+'&w=1080&h=1080&fit=cover&output=jpg';
+  fetchT(proxy,12000)
+    .then(r=>r.blob())
+    .then(blob=>{
+      const rd=new FileReader();
+      rd.onload=ev=>{photoFields.forEach(pf=>{PHOTOS[pf.role]=ev.target.result;});updatePreview();showToast('✅ Fotoğraf uygulandı!');};
+      rd.readAsDataURL(blob);
+    })
+    .catch(()=>{
+      photoFields.forEach(pf=>{PHOTOS[pf.role]=url;});
+      updatePreview();showToast('⚠️ Önizlemede gösteriliyor');
+    });
+}
+
+/* ══════════════════════════════════════════
+   LIVE DATA — Forex + Crypto + TCMB
+══════════════════════════════════════════ */
+let LIVE={forex:{},crypto:{},tcmb:{}};
+
+async function loadLiveData(){
+  const errEl=document.getElementById('ld-error');
+  if(errEl)errEl.style.display='none';
+
+  // Mark tiles as loading
+  ['ld-forex','ld-crypto','ld-tcmb'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el)el.innerHTML='<div style="color:var(--mut);font-size:12px;grid-column:1/-1;padding:8px 0;">⏳ Yükleniyor...</div>';
+  });
+
+  // ── 1. open.er-api (free, no key, no CORS) ──
+  try{
+    const r=await fetchT('https://open.er-api.com/v6/latest/USD',8000);
+    const d=await r.json();
+    if(d.result==='success'){
+      const rates=d.rates;
+      LIVE.forex.USDTRY=rates.TRY?.toFixed(2);
+      if(rates.EUR&&rates.TRY) LIVE.forex.EURTRY=(rates.TRY/rates.EUR).toFixed(2);
+      if(rates.GBP&&rates.TRY) LIVE.forex.GBPTRY=(rates.TRY/rates.GBP).toFixed(2);
+      if(rates.CHF&&rates.TRY) LIVE.forex.CHFTRY=(rates.TRY/rates.CHF).toFixed(2);
+    }
+  }catch(e){}
+
+  // ── 2. CoinGecko free ──
+  try{
+    const r=await fetchT('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana,binancecoin&vs_currencies=usd&include_24hr_change=true',8000);
+    const d=await r.json();
+    const fmt=(id,key)=>({price:d[id]?.usd,chg:d[id]?.usd_24h_change?.toFixed(2)});
+    LIVE.crypto.BTC=fmt('bitcoin');
+    LIVE.crypto.ETH=fmt('ethereum');
+    LIVE.crypto.SOL=fmt('solana');
+    LIVE.crypto.BNB=fmt('binancecoin');
+  }catch(e){}
+
+  // ── 3. TCMB via allorigins ──
+  try{
+    const tcmbUrl='https://www.tcmb.gov.tr/kurlar/today.xml';
+    const r=await fetchT('https://api.allorigins.win/get?url='+encodeURIComponent(tcmbUrl),10000);
+    const j=await r.json();
+    const xml=(new DOMParser()).parseFromString(j.contents||'','text/xml');
+    ['USD','EUR','GBP','CHF','JPY','SAR','AUD'].forEach(code=>{
+      const node=[...xml.querySelectorAll('Currency')].find(c=>c.getAttribute('CurrencyCode')===code);
+      if(!node)return;
+      const buy=parseFloat((node.querySelector('ForexBuying')?.textContent||'').replace(',','.'));
+      const sell=parseFloat((node.querySelector('ForexSelling')?.textContent||'').replace(',','.'));
+      if(buy>0) LIVE.tcmb[code]={buying:buy.toFixed(4),selling:(sell||buy).toFixed(4)};
+    });
+  }catch(e){}
+
+  renderLiveData();
+}
+
+function ldTile(name,val,pct,sub){
+  const up=pct===undefined?null:parseFloat(pct)>=0;
+  const c=up===null?'var(--txt)':up?'#06d6a0':'#e63946';
+  return `<div class="ld-tile">
+    <div class="ld-name">${name}</div>
+    <div class="ld-val" style="color:${c};">${val||'—'}</div>
+    ${pct!==undefined?`<div class="ld-pct" style="color:${c};">${up?'▲':'▼'} ${Math.abs(parseFloat(pct))||0}%</div>`:''}
+    ${sub?`<div style="font-size:9px;color:var(--mut);margin-top:2px;">${sub}</div>`:''}
+  </div>`;
+}
+
+function renderLiveData(){
+  const fEl=document.getElementById('ld-forex');
+  if(fEl){
+    const tiles=[];
+    if(LIVE.forex.USDTRY) tiles.push(ldTile('Dolar / TL','₺'+LIVE.forex.USDTRY));
+    if(LIVE.forex.EURTRY)  tiles.push(ldTile('Euro / TL','₺'+LIVE.forex.EURTRY));
+    if(LIVE.forex.GBPTRY)  tiles.push(ldTile('Sterlin / TL','₺'+LIVE.forex.GBPTRY));
+    if(LIVE.forex.CHFTRY)  tiles.push(ldTile('Frank / TL','₺'+LIVE.forex.CHFTRY));
+    fEl.innerHTML=tiles.length?tiles.join(''):'<div style="color:var(--mut);font-size:12px;grid-column:1/-1;">Veri alınamadı</div>';
+  }
+
+  const cEl=document.getElementById('ld-crypto');
+  if(cEl){
+    const tiles=[];
+    if(LIVE.crypto.BTC?.price) tiles.push(ldTile('Bitcoin','$'+Number(LIVE.crypto.BTC.price).toLocaleString('en'),LIVE.crypto.BTC.chg));
+    if(LIVE.crypto.ETH?.price) tiles.push(ldTile('Ethereum','$'+Number(LIVE.crypto.ETH.price).toLocaleString('en'),LIVE.crypto.ETH.chg));
+    if(LIVE.crypto.SOL?.price) tiles.push(ldTile('Solana','$'+Number(LIVE.crypto.SOL.price).toLocaleString('en'),LIVE.crypto.SOL.chg));
+    if(LIVE.crypto.BNB?.price) tiles.push(ldTile('BNB','$'+Number(LIVE.crypto.BNB.price).toLocaleString('en'),LIVE.crypto.BNB.chg));
+    cEl.innerHTML=tiles.length?tiles.join(''):'<div style="color:var(--mut);font-size:12px;grid-column:1/-1;">Veri alınamadı</div>';
+  }
+
+  const tEl=document.getElementById('ld-tcmb');
+  if(tEl){
+    const pairs=Object.entries(LIVE.tcmb);
+    tEl.innerHTML=pairs.length
+      ?pairs.map(([c,v])=>ldTile(c+' / TRY','₺'+v.buying,undefined,'Satış: ₺'+v.selling)).join('')
+      :'<div style="color:var(--mut);font-size:12px;grid-column:1/-1;">TCMB verisi alınamadı</div>';
+  }
+
+  const tbEl=document.getElementById('ld-tmpl-btns');
+  if(tbEl){
+    tbEl.innerHTML='';
+    [['market1','💹 Piyasa Özeti'],['market2','₿ Kripto'],['market3','📈 Grafik'],['currency1','💱 Döviz']].forEach(([id,lbl])=>{
+      const btn=document.createElement('button');
+      btn.className='btn btn-g';btn.style.cssText='font-size:11px;margin-bottom:6px;';btn.textContent=lbl;
+      btn.addEventListener('click',()=>{openEditor(id);setTimeout(()=>injectLiveIntoEditor(id),80);});
+      tbEl.appendChild(btn);
+    });
+  }
+}
+
+function injectLiveIntoEditor(id){
+  const now=new Date().toLocaleDateString('tr-TR',{day:'numeric',month:'long',year:'numeric'});
+  if(id==='market1'){
+    if(LIVE.forex.USDTRY){DATA.a1='Dolar/TL';DATA.v1='₺'+LIVE.forex.USDTRY;DATA.p1='';}
+    if(LIVE.forex.EURTRY){DATA.a2='Euro/TL';DATA.v2='₺'+LIVE.forex.EURTRY;DATA.p2='';}
+    if(LIVE.crypto.BTC?.price){DATA.a3='Bitcoin';DATA.v3='$'+Number(LIVE.crypto.BTC.price).toLocaleString('en');DATA.p3=(parseFloat(LIVE.crypto.BTC.chg)>=0?'+':'')+LIVE.crypto.BTC.chg;}
+    if(LIVE.crypto.ETH?.price){DATA.a4='Ethereum';DATA.v4='$'+Number(LIVE.crypto.ETH.price).toLocaleString('en');DATA.p4=(parseFloat(LIVE.crypto.ETH.chg)>=0?'+':'')+LIVE.crypto.ETH.chg;}
+    DATA.date=now;
+  }
+  if(id==='market2'){
+    const coins=[['BTC','Bitcoin'],['ETH','Ethereum'],['SOL','Solana'],['BNB','BNB']];
+    coins.forEach(([k,nm],i)=>{
+      const c=LIVE.crypto[k];if(!c?.price)return;
+      DATA['c'+(i+1)]=nm;DATA['v'+(i+1)]='$'+Number(c.price).toLocaleString('en');
+      DATA['p'+(i+1)]=(parseFloat(c.chg)>=0?'+':'')+c.chg;
+    });
+  }
+  if(id==='currency1'){
+    const t=LIVE.tcmb;const f=LIVE.forex;
+    if(t.USD){DATA.c1='Dolar';DATA.s1='$';DATA.v1=t.USD.buying;DATA.p1='';}
+    if(t.EUR){DATA.c2='Euro';DATA.s2='€';DATA.v2=t.EUR.buying;DATA.p2='';}
+    if(t.GBP){DATA.c3='Sterlin';DATA.s3='£';DATA.v3=t.GBP.buying;DATA.p3='';}
+    if(t.CHF){DATA.c4='Frank';DATA.s4='₣';DATA.v4=t.CHF.buying;DATA.p4='';}
+  }
+  if(id==='market3' && LIVE.forex.USDTRY){
+    DATA.asset='Dolar / TL';DATA.val=LIVE.forex.USDTRY;
+  }
+  document.querySelectorAll('#tools input[type=text],#tools textarea').forEach(inp=>{
+    const k=inp.dataset?.k;if(k&&DATA[k]!==undefined)inp.value=DATA[k];
+  });
+  updatePreview();
+  showToast('✅ Güncel veriler uygulandı!');
+}
+
+/* ══════════════════════════════════════════
+   EARTHQUAKE — USGS GeoJSON
+══════════════════════════════════════════ */
+let EQ_ALL=[];let EQ_FILTER='all';
+
+async function loadEarthquakes(){
+  const loading=document.getElementById('eq-loading');
+  const errEl=document.getElementById('eq-error');
+  const results=document.getElementById('eq-results');
+  if(loading)loading.style.display='block';
+  if(errEl)errEl.style.display='none';
+  if(results)results.innerHTML='';
+
+  try{
+    // USGS all earthquakes M≥1 past 7 days — public API, no CORS
+    const r=await fetchT('https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/1.0_week.geojson',10000);
+    const d=await r.json();
+    EQ_ALL=(d.features||[]).map(f=>{
+      const p=f.properties;const c=f.geometry?.coordinates||[];
+      return{mag:parseFloat(p.mag)||0,place:p.place||'Bilinmeyen',
+        time:new Date(p.time).toLocaleString('tr-TR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}),
+        depth:parseFloat(c[2]||0).toFixed(1),lat:c[1],lon:c[0],url:p.url,
+        turkey:c[1]>=34&&c[1]<=43&&c[0]>=24&&c[0]<=46};
+    }).sort((a,b)=>b.mag-a.mag);
+    if(loading)loading.style.display='none';
+    renderEarthquakes();
+  }catch(e){
+    if(loading)loading.style.display='none';
+    if(errEl){errEl.textContent='Deprem verisi alınamadı: '+e.message;errEl.style.display='block';}
+  }
+}
+
+function renderEarthquakes(){
+  const results=document.getElementById('eq-results');
+  if(!results)return;
+  let list=EQ_ALL;
+  if(EQ_FILTER==='turkey')list=list.filter(e=>e.turkey);
+  if(EQ_FILTER==='m3')list=list.filter(e=>e.mag>=3);
+  if(EQ_FILTER==='m5')list=list.filter(e=>e.mag>=5);
+  list=list.slice(0,60);
+  if(!list.length){results.innerHTML='<div style="color:var(--mut);font-size:12px;padding:16px 0;">Bu filtrede deprem bulunamadı.</div>';return;}
+  results.innerHTML='';
+
+  list.forEach(eq=>{
+    const magClass=eq.mag>=6?'vhigh':eq.mag>=5?'high':eq.mag>=4?'mid':'low';
+    const card=document.createElement('div');card.className='eq-card';
+    const magEl=document.createElement('div');magEl.className='eq-mag '+magClass;magEl.textContent=eq.mag.toFixed(1);
+    const info=document.createElement('div');info.className='eq-info';
+    const loc=document.createElement('div');loc.className='eq-loc';
+    loc.innerHTML=eq.place+(eq.turkey?' <span style="color:#e63946;">🇹🇷</span>':'');
+    const meta=document.createElement('div');meta.className='eq-meta';
+    meta.innerHTML=`🕐 ${eq.time} <span class="eq-depth">Derinlik: ${eq.depth} km</span>`;
+    const btn=document.createElement('button');btn.className='btn btn-r eq-use-btn';btn.textContent='📢 Şablona Aktar';
+    btn.addEventListener('click',()=>eqToEditor(eq));
+    info.appendChild(loc);info.appendChild(meta);
+    card.appendChild(magEl);card.appendChild(info);card.appendChild(btn);
+    results.appendChild(card);
+  });
+}
+
+function eqToEditor(eq){
+  openEditor('breaking1');
+  const headline=`${eq.place} bölgesinde ${eq.mag.toFixed(1)} büyüklüğünde deprem`;
+  setTimeout(()=>{
+    if(DATA.hasOwnProperty('headline'))DATA.headline=headline;
+    if(DATA.hasOwnProperty('sub'))DATA.sub='Derinlik: '+eq.depth+' km · '+eq.time;
+    if(DATA.hasOwnProperty('category'))DATA.category='DEPREM';
+    if(DATA.hasOwnProperty('time'))DATA.time=eq.time?.split(' ')?.[1]||'';
+    if(DATA.hasOwnProperty('source'))DATA.source='Haber Ağı · USGS';
+    if(DATA.hasOwnProperty('accent'))DATA.accent=eq.mag>=5?'#e63946':eq.mag>=4?'#f4a261':'#ffd60a';
+    document.querySelectorAll('#tools input[type=text],#tools textarea').forEach(inp=>{
+      const k=inp.dataset?.k;if(k&&DATA[k]!==undefined)inp.value=DATA[k];
+    });
+    updatePreview();showToast('✅ Deprem bilgisi aktarıldı!');
+  },80);
+}
+
+/* ══════════════════════════════════════════
+   SHARE SYSTEM
+══════════════════════════════════════════ */
+
+/* ── Credential storage ── */
+const CREDS_KEY='haberagi_creds';
+function getCreds(){try{return JSON.parse(localStorage.getItem(CREDS_KEY)||'{}')}catch(e){return{};}}
+function saveCreds(obj){const c={...getCreds(),...obj};localStorage.setItem(CREDS_KEY,JSON.stringify(c));}
+
+/* ── Auto hashtag suggestions ── */
+const HASHTAG_SETS={
+  breaking:['#sondakika','#haberler','#gündem','#breaking','#haber'],
+  market:  ['#piyasalar','#dolar','#borsa','#ekonomi','#finans','#bitcoin','#kripto'],
+  story:   ['#instagram','#instastory','#gündem','#haberler'],
+  sport:   ['#spor','#futbol','#süperlig','#maç'],
+  weather: ['#havadurumu','#hava','#meteoroloji'],
+  general: ['#türkiye','#dünya','#haberler','#gündem','#haberciler'],
+};
+let SHARE_PNG_B64=null; // base64 of rendered PNG
+let ACTIVE_STAB='ig';
+let SELECTED_HTAGS=new Set();
+
+function getAutoHashtags(){
+  if(!CUR) return HASHTAG_SETS.general;
+  const cat=CUR.cat||'';
+  if(cat==='breaking') return [...HASHTAG_SETS.breaking,...HASHTAG_SETS.general];
+  if(cat==='market')   return [...HASHTAG_SETS.market,...HASHTAG_SETS.general];
+  if(cat==='sport')    return [...HASHTAG_SETS.sport,...HASHTAG_SETS.general];
+  return [...HASHTAG_SETS.general,...HASHTAG_SETS.breaking];
+}
+
+function buildCaption(){
+  if(!CUR||!DATA) return '';
+  const fields=['headline','h1','sub','detail','desc'];
+  const text=fields.map(k=>DATA[k]||'').filter(Boolean)[0]||CUR.name;
+  return text;
+}
+
+/* ── Render PNG for sharing ── */
+async function renderSharePNG(){
+  const container=renderOffscreen(CUR,{...DATA},PHOTOS,FMT,FONT,FILTER);
+  await document.fonts.ready;
+  return new Promise((res,rej)=>{
+    const [w,h]=FMT_DIMS[FMT]||[1080,1080];
+    setTimeout(()=>{
+      html2canvas(container,{
+        backgroundColor:'#07070f',scale:1,
+        width:w,height:h,windowWidth:w,windowHeight:h,
+        useCORS:true,allowTaint:true,logging:false,
+        onclone(doc){const c=doc.getElementById('offscreen-render');if(c){c.style.left='0';c.style.top='0';}}
+      }).then(canvas=>{
+        container.innerHTML='';
+        res(canvas.toDataURL('image/png',1.0));
+      }).catch(e=>{container.innerHTML='';rej(e);});
+    },80);
+  });
+}
+
+/* ── Open share modal ── */
+async function openShareModal(tab){
+  if(!CUR){showToast('❌ Önce bir şablon düzenleyin');return;}
+  ACTIVE_STAB=tab||'ig';
+  SELECTED_HTAGS=new Set();
+  SHARE_PNG_B64=null;
+
+  // Show modal immediately, render in bg
+  document.getElementById('share-modal').classList.add('on');
+  renderShareTab(ACTIVE_STAB);
+
+  // Start rendering
+  showShareStatus('info','⏳ İçerik hazırlanıyor...',true);
+  try{
+    SHARE_PNG_B64=await renderSharePNG();
+    hideShareStatus();
+    renderShareTab(ACTIVE_STAB); // refresh with preview
+  }catch(e){
+    showShareStatus('err','❌ Render hatası: '+e.message);
+  }
+}
+
+function renderShareTab(tab){
+  const body=document.getElementById('share-body');
+  const ftr=document.getElementById('share-ftr');
+  if(!body||!ftr)return;
+
+  document.querySelectorAll('.share-tab').forEach(t=>t.classList.remove('on'));
+  document.querySelector(`.share-tab.${tab}-tab`)?.classList.add('on');
+
+  const suggestedCaption=buildCaption();
+  const hashtags=getAutoHashtags();
+
+  const previewHtml=SHARE_PNG_B64
+    ?`<div class="share-prev"><img src="${SHARE_PNG_B64}" style="width:100%;height:100%;object-fit:contain;"></div>`
+    :`<div class="share-prev" style="display:flex;align-items:center;justify-content:center;color:var(--mut);font-size:12px;">⏳ Önizleme yükleniyor...</div>`;
+
+  if(tab==='ig'){
+    body.innerHTML=`
+      ${previewHtml}
+
+      <div class="sett-row" id="ig-sett-toggle">⚙️ API Ayarları <span style="margin-left:auto;font-size:10px;">▾</span></div>
+      <div class="sett-panel" id="ig-sett">
+        <p style="font-size:11px;color:var(--mut);margin-bottom:8px;">Instagram Graph API ile otomatik paylaşım. <a href="https://developers.facebook.com/docs/instagram-api" target="_blank" style="color:#1d9bf0;">Nasıl alınır?</a></p>
+        <div class="cred-grid">
+          <input class="ci" id="ig-token" placeholder="Instagram Access Token" value="${getCreds().igToken||''}">
+          <input class="ci" id="ig-userid" placeholder="Instagram User ID" value="${getCreds().igUserId||''}">
+        </div>
+        <div class="cred-grid">
+          <input class="ci" id="imgbb-key" placeholder="ImgBB API Key (ücretsiz)" value="${getCreds().imgbbKey||''}">
+          <span style="font-size:10.5px;color:var(--mut);align-self:center;">imgbb.com → API → Ücretsiz key al</span>
+        </div>
+        <button class="btn btn-g" style="font-size:11px;width:100%;margin-bottom:4px;" id="ig-save-creds">💾 Kaydet</button>
+      </div>
+
+      <div class="fl" style="margin-bottom:8px;">
+        <label style="font-size:10px;color:var(--mut);font-weight:600;display:block;margin-bottom:5px;">Caption</label>
+        <textarea class="share-input" id="ig-caption" rows="3" maxlength="2200" placeholder="Instagram gönderisi için açıklama...">${suggestedCaption}</textarea>
+        <div class="char-ctr" id="ig-char">0 / 2200</div>
+      </div>
+
+      <div class="fl">
+        <label style="font-size:10px;color:var(--mut);font-weight:600;display:block;margin-bottom:5px;">Hashtag Önerileri <span style="font-weight:400;">(tıkla ekle)</span></label>
+        <div class="htags" id="ig-htags">
+          ${hashtags.map(h=>`<span class="htag" data-ht="${h}">${h}</span>`).join('')}
+        </div>
+        <div style="display:flex;gap:6px;margin-top:8px;">
+          <input class="share-input" id="ig-custom-ht" placeholder="Özel hashtag ekle..." style="height:34px;padding:6px 10px;font-size:12px;">
+          <button class="btn btn-g" style="font-size:11px;padding:5px 10px;white-space:nowrap;" id="ig-add-ht">+ Ekle</button>
+        </div>
+      </div>
+
+      <div class="sbar" id="ig-status"></div>
+    `;
+
+    // Char counter
+    const cap=body.querySelector('#ig-caption');
+    const ctr=body.querySelector('#ig-char');
+    const updateCtr=()=>{const l=cap.value.length;ctr.textContent=l+' / 2200';ctr.className='char-ctr'+(l>1800?' warn':'')+(l>2200?' over':'');};
+    cap.addEventListener('input',updateCtr);updateCtr();
+
+    // Settings toggle
+    body.querySelector('#ig-sett-toggle').addEventListener('click',()=>{
+      body.querySelector('#ig-sett').classList.toggle('on');
+    });
+    // Save creds
+    body.querySelector('#ig-save-creds').addEventListener('click',()=>{
+      saveCreds({igToken:body.querySelector('#ig-token').value.trim(),igUserId:body.querySelector('#ig-userid').value.trim(),imgbbKey:body.querySelector('#imgbb-key').value.trim()});
+      showToast('✅ API bilgileri kaydedildi!');
+    });
+
+    // Hashtag chips
+    body.querySelectorAll('.htag').forEach(chip=>{
+      chip.addEventListener('click',()=>{
+        const h=chip.dataset.ht;
+        if(SELECTED_HTAGS.has(h)){SELECTED_HTAGS.delete(h);chip.classList.remove('on');}
+        else{SELECTED_HTAGS.add(h);chip.classList.add('on');}
+        syncHashtags('ig');
+      });
+    });
+    // Custom hashtag
+    body.querySelector('#ig-add-ht').addEventListener('click',()=>{
+      const inp=body.querySelector('#ig-custom-ht');
+      let v=inp.value.trim();if(!v)return;
+      if(!v.startsWith('#'))v='#'+v;
+      SELECTED_HTAGS.add(v);
+      const chip=document.createElement('span');chip.className='htag on';chip.dataset.ht=v;chip.textContent=v;
+      chip.addEventListener('click',()=>{SELECTED_HTAGS.delete(v);chip.remove();syncHashtags('ig');});
+      body.querySelector('#ig-htags').appendChild(chip);
+      inp.value='';syncHashtags('ig');
+    });
+
+    ftr.innerHTML=`
+      <button class="btn btn-g" style="font-size:11px;" id="ig-manual-btn">📥 İndir + Aç</button>
+      <button class="btn" style="font-size:11.5px;font-weight:700;background:linear-gradient(135deg,#833ab4,#e1306c,#f77737);color:#fff;box-shadow:0 3px 14px rgba(225,48,108,.35);" id="ig-post-btn">📸 Instagram'da Paylaş</button>
+    `;
+    ftr.querySelector('#ig-manual-btn').addEventListener('click',()=>manualShare('ig'));
+    ftr.querySelector('#ig-post-btn').addEventListener('click',()=>postToInstagram());
+
+  } else {
+    // Twitter tab
+    body.innerHTML=`
+      ${previewHtml}
+
+      <div class="sett-row" id="tw-sett-toggle">⚙️ API Ayarları (opsiyonel) <span style="margin-left:auto;font-size:10px;">▾</span></div>
+      <div class="sett-panel" id="tw-sett">
+        <p style="font-size:11px;color:var(--mut);margin-bottom:8px;">Twitter API v2 ile görsel + metin paylaşımı. API anahtarı girmezsen sadece metin paylaşılır. <a href="https://developer.twitter.com/en/portal/dashboard" target="_blank" style="color:#1d9bf0;">Twitter Developer Portal</a></p>
+        <div class="cred-grid">
+          <input class="ci" id="tw-atoken" placeholder="Access Token" value="${getCreds().twAToken||''}">
+          <input class="ci" id="tw-asecret" placeholder="Access Token Secret" value="${getCreds().twASecret||''}">
+        </div>
+        <div class="cred-grid">
+          <input class="ci" id="tw-apikey" placeholder="API Key (Consumer Key)" value="${getCreds().twApiKey||''}">
+          <input class="ci" id="tw-apisecret" placeholder="API Key Secret" value="${getCreds().twApiSecret||''}">
+        </div>
+        <button class="btn btn-g" style="font-size:11px;width:100%;margin-bottom:4px;" id="tw-save-creds">💾 Kaydet</button>
+      </div>
+
+      <div class="fl" style="margin-bottom:8px;">
+        <label style="font-size:10px;color:var(--mut);font-weight:600;display:block;margin-bottom:5px;">Tweet Metni</label>
+        <textarea class="share-input" id="tw-caption" rows="3" maxlength="280" placeholder="Tweet metni...">${suggestedCaption.slice(0,220)}</textarea>
+        <div class="char-ctr" id="tw-char">0 / 280</div>
+      </div>
+
+      <div class="fl">
+        <label style="font-size:10px;color:var(--mut);font-weight:600;display:block;margin-bottom:5px;">Hashtag Önerileri</label>
+        <div class="htags" id="tw-htags">
+          ${hashtags.slice(0,8).map(h=>`<span class="htag" data-ht="${h}">${h}</span>`).join('')}
+        </div>
+        <div style="display:flex;gap:6px;margin-top:8px;">
+          <input class="share-input" id="tw-custom-ht" placeholder="Özel hashtag..." style="height:34px;padding:6px 10px;font-size:12px;">
+          <button class="btn btn-g" style="font-size:11px;padding:5px 10px;white-space:nowrap;" id="tw-add-ht">+ Ekle</button>
+        </div>
+      </div>
+
+      <div class="sbar" id="tw-status"></div>
+    `;
+
+    // Char counter
+    const cap=body.querySelector('#tw-caption');
+    const ctr=body.querySelector('#tw-char');
+    const updateCtr=()=>{const l=cap.value.length;ctr.textContent=l+' / 280';ctr.className='char-ctr'+(l>250?' warn':'')+(l>280?' over':'');};
+    cap.addEventListener('input',updateCtr);updateCtr();
+
+    body.querySelector('#tw-sett-toggle').addEventListener('click',()=>{body.querySelector('#tw-sett').classList.toggle('on');});
+    body.querySelector('#tw-save-creds').addEventListener('click',()=>{
+      saveCreds({twAToken:body.querySelector('#tw-atoken').value.trim(),twASecret:body.querySelector('#tw-asecret').value.trim(),twApiKey:body.querySelector('#tw-apikey').value.trim(),twApiSecret:body.querySelector('#tw-apisecret').value.trim()});
+      showToast('✅ Twitter API bilgileri kaydedildi!');
+    });
+
+    body.querySelectorAll('.htag').forEach(chip=>{
+      chip.addEventListener('click',()=>{
+        const h=chip.dataset.ht;
+        if(SELECTED_HTAGS.has(h)){SELECTED_HTAGS.delete(h);chip.classList.remove('on');}
+        else{SELECTED_HTAGS.add(h);chip.classList.add('on');}
+        syncHashtags('tw');
+      });
+    });
+    body.querySelector('#tw-add-ht').addEventListener('click',()=>{
+      const inp=body.querySelector('#tw-custom-ht');
+      let v=inp.value.trim();if(!v)return;
+      if(!v.startsWith('#'))v='#'+v;
+      SELECTED_HTAGS.add(v);
+      const chip=document.createElement('span');chip.className='htag on';chip.dataset.ht=v;chip.textContent=v;
+      chip.addEventListener('click',()=>{SELECTED_HTAGS.delete(v);chip.remove();syncHashtags('tw');});
+      body.querySelector('#tw-htags').appendChild(chip);
+      inp.value='';syncHashtags('tw');
+    });
+
+    ftr.innerHTML=`
+      <button class="btn btn-g" style="font-size:11px;" id="tw-manual-btn">📥 İndir + Aç</button>
+      <button class="btn btn-g" style="font-size:11px;" id="tw-intent-btn">🔗 Tweet Composer</button>
+      <button class="btn" style="font-size:11.5px;font-weight:700;background:#1d9bf0;color:#fff;box-shadow:0 3px 12px rgba(29,155,240,.3);" id="tw-post-btn">𝕏 Twitter'da Paylaş</button>
+    `;
+    ftr.querySelector('#tw-manual-btn').addEventListener('click',()=>manualShare('tw'));
+    ftr.querySelector('#tw-intent-btn').addEventListener('click',()=>tweetIntent());
+    ftr.querySelector('#tw-post-btn').addEventListener('click',()=>postToTwitter());
+  }
+}
+
+function syncHashtags(tab){
+  const cap=document.getElementById(tab+'-caption');
+  if(!cap)return;
+  // Remove existing hashtags from caption
+  let text=cap.value.replace(/#[\w\u0080-\uFFFF]+/g,'').trimEnd();
+  const tags=[...SELECTED_HTAGS].join(' ');
+  if(tags) text=text+'\n\n'+tags;
+  cap.value=text;
+  cap.dispatchEvent(new Event('input'));
+}
+
+/* ── Instagram posting ── */
+async function postToInstagram(){
+  const creds=getCreds();
+  if(!creds.igToken||!creds.igUserId){
+    showShareStatus('err','❌ Instagram Access Token ve User ID gerekli. ⚙️ API Ayarları\'nı aç.',false,'ig');
+    document.getElementById('ig-sett')?.classList.add('on');return;
+  }
+  if(!creds.imgbbKey){
+    showShareStatus('err','❌ ImgBB API Key gerekli (ücretsiz: imgbb.com). Görsel barındırma için şart.',false,'ig');
+    document.getElementById('ig-sett')?.classList.add('on');return;
+  }
+  if(!SHARE_PNG_B64){showShareStatus('err','❌ Görsel henüz hazır değil, bekleyin.',false,'ig');return;}
+
+  const caption=document.getElementById('ig-caption')?.value||'';
+  showShareStatus('info','<span class="spin">⏳</span> Görsel yükleniyor (ImgBB)...',true,'ig');
+
+  try{
+    // 1. Upload to ImgBB
+    const b64clean=SHARE_PNG_B64.split(',')[1];
+    const fd=new FormData();
+    fd.append('key',creds.imgbbKey);
+    fd.append('image',b64clean);
+    const imgRes=await fetchT('https://api.imgbb.com/1/upload',15000);
+    // ImgBB doesn't support POST via fetchT directly, need to POST with body
+    const imgRes2=await fetch('https://api.imgbb.com/1/upload',{method:'POST',body:fd});
+    const imgJson=await imgRes2.json();
+    if(!imgJson.success)throw new Error('ImgBB: '+JSON.stringify(imgJson));
+    const imageUrl=imgJson.data.url;
+    showShareStatus('info','<span class="spin">⏳</span> Instagram\'a gönderiliyor...',true,'ig');
+
+    // 2. Create media container
+    const proxy='https://api.allorigins.win/raw?url=';
+    const mediaUrl=`https://graph.instagram.com/v18.0/${creds.igUserId}/media`+
+      `?image_url=${encodeURIComponent(imageUrl)}&caption=${encodeURIComponent(caption)}&access_token=${creds.igToken}`;
+    const mRes=await fetchT(proxy+encodeURIComponent(mediaUrl+'&method=POST'),12000);
+    const mJson=await mRes.json();
+    if(!mJson.id)throw new Error(mJson.error?.message||JSON.stringify(mJson));
+    const creationId=mJson.id;
+
+    // 3. Publish
+    const pubUrl=`https://graph.instagram.com/v18.0/${creds.igUserId}/media_publish`+
+      `?creation_id=${creationId}&access_token=${creds.igToken}`;
+    const pRes=await fetchT(proxy+encodeURIComponent(pubUrl+'&method=POST'),12000);
+    const pJson=await pRes.json();
+    if(!pJson.id)throw new Error(pJson.error?.message||JSON.stringify(pJson));
+
+    showShareStatus('ok','✅ Instagram\'da başarıyla paylaşıldı! 🎉',false,'ig');
+  }catch(e){
+    console.error('IG error:',e);
+    showShareStatus('err','❌ Hata: '+e.message+' — Manuel paylaşımı deneyin.',false,'ig');
+  }
+}
+
+/* ── Twitter posting ── */
+async function postToTwitter(){
+  const creds=getCreds();
+  const caption=document.getElementById('tw-caption')?.value||'';
+
+  // If no API keys, fall back to intent
+  if(!creds.twAToken||!creds.twApiKey){
+    showShareStatus('info','API anahtarı yok — Tweet Composer açılıyor...',false,'tw');
+    setTimeout(()=>tweetIntent(),800);return;
+  }
+
+  if(!SHARE_PNG_B64){showShareStatus('err','❌ Görsel henüz hazır değil.',false,'tw');return;}
+  showShareStatus('info','<span class="spin">⏳</span> Görsel yükleniyor...',true,'tw');
+
+  try{
+    // Upload image via allorigins proxy + twitter upload endpoint
+    // Twitter media upload requires multipart — use imgbb as intermediary
+    if(!creds.imgbbKey){
+      // No imgbb key — post text-only tweet via intent
+      showShareStatus('info','ImgBB key yok — sadece metin tweet açılıyor...',false,'tw');
+      setTimeout(()=>tweetIntent(),800);return;
+    }
+
+    // Upload to imgbb first
+    const b64clean=SHARE_PNG_B64.split(',')[1];
+    const fd=new FormData();fd.append('key',creds.imgbbKey);fd.append('image',b64clean);
+    const ir=await fetch('https://api.imgbb.com/1/upload',{method:'POST',body:fd});
+    const ij=await ir.json();
+    if(!ij.success)throw new Error('ImgBB: '+JSON.stringify(ij));
+    const imageUrl=ij.data.url;
+
+    showShareStatus('info','<span class="spin">⏳</span> Tweet gönderiliyor...',true,'tw');
+
+    // Post tweet with image URL in text (Twitter API v2 free tier doesn't allow media upload)
+    // Use OAuth 2.0 user context tweet endpoint via proxy
+    const tweetBody={text:caption+'\n'+imageUrl};
+    const proxy='https://api.allorigins.win/raw?url=';
+    // Note: Twitter v2 requires OAuth 1.0a signing for user tweets — use intent as reliable fallback
+    // We'll try a simple POST and fall back to intent
+    try{
+      // Try posting (requires proper OAuth — will likely need intent fallback)
+      const tr=await fetch('https://api.twitter.com/2/tweets',{
+        method:'POST',
+        headers:{'Content-Type':'application/json','Authorization':'Bearer '+creds.twAToken},
+        body:JSON.stringify(tweetBody)
+      });
+      const tj=await tr.json();
+      if(tj.data?.id){
+        showShareStatus('ok','✅ Tweet başarıyla gönderildi! 🎉',false,'tw');return;
+      }
+    }catch(e2){}
+
+    // Fallback: Open tweet intent with image URL appended
+    showShareStatus('ok','✅ Tweet Composer açılıyor (görsel URL eklendi).',false,'tw');
+    setTimeout(()=>tweetIntentWithText(caption+'\n'+imageUrl),600);
+  }catch(e){
+    console.error('TW error:',e);
+    showShareStatus('err','❌ '+e.message+' — Tweet Composer açılıyor...',false,'tw');
+    setTimeout(()=>tweetIntent(),1200);
+  }
+}
+
+function tweetIntent(){
+  const caption=document.getElementById('tw-caption')?.value||buildCaption();
+  tweetIntentWithText(caption);
+}
+function tweetIntentWithText(text){
+  const url='https://twitter.com/intent/tweet?text='+encodeURIComponent(text.slice(0,280));
+  window.open(url,'_blank','width=600,height=450');
+}
+
+/* ── Manual share (download + open app) ── */
+function manualShare(platform){
+  if(!SHARE_PNG_B64){showToast('❌ Görsel henüz hazır değil');return;}
+  // Download
+  const a=document.createElement('a');
+  a.download=`haber-agi-${platform}-${Date.now()}.png`;
+  a.href=SHARE_PNG_B64;a.click();
+  // After short delay, open platform
+  setTimeout(()=>{
+    if(platform==='ig') window.open('https://www.instagram.com','_blank');
+    else window.open('https://twitter.com','_blank');
+  },800);
+  showToast('📥 Görsel indirildi! Platform açılıyor...',true);
+}
+
+/* ── Status helper ── */
+function showShareStatus(type,msg,loading,tab){
+  const t=tab||ACTIVE_STAB;
+  const el=document.getElementById(t+'-status');
+  if(!el)return;
+  el.className='sbar on '+type;
+  el.innerHTML=msg;
+}
+function hideShareStatus(){
+  ['ig','tw'].forEach(t=>{
+    const el=document.getElementById(t+'-status');
+    if(el){el.className='sbar';el.innerHTML='';}
+  });
+}
+
+/* ── Share modal init ── */
+function initShareModal(){
+  document.getElementById('share-close').addEventListener('click',()=>{
+    document.getElementById('share-modal').classList.remove('on');
+    SHARE_PNG_B64=null;
+  });
+  document.getElementById('share-modal').addEventListener('click',e=>{
+    if(e.target.id==='share-modal') document.getElementById('share-modal').classList.remove('on');
+  });
+  document.querySelectorAll('.share-tab').forEach(tab=>{
+    tab.addEventListener('click',()=>{
+      ACTIVE_STAB=tab.dataset.stab;
+      SELECTED_HTAGS=new Set();
+      renderShareTab(ACTIVE_STAB);
+    });
+  });
+}
+
+document.getElementById('m-ig').addEventListener('click',()=>openShareModal('ig'));
+document.getElementById('m-tw').addEventListener('click',()=>openShareModal('tw'));
 
 /* INIT */
 initTicker();
 showPage('dashboard');
 initRSSPage();
+initShareModal();
 </script>
 </body>
 </html>
