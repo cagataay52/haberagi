@@ -171,6 +171,19 @@ body{background:var(--bg);color:var(--txt);font-family:'DM Sans',sans-serif;disp
 @keyframes fu{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 .stats,.tgrid,.mgrid,.tck{animation:fu .36s ease both;}
 .tgrid{animation-delay:.06s;}
+
+/* RSS */
+.rss-src-btn{padding:6px 13px;border-radius:22px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid var(--b);background:var(--s);color:var(--mut);transition:.14s;white-space:nowrap;}
+.rss-src-btn:hover{color:#fff;border-color:var(--b2);}
+.rss-src-btn.on{background:rgba(230,57,70,.12);border-color:rgba(230,57,70,.28);color:#fff;}
+.rss-card{display:flex;gap:13px;background:var(--s);border:1px solid var(--b);border-radius:12px;padding:13px 14px;transition:.18s;cursor:default;}
+.rss-card:hover{border-color:var(--b2);background:var(--s2);}
+.rss-card-img{width:76px;height:64px;border-radius:8px;background:rgba(255,255,255,.06);flex-shrink:0;background-size:cover;background-position:center;}
+.rss-card-body{flex:1;min-width:0;}
+.rss-card-cat{font-size:9.5px;font-weight:700;letter-spacing:1.2px;color:var(--red);text-transform:uppercase;margin-bottom:3px;}
+.rss-card-title{font-size:13px;font-weight:700;line-height:1.35;color:#fff;margin-bottom:4px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.rss-card-meta{font-size:10px;color:var(--mut);}
+.rss-card-actions{display:flex;gap:6px;margin-top:8px;}
 </style>
 </head>
 <body>
@@ -183,6 +196,7 @@ body{background:var(--bg);color:var(--txt);font-family:'DM Sans',sans-serif;disp
   <button class="ni" data-page="markets"><span class="ic">📈</span>Piyasalar</button>
   <button class="ni" data-page="breaking"><span class="ic">🔴</span>Son Dakika</button>
   <div class="nl">Araçlar</div>
+  <button class="ni" data-page="rss"><span class="ic">📡</span>RSS Haber Çek</button>
   <button class="ni" data-page="schedule"><span class="ic">📅</span>Yayın Takvimi</button>
   <button class="ni" data-page="analytics"><span class="ic">📊</span>Analitik</button>
   <div class="sf">
@@ -238,6 +252,35 @@ body{background:var(--bg);color:var(--txt);font-family:'DM Sans',sans-serif;disp
 <div class="page" id="pg-breaking">
   <div class="tb"><h1>Son Dakika <span>Editörü</span></h1></div>
   <div style="padding:18px 22px 0;"><div class="tgrid" id="brk-grid"></div></div>
+</div>
+<div class="page" id="pg-rss">
+  <div class="tb"><h1>RSS <span>Haber Çek</span></h1><span id="rss-status" style="font-size:11px;color:var(--mut);"></span></div>
+  <div style="padding:18px 22px 0;">
+
+    <!-- Source picker -->
+    <div class="sh"><h2>Haber Kaynağı</h2></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;" id="rss-source-btns"></div>
+
+    <!-- Custom URL -->
+    <div style="display:flex;gap:8px;margin-bottom:20px;">
+      <input id="rss-custom-url" type="text" placeholder="Veya özel RSS URL girin (https://...)" style="flex:1;background:var(--s);border:1px solid var(--b);border-radius:8px;padding:8px 13px;font-size:12.5px;color:#fff;font-family:'DM Sans';outline:none;" />
+      <button class="btn btn-r" id="rss-fetch-btn" style="white-space:nowrap;">📡 Çek</button>
+    </div>
+
+    <!-- Template selector for auto-fill -->
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px;padding:11px 14px;background:var(--s);border:1px solid var(--b);border-radius:10px;">
+      <span style="font-size:11.5px;color:var(--mut);white-space:nowrap;">Şablona aktar:</span>
+      <select id="rss-tmpl-sel" style="flex:1;background:rgba(255,255,255,.07);border:1px solid var(--b);border-radius:7px;padding:6px 9px;font-size:12px;color:#fff;font-family:'DM Sans';outline:none;cursor:pointer;"></select>
+      <span style="font-size:11px;color:var(--mut);">→ seçili haberi bu şablonla aç</span>
+    </div>
+
+    <!-- Results -->
+    <div id="rss-loading" style="display:none;text-align:center;padding:30px;color:var(--mut);">
+      <div style="font-size:28px;margin-bottom:10px;">⏳</div><div>Haberler yükleniyor...</div>
+    </div>
+    <div id="rss-error" style="display:none;padding:16px;background:rgba(230,57,70,.08);border:1px solid rgba(230,57,70,.22);border-radius:10px;color:var(--red);font-size:13px;margin-bottom:14px;"></div>
+    <div id="rss-results" style="display:flex;flex-direction:column;gap:10px;"></div>
+  </div>
 </div>
 <div class="page" id="pg-schedule"><div class="tb"><h1>Yayın <span>Takvimi</span></h1></div><div style="padding:40px;text-align:center;color:var(--mut);"><div style="font-size:44px;margin-bottom:12px;">📅</div><div>Yakında aktif olacak</div></div></div>
 <div class="page" id="pg-analytics"><div class="tb"><h1><span>Analitik</span></h1></div><div style="padding:40px;text-align:center;color:var(--mut);"><div style="font-size:44px;margin-bottom:12px;">📊</div><div>Yakında aktif olacak</div></div></div>
@@ -703,6 +746,7 @@ function showPage(id){
   if(id==='templates')initGrid('all-grid',TMPL);
   if(id==='markets'){renderMkt('full-mkt',8);initGrid('mkt-grid',TMPL.filter(t=>t.cat==='market'));}
   if(id==='breaking')initGrid('brk-grid',TMPL.filter(t=>t.cat==='breaking'));
+  if(id==='rss')initRSSPage();
 }
 document.querySelectorAll('.ni[data-page]').forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.page)));
 
@@ -728,7 +772,7 @@ function buildTools(){
   const colorFs=CUR.fields.filter(f=>f.t==='cl');
   if(textFs.length){
     const s=mkSec('✏️ Metin & İçerik');
-    textFs.forEach(f=>{const w=el('div','fl');const lbl=el('label');lbl.textContent=f.l;w.appendChild(lbl);const inp=f.t==='ta'?el('textarea'):el('input');if(f.t==='tx')inp.type='text';inp.value=f.d;inp.addEventListener('input',()=>{DATA[f.k]=inp.value;updatePreview();});w.appendChild(inp);s.body.appendChild(w);});
+    textFs.forEach(f=>{const w=el('div','fl');const lbl=el('label');lbl.textContent=f.l;w.appendChild(lbl);const inp=f.t==='ta'?el('textarea'):el('input');if(f.t==='tx')inp.type='text';inp.value=f.d;inp.dataset.k=f.k;inp.addEventListener('input',()=>{DATA[f.k]=inp.value;updatePreview();});w.appendChild(inp);s.body.appendChild(w);});
     panel.appendChild(s.root);
   }
   if(photoFs.length){const s=mkSec('🖼 Fotoğraflar');photoFs.forEach(f=>s.body.appendChild(mkPhotoField(f)));panel.appendChild(s.root);}
@@ -942,9 +986,284 @@ function showToast(msg,auto=true){
 /* TICKER */
 function initTicker(){const e=document.getElementById('ticker');if(!e)return;const items=TICKERDATA.map(i=>`<span>${i}</span>`).join('');e.innerHTML=items+items;}
 
+/* ══════════════════════════════════════════
+   RSS SYSTEM
+══════════════════════════════════════════ */
+const RSS_SOURCES=[
+  {name:'TRT Haber',    url:'https://www.trthaber.com/sondakika.rss',       cat:'Genel'},
+  {name:'Hürriyet',     url:'https://www.hurriyet.com.tr/rss/anasayfa',     cat:'Genel'},
+  {name:'CNN Türk',     url:'https://www.cnnturk.com/feed/rss/news',         cat:'Genel'},
+  {name:'NTV',          url:'https://www.ntv.com.tr/son-dakika.rss',         cat:'Genel'},
+  {name:'Sabah',        url:'https://www.sabah.com.tr/rss/anasayfa.xml',    cat:'Genel'},
+  {name:'Sözcü',        url:'https://www.sozcu.com.tr/rss.xml',              cat:'Genel'},
+  {name:'Bloomberg HT', url:'https://www.bloomberght.com/rss',              cat:'Ekonomi'},
+  {name:'Dünya Gazetesi',url:'https://www.dunya.com/rss',                   cat:'Ekonomi'},
+  {name:'Anadolu Ajansı',url:'https://www.aa.com.tr/tr/rss/default?cat=guncel', cat:'Güncel'},
+  {name:'DHA',          url:'https://www.dha.com.tr/rss',                   cat:'Güncel'},
+];
+
+const CORS_PROXIES=[
+  'https://api.allorigins.win/get?url=',
+  'https://api.codetabs.com/v1/proxy?quest=',
+];
+
+let RSS_ITEMS=[];
+let rssActiveSrc=null;
+
+function initRSSPage(){
+  // Source buttons
+  const btnContainer=document.getElementById('rss-source-btns');
+  btnContainer.innerHTML='';
+  RSS_SOURCES.forEach((src,i)=>{
+    const btn=document.createElement('button');
+    btn.className='rss-src-btn';
+    btn.textContent=src.name;
+    btn.addEventListener('click',()=>{
+      document.querySelectorAll('.rss-src-btn').forEach(b=>b.classList.remove('on'));
+      btn.classList.add('on');
+      rssActiveSrc=src;
+      document.getElementById('rss-custom-url').value='';
+      fetchRSS(src.url, src.name);
+    });
+    btnContainer.appendChild(btn);
+  });
+
+  // Template selector
+  const sel=document.getElementById('rss-tmpl-sel');
+  sel.innerHTML='';
+  // Template categories that make sense for news
+  const newsTmpls=TMPL.filter(t=>['breaking1','breaking2','breaking3','story1','reel1','feed1','analysis1','summary1','magazine1'].includes(t.id));
+  newsTmpls.forEach(t=>{
+    const opt=document.createElement('option');
+    opt.value=t.id;opt.textContent=t.name;
+    sel.appendChild(opt);
+  });
+
+  // Fetch button
+  document.getElementById('rss-fetch-btn').onclick=()=>{
+    const url=document.getElementById('rss-custom-url').value.trim();
+    if(!url){showToast('❌ Bir URL girin veya yukarıdan kaynak seçin');return;}
+    document.querySelectorAll('.rss-src-btn').forEach(b=>b.classList.remove('on'));
+    rssActiveSrc=null;
+    fetchRSS(url,'Özel Kaynak');
+  };
+}
+
+async function fetchRSS(feedUrl, sourceName){
+  const loading=document.getElementById('rss-loading');
+  const error=document.getElementById('rss-error');
+  const results=document.getElementById('rss-results');
+  const status=document.getElementById('rss-status');
+
+  loading.style.display='block';
+  error.style.display='none';
+  results.innerHTML='';
+  status.textContent='Bağlanılıyor...';
+
+  let xml=null;
+  let lastErr='';
+
+  // Try each proxy in order
+  for(const proxy of CORS_PROXIES){
+    try{
+      const res=await fetch(proxy+encodeURIComponent(feedUrl),{signal:AbortSignal.timeout(8000)});
+      if(!res.ok) continue;
+      const json=await res.json();
+      // allorigins returns {contents:'...'}; codetabs returns plain text
+      const raw=json.contents||json;
+      const parser=new DOMParser();
+      xml=parser.parseFromString(typeof raw==='string'?raw:JSON.stringify(raw),'text/xml');
+      if(xml.querySelector('parsererror')){xml=null;continue;}
+      break;
+    }catch(e){lastErr=e.message;continue;}
+  }
+
+  loading.style.display='none';
+
+  if(!xml){
+    error.textContent='RSS çekilemedi. Kaynak CORS engeliyor olabilir. Farklı bir kaynak deneyin. ('+lastErr+')';
+    error.style.display='block';
+    status.textContent='';
+    return;
+  }
+
+  const items=[...xml.querySelectorAll('item,entry')];
+  if(!items.length){
+    error.textContent='Bu RSS kaynağında haber bulunamadı.';
+    error.style.display='block';
+    status.textContent='';
+    return;
+  }
+
+  RSS_ITEMS=items.map(item=>{
+    const get=(selectors)=>{
+      for(const s of selectors){
+        const el=item.querySelector(s);
+        if(el) return (el.textContent||el.getAttribute('url')||'').trim();
+      }
+      return '';
+    };
+    // Try to extract image from enclosure, media:content, or og:image in description
+    let img='';
+    const enc=item.querySelector('enclosure[type^="image"],enclosure');
+    if(enc) img=enc.getAttribute('url')||'';
+    if(!img){const mc=item.querySelector('content');if(mc) img=mc.getAttribute('url')||'';}
+    if(!img){const desc=get(['description','content\\:encoded','summary']);const m=desc.match(/<img[^>]+src=["']([^"']+)["']/i);if(m) img=m[1];}
+    if(!img){const thumb=item.querySelector('[medium="image"]');if(thumb) img=thumb.getAttribute('url')||'';}
+
+    const title=get(['title']);
+    const desc=get(['description','summary']).replace(/<[^>]+>/g,'').trim().slice(0,220);
+    const link=get(['link','guid']);
+    const pubDate=get(['pubDate','published','updated']);
+    const category=get(['category']);
+    const timeStr=pubDate?new Date(pubDate).toLocaleString('tr-TR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'';
+
+    return {title,desc,link,img,pubDate,timeStr,category,source:sourceName};
+  }).filter(i=>i.title);
+
+  status.textContent=`${RSS_ITEMS.length} haber bulundu · ${sourceName}`;
+  renderRSSResults(RSS_ITEMS);
+}
+
+function renderRSSResults(items){
+  const results=document.getElementById('rss-results');
+  results.innerHTML='';
+
+  items.forEach((item,idx)=>{
+    const card=document.createElement('div');
+    card.className='rss-card';
+
+    // Image
+    const imgDiv=document.createElement('div');
+    imgDiv.className='rss-card-img';
+    if(item.img){
+      // Use image proxy to avoid mixed content issues
+      imgDiv.style.backgroundImage='url(https://wsrv.nl/?url='+encodeURIComponent(item.img)+'&w=160&h=128&fit=cover)';
+    } else {
+      imgDiv.style.background='linear-gradient(135deg,#1a1a2e,#16213e)';
+      imgDiv.innerHTML='<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:22px;opacity:.4;">📰</div>';
+    }
+
+    // Body
+    const body=document.createElement('div');
+    body.className='rss-card-body';
+
+    const cat=document.createElement('div');
+    cat.className='rss-card-cat';
+    cat.textContent=(item.category||item.source||'HABER').toUpperCase().slice(0,30);
+
+    const title=document.createElement('div');
+    title.className='rss-card-title';
+    title.textContent=item.title;
+
+    const meta=document.createElement('div');
+    meta.className='rss-card-meta';
+    meta.textContent=(item.timeStr||'')+(item.source?' · '+item.source:'');
+
+    const actions=document.createElement('div');
+    actions.className='rss-card-actions';
+
+    // Use in template button
+    const useBtn=document.createElement('button');
+    useBtn.className='btn btn-r';
+    useBtn.style.cssText='font-size:10px;padding:4px 10px;';
+    useBtn.textContent='✏️ Şablona Aktar';
+    useBtn.addEventListener('click',()=>openRSSinEditor(item));
+
+    // Open link button
+    if(item.link){
+      const linkBtn=document.createElement('a');
+      linkBtn.href=item.link;linkBtn.target='_blank';
+      linkBtn.className='btn btn-g';
+      linkBtn.style.cssText='font-size:10px;padding:4px 10px;text-decoration:none;';
+      linkBtn.textContent='🔗 Habere Git';
+      actions.appendChild(useBtn);actions.appendChild(linkBtn);
+    } else {
+      actions.appendChild(useBtn);
+    }
+
+    body.appendChild(cat);body.appendChild(title);body.appendChild(meta);body.appendChild(actions);
+    card.appendChild(imgDiv);card.appendChild(body);
+    results.appendChild(card);
+  });
+}
+
+async function openRSSinEditor(item){
+  const selId=document.getElementById('rss-tmpl-sel').value;
+  const tmpl=TMPL.find(t=>t.id===selId)||TMPL.find(t=>t.id==='breaking1');
+  if(!tmpl) return;
+
+  // Open editor with this template
+  openEditor(tmpl.id);
+
+  // Map RSS fields to template fields intelligently
+  const mapping={
+    headline: item.title,
+    h1: item.title,
+    masthead: item.source||'Haber Ağı',
+    sub: item.desc||'',
+    detail: item.desc||'',
+    body: item.desc||'',
+    category: (item.category||'GÜNDEM').toUpperCase().slice(0,20),
+    cat: (item.category||'GÜNDEM').toUpperCase().slice(0,20),
+    tag: (item.category||'GÜNDEM').toUpperCase().slice(0,20),
+    source: item.source||'Haber Ağı',
+    time: item.timeStr||new Date().toLocaleTimeString('tr-TR',{hour:'2-digit',minute:'2-digit'}),
+    date: new Date().toLocaleDateString('tr-TR',{day:'numeric',month:'long',year:'numeric'}),
+    topic: (item.category||'HABERLER').toUpperCase(),
+    p1: item.title,
+  };
+
+  // Apply mappings to DATA
+  Object.entries(mapping).forEach(([k,v])=>{if(DATA.hasOwnProperty(k)) DATA[k]=v;});
+
+  // If there's an image, fetch and apply it
+  if(item.img){
+    showToast('🖼 Fotoğraf yükleniyor...',false);
+    try{
+      const proxyUrl='https://wsrv.nl/?url='+encodeURIComponent(item.img)+'&w=1080&h=1080&fit=cover&output=jpg';
+      const resp=await fetch(proxyUrl,{signal:AbortSignal.timeout(10000)});
+      if(resp.ok){
+        const blob=await resp.blob();
+        const reader=new FileReader();
+        reader.onload=ev=>{
+          // Apply to all photo roles the template supports
+          const photoFields=tmpl.fields.filter(f=>f.t==='ph');
+          photoFields.forEach(pf=>{PHOTOS[pf.role]=ev.target.result;});
+          buildTools();
+          updatePreview();
+          // Re-apply text data after buildTools refresh
+          Object.entries(mapping).forEach(([k,v])=>{if(DATA.hasOwnProperty(k)) DATA[k]=v;});
+          // Refresh input fields in tools panel
+          document.querySelectorAll('#tools input[type=text],#tools textarea').forEach(inp=>{
+            const key=inp.dataset?.k;
+            if(key&&DATA[key]!==undefined) inp.value=DATA[key];
+          });
+          updatePreview();
+          showToast('✅ Haber ve fotoğraf yüklendi!');
+        };
+        reader.readAsDataURL(blob);
+        return;
+      }
+    }catch(e){/* image failed, continue without it */}
+  }
+
+  // No image or image failed — just rebuild tools and update
+  buildTools();
+  // Re-apply text data after buildTools
+  Object.entries(mapping).forEach(([k,v])=>{if(DATA.hasOwnProperty(k)) DATA[k]=v;});
+  document.querySelectorAll('#tools input[type=text],#tools textarea').forEach(inp=>{
+    const key=inp.dataset?.k;
+    if(key&&DATA[key]!==undefined) inp.value=DATA[key];
+  });
+  updatePreview();
+  showToast('✅ Haber şablona aktarıldı!');
+}
+
 /* INIT */
 initTicker();
 showPage('dashboard');
+initRSSPage();
 </script>
 </body>
 </html>
