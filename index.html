@@ -621,7 +621,7 @@ const TMPL=[
 /* ══════════════════════════════════════════
    STATE & CONSTANTS
 ══════════════════════════════════════════ */
-let CUR=null,DATA={},PHOTOS={},FMT='sq',FONT='DM Sans',FILTER='Yok';
+let CUR=null,DATA={},PHOTOS={},FMT='sq',FONT='DM Sans',FILTER='Yok',TS=1.0;
 
 const FMT_DIMS={sq:[1080,1080],pt:[1080,1350],p2:[1080,1440],st:[1080,1920],ls:[1280,720]};
 const FMT_LABELS={sq:'📐 1080 × 1080 px · Instagram Post',pt:'📐 1080 × 1350 px · Instagram Portrait',p2:'📐 1080 × 1440 px · Portrait Geniş',st:'📐 1080 × 1920 px · Story/Reel',ls:'📐 1280 × 720 px · 16:9'};
@@ -651,8 +651,18 @@ function applyPhotos(container,photos){
 }
 
 /* ══════════════════════════════════════════
-   CARD BUILDER
+   TEXT SCALE — scales all inline font-sizes
+   after render, zero template changes needed
 ══════════════════════════════════════════ */
+function applyTextScale(container, scale){
+  if(!scale||scale===1)return;
+  container.querySelectorAll('*').forEach(el=>{
+    if(el.style&&el.style.fontSize){
+      const v=parseFloat(el.style.fontSize);
+      if(!isNaN(v)) el.style.fontSize=(v*scale)+'px';
+    }
+  });
+}
 function makeCard(t){
   const d={};
   t.fields.forEach(f=>{if(f.t!=='ph')d[f.k]=f.d;});
@@ -701,7 +711,7 @@ document.querySelectorAll('.ni[data-page]').forEach(b=>b.addEventListener('click
 ══════════════════════════════════════════ */
 function openEditor(id){
   const t=TMPL.find(x=>x.id===id);if(!t)return;
-  CUR=t;DATA={};PHOTOS={};FONT='DM Sans';FILTER='Yok';
+  CUR=t;DATA={};PHOTOS={};FONT='DM Sans';FILTER='Yok';TS=1.0;
   t.fields.forEach(f=>{if(f.t!=='ph')DATA[f.k]=f.d;});
   document.getElementById('m-title').textContent=t.name+' – Düzenle';
   buildTools();updatePreview();
@@ -735,8 +745,23 @@ function buildTools(){
   }
   // Filter
   {const s=mkSec('🔮 Filtre');const w=el('div','fl');const lbl=el('label');lbl.textContent='Fotoğraf Filtresi';w.appendChild(lbl);const pills=el('div','fpills');Object.keys(FILTERCSS).forEach(name=>{const btn=el('button','fp'+(name==='Yok'?' on':''));btn.textContent=name;btn.addEventListener('click',()=>{pills.querySelectorAll('.fp').forEach(b=>b.classList.remove('on'));btn.classList.add('on');FILTER=name;updatePreview();});pills.appendChild(btn);});w.appendChild(pills);s.body.appendChild(w);panel.appendChild(s.root);}
-  // Font
-  {const s=mkSec('🔤 Yazı Tipi');const w=el('div','fl');const lbl=el('label');lbl.textContent='Font';w.appendChild(lbl);const pills=el('div','fpills');FONTS.forEach((f,i)=>{const btn=el('button','fp'+(i===0?' on':''));btn.textContent=f;btn.style.fontFamily=`'${f}',sans-serif`;btn.addEventListener('click',()=>{pills.querySelectorAll('.fp').forEach(b=>b.classList.remove('on'));btn.classList.add('on');FONT=f;updatePreview();});pills.appendChild(btn);});w.appendChild(pills);s.body.appendChild(w);panel.appendChild(s.root);}
+  // Font + Size
+  {const s=mkSec('🔤 Yazı Tipi & Boyutu');
+   // Font picker
+   const fw=el('div','fl');const flbl=el('label');flbl.textContent='Font';fw.appendChild(flbl);
+   const pills=el('div','fpills');FONTS.forEach((f,i)=>{const btn=el('button','fp'+(i===0&&FONT==='DM Sans'?' on':'')+(FONT===f?' on':''));btn.textContent=f;btn.style.fontFamily=`'${f}',sans-serif`;btn.addEventListener('click',()=>{pills.querySelectorAll('.fp').forEach(b=>b.classList.remove('on'));btn.classList.add('on');FONT=f;updatePreview();});pills.appendChild(btn);});
+   fw.appendChild(pills);s.body.appendChild(fw);
+   // Size slider
+   const sw=el('div','fl');
+   const slbl=el('label');
+   const sval=el('span');sval.textContent=' %100';sval.style.cssText='color:#fff;font-weight:700;';
+   slbl.textContent='Yazı Boyutu';slbl.appendChild(sval);sw.appendChild(slbl);
+   const sl=el('input');sl.type='range';sl.min=60;sl.max=150;sl.value=Math.round(TS*100);
+   sl.addEventListener('input',()=>{TS=sl.value/100;sval.textContent=' %'+sl.value;updatePreview();});
+   const resetBtn=el('button','btn btn-g');resetBtn.style.cssText='font-size:9.5px;padding:3px 9px;margin-top:5px;';resetBtn.textContent='Sıfırla %100';
+   resetBtn.addEventListener('click',()=>{TS=1.0;sl.value=100;sval.textContent=' %100';updatePreview();});
+   sw.appendChild(sl);sw.appendChild(resetBtn);s.body.appendChild(sw);
+   panel.appendChild(s.root);}
 }
 
 function mkPhotoField(f){
@@ -767,6 +792,7 @@ function updatePreview(){
   inner.style.filter=FILTERCSS[FILTER]||'';
   inner.innerHTML=CUR.fn(DATA,{},SZ_PREVIEW);
   applyPhotos(inner,PHOTOS);
+  applyTextScale(inner,TS);
 }
 
 /* ══════════════════════════════════════════
@@ -782,6 +808,7 @@ function renderOffscreen(t,data,photos,fmt,font,filter){
   container.innerHTML=t.fn(data,{},sz);
   container.style.filter=FILTERCSS[filter]||'';
   applyPhotos(container,photos);
+  applyTextScale(container,TS);
   return container;
 }
 
@@ -873,7 +900,7 @@ document.getElementById('fmt-row').addEventListener('click',e=>{
 ══════════════════════════════════════════ */
 document.getElementById('m-close').addEventListener('click',()=>document.getElementById('modal').classList.remove('on'));
 document.getElementById('modal').addEventListener('click',e=>{if(e.target.id==='modal')document.getElementById('modal').classList.remove('on');});
-document.getElementById('m-reset').addEventListener('click',()=>{if(!CUR)return;DATA={};PHOTOS={};FONT='DM Sans';FILTER='Yok';CUR.fields.forEach(f=>{if(f.t!=='ph')DATA[f.k]=f.d;});buildTools();updatePreview();});
+document.getElementById('m-reset').addEventListener('click',()=>{if(!CUR)return;DATA={};PHOTOS={};FONT='DM Sans';FILTER='Yok';TS=1.0;CUR.fields.forEach(f=>{if(f.t!=='ph')DATA[f.k]=f.d;});buildTools();updatePreview();});
 document.getElementById('m-dl').addEventListener('click',()=>doDownload(false));
 document.getElementById('m-dlhq').addEventListener('click',()=>doDownload(true));
 document.getElementById('m-copy').addEventListener('click',()=>{
