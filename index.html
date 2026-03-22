@@ -149,6 +149,7 @@ body{background:var(--bg);color:var(--txt);font-family:'DM Sans',sans-serif;disp
 .cw{position:relative;overflow:hidden;transition:.28s;flex-shrink:0;border-radius:11px;box-shadow:0 14px 44px rgba(0,0,0,.58);}
 .cw.sq{width:320px;height:320px;}
 .cw.pt{width:212px;height:377px;}
+.cw.p2{width:212px;height:283px;}
 .cw.st{width:202px;height:359px;border-radius:16px;}
 .cw.ls{width:400px;height:225px;}
 #prev-inner{width:100%;height:100%;overflow:hidden;}
@@ -256,7 +257,8 @@ body{background:var(--bg);color:var(--txt);font-family:'DM Sans',sans-serif;disp
       <div class="prev">
         <div class="fmtr" id="fmt-row">
           <button class="fb on" data-fmt="sq">▪ 1:1</button>
-          <button class="fb" data-fmt="pt">▮ 4:5</button>
+          <button class="fb" data-fmt="pt">▮ 1080×1350</button>
+          <button class="fb" data-fmt="p2">▮ 1080×1440</button>
           <button class="fb" data-fmt="st">📱 Story</button>
           <button class="fb" data-fmt="ls">▬ 16:9</button>
         </div>
@@ -621,8 +623,8 @@ const TMPL=[
 ══════════════════════════════════════════ */
 let CUR=null,DATA={},PHOTOS={},FMT='sq',FONT='DM Sans',FILTER='Yok';
 
-const FMT_DIMS={sq:[1080,1080],pt:[1080,1350],st:[1080,1920],ls:[1280,720]};
-const FMT_LABELS={sq:'📐 1080 × 1080 px · Instagram Post',pt:'📐 1080 × 1350 px · Portrait',st:'📐 1080 × 1920 px · Story/Reel',ls:'📐 1280 × 720 px · 16:9'};
+const FMT_DIMS={sq:[1080,1080],pt:[1080,1350],p2:[1080,1440],st:[1080,1920],ls:[1280,720]};
+const FMT_LABELS={sq:'📐 1080 × 1080 px · Instagram Post',pt:'📐 1080 × 1350 px · Instagram Portrait',p2:'📐 1080 × 1440 px · Portrait Geniş',st:'📐 1080 × 1920 px · Story/Reel',ls:'📐 1280 × 720 px · 16:9'};
 
 /* sz ratio: preview is 320px wide, export is 1080px wide → 3.375 */
 const PREVIEW_PX=320;
