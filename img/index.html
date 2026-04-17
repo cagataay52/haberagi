@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Efsane Kariyer - Prototip</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; user-select: none; }
+        body { background: #0f0f1a; color: #fff; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
+        
+        #game-container {
+            width: 100%; max-width: 414px; height: 100vh; max-height: 896px;
+            background: linear-gradient(to bottom, #1a1a2e, #16213e);
+            position: relative; box-shadow: 0 0 50px rgba(0,0,0,0.8); overflow: hidden;
+        }
+
+        /* Dükkan ve Dashboard Arayüzü */
+        .ui-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; padding: 20px; display: flex; flex-direction: column; z-index: 10; transition: 0.3s; }
+        .glass-panel { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 20px; margin-bottom: 20px;}
+        
+        .top-bar { display: flex; justify-content: space-between; margin-bottom: 20px; }
+        .stat-box { display: flex; align-items: center; gap: 10px; background: rgba(0, 0, 0, 0.5); padding: 10px 15px; border-radius: 30px; font-weight: 600; font-size: 0.9rem;}
+        
+        .news-ticker { background: #ff4757; color: white; padding: 10px; border-radius: 10px; font-size: 0.8rem; font-weight: bold; margin-bottom: 20px; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
+        
+        .player-card { text-align: center; }
+        .team-text { color: #f1c40f; font-size: 1rem; margin-bottom: 10px; font-weight: 800;}
+        .skills-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 15px; }
+        .skill { background: rgba(0, 0, 0, 0.4); padding: 10px; border-radius: 10px; display: flex; flex-direction: column; font-size: 0.8rem; color: #ccc; }
+        .skill span:last-child { font-size: 1.2rem; color: #fff; font-weight: 800; }
+
+        .action-menu { display: flex; flex-direction: column; gap: 15px; margin-top: auto; }
+        .action-btn { padding: 15px; border: none; border-radius: 15px; font-size: 1.1rem; font-weight: 600; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: transform 0.1s;}
+        .action-btn:active { transform: scale(0.95); }
+        .play-btn { background: linear-gradient(135deg, #2ed573, #7bed9f); color: #000;}
+        .train-btn { background: linear-gradient(135deg, #1e90ff, #70a1ff); }
+        .shop-btn { background: linear-gradient(135deg, #ffa502, #eccc68); color: #000;}
+
+        /* Maç Motoru (Canvas) */
+        #match-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 5; display: none; background: #27ae60; }
+        canvas { display: block; width: 100%; height: 100%; }
+        
+        .match-ui { position: absolute; top: 20px; left: 0; width: 100%; text-align: center; z-index: 6; pointer-events: none;}
+        .match-ui h2 { color: white; text-shadow: 2px 2px 0 #000; font-size: 1.5rem; }
+        .match-ui p { color: white; background: rgba(0,0,0,0.5); display: inline-block; padding: 5px 15px; border-radius: 10px; margin-top: 10px;}
+
+        /* Dükkan Modalı */
+        #shop-modal { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 20; padding: 20px; flex-direction: column;}
+        .shop-item { background: #333; padding: 15px; border-radius: 10px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;}
+        .close-btn { background: #ff4757; margin-top: auto; }
+        
+    </style>
+</head>
+<body>
+
+    <div id="game-container">
+        
+        <div id="dashboard-layer" class="ui-layer">
+            <div class="top-bar">
+                <div class="stat-box"><i class="fa-solid fa-bolt" style="color: #ff4757;"></i> <span id="energy-text">100</span></div>
+                <div class="stat-box"><i class="fa-solid fa-coins" style="color: #ffa502;"></i> <span id="money-text">500 ₺</span></div>
+            </div>
+
+            <div class="news-ticker" id="news-ticker">Skor Ağı: Genç yetenek idmanlarda göz dolduruyor!</div>
+
+            <div class="player-card glass-panel">
+                <h2 id="player-name">Çağatay</h2>
+                <h3 id="player-team" class="team-text">Fenerbahçe</h3>
+                <div class="skills-grid">
+                    <div class="skill"><span>Şut</span> <span id="skill-shoot">15</span></div>
+                    <div class="skill"><span>Fizik</span> <span id="skill-physics">12</span></div>
+                    <div class="skill"><span>Moral</span> <span id="skill-morale">50</span></div>
+                </div>
+            </div>
+
+            <div class="action-menu">
+                <button class="action-btn play-btn" onclick="Game.startMatch()"><i class="fa-solid fa-futbol"></i> Maça Çık</button>
+                <button class="action-btn train-btn" onclick="Game.train()"><i class="fa-solid fa-dumbbell"></i> İdman Yap (-20 Enerji)</button>
+                <button class="action-btn shop-btn" onclick="Game.openShop()"><i class="fa-solid fa-store"></i> Sosyal Hayat & Mağaza</button>
+            </div>
+        </div>
+
+        <div id="shop-modal">
+            <h2 style="color: white; margin-bottom: 20px; text-align: center;">Sosyal Hayat</h2>
+            <div class="shop-item">
+                <div>
+                    <h3 style="color: white;">Enerji İçeceği</h3>
+                    <p style="color: #aaa; font-size: 0.8rem;">+50 Enerji</p>
+                </div>
+                <button class="action-btn play-btn" style="padding: 10px;" onclick="Game.buyItem('energy', 100)">100 ₺</button>
+            </div>
+            <div class="shop-item">
+                <div>
+                    <h3 style="color: white;">Çağatay Motors'tan Cabrio</h3>
+                    <p style="color: #aaa; font-size: 0.8rem;">+50 Moral, Statü Artar</p>
+                </div>
+                <button class="action-btn shop-btn" style="padding: 10px;" onclick="Game.buyItem('car', 1500)">1500 ₺</button>
+            </div>
+            <button class="action-btn close-btn" onclick="Game.closeShop()">Kapat</button>
+        </div>
+
+        <div id="match-layer">
+            <div class="match-ui">
+                <h2>Frikik Şansı!</h2>
+                <p>Topu çek, nişan al ve fırlat</p>
+            </div>
+            <canvas id="gameCanvas"></canvas>
+        </div>
+
+    </div>
+
+    <script>
+        const Game = {
+            player: { energy: 100, money: 500, skills: { shoot: 15, physics: 12, morale: 50 } },
+            
+            updateUI: function() {
+                document.getElementById('energy-text').innerText = this.player.energy;
+                document.getElementById('money-text').innerText = this.player.money + ' ₺';
+                document.getElementById('skill-shoot').innerText = this.player.skills.shoot;
+                document.getElementById('skill-physics').innerText = this.player.skills.physics;
+                document.getElementById('skill-morale').innerText = this.player.skills.morale;
+            },
+
+            train: function() {
+                if(this.player.energy >= 20) {
+                    this.player.energy -= 20;
+                    this.player.skills.shoot += Math.floor(Math.random() * 2) + 1;
+                    this.player.skills.physics += 1;
+                    this.setNews("Haber Ağı: Oyuncunun ekstra idman performansı teknik heyeti sevindirdi.");
+                    this.updateUI();
+                } else {
+                    alert("Enerjin bitti! Mağazadan içecek almalısın.");
+                }
+            },
+
+            setNews: function(text) {
+                document.getElementById('news-ticker').innerText = text;
+            },
+
+            openShop: function() { document.getElementById('shop-modal').style.display = 'flex'; },
+            closeShop: function() { document.getElementById('shop-modal').style.display = 'none'; },
+
+            buyItem: function(type, price) {
+                if(this.player.money >= price) {
+                    this.player.money -= price;
+                    if(type === 'energy') this.player.energy = Math.min(100, this.player.energy + 50);
+                    if(type === 'car') {
+                        this.player.skills.morale = 100;
+                        this.setNews("Skor Ağı: Yıldız oyuncu yeni arabasıyla antrenman tesislerinde şov yaptı!");
+                    }
+                    this.updateUI();
+                } else {
+                    alert("Yeterli paran yok!");
+                }
+            },
+
+            startMatch: function() {
+                if(this.player.energy < 10) { alert("Maça çıkacak enerjin yok!"); return; }
+                this.player.energy -= 10;
+                this.updateUI();
+                document.getElementById('dashboard-layer').style.display = 'none';
+                document.getElementById('match-layer').style.display = 'block';
+                MatchEngine.init();
+            },
+
+            endMatch: function(isGoal) {
+                setTimeout(() => {
+                    document.getElementById('match-layer').style.display = 'none';
+                    document.getElementById('dashboard-layer').style.display = 'flex';
+                    if(isGoal) {
+                        let kazanilan = 200 + (this.player.skills.morale * 2);
+                        this.player.money += kazanilan;
+                        this.setNews(`Skor Ağı: İnanılmaz bir gol! Yönetimden ${kazanilan}₺ prim yattı.`);
+                    } else {
+                        this.player.skills.morale -= 5;
+                        this.setNews("Skor Ağı: Taraftar kaçan pozisyon sonrası saç baş yoldu.");
+                    }
+                    this.updateUI();
+                }, 1500);
+            }
+        };
+
+        // --- 2D FİZİK VE MAÇ MOTORU ---
+        const MatchEngine = {
+            canvas: null, ctx: null,
+            ball: { x: 0, y: 0, radius: 15, vx: 0, vy: 0, isDragging: false },
+            goal: { x: 0, y: 50, width: 140, height: 20 },
+            dragStart: { x: 0, y: 0 },
+            isShot: false,
+
+            init: function() {
+                this.canvas = document.getElementById('gameCanvas');
+                this.ctx = this.canvas.getContext('2d');
+                this.canvas.width = this.canvas.parentElement.clientWidth;
+                this.canvas.height = this.canvas.parentElement.clientHeight;
+                
+                // Topu alt ortaya koy
+                this.ball.x = this.canvas.width / 2;
+                this.ball.y = this.canvas.height - 100;
+                this.ball.vx = 0; this.ball.vy = 0;
+                this.isShot = false;
+
+                // Kaleyi üst ortaya koy
+                this.goal.x = (this.canvas.width - this.goal.width) / 2;
+
+                this.bindEvents();
+                requestAnimationFrame(() => this.loop());
+            },
+
+            bindEvents: function() {
+                // Mouse ve Dokunmatik desteği
+                const startDrag = (e) => {
+                    if(this.isShot) return;
+                    let clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                    let clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                    
+                    // Topa tıklandı mı kontrolü
+                    let dist = Math.hypot(clientX - this.ball.x, clientY - this.ball.y);
+                    if(dist < this.ball.radius * 3) { // Mobil için dokunma alanını geniş tuttum
+                        this.ball.isDragging = true;
+                        this.dragStart = { x: clientX, y: clientY };
+                    }
+                };
+
+                const doDrag = (e) => {
+                    if(!this.ball.isDragging) return;
+                    let clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                    let clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                    this.dragCurrent = { x: clientX, y: clientY };
+                };
+
+                const endDrag = () => {
+                    if(!this.ball.isDragging) return;
+                    this.ball.isDragging = false;
+                    this.isShot = true;
+                    
+                    // Çekme mesafesine göre fırlatma hızı hesapla (Sapan mantığı)
+                    let dx = this.dragStart.x - this.dragCurrent.x;
+                    let dy = this.dragStart.y - this.dragCurrent.y;
+                    
+                    // Şut yeteneği hızı etkiler
+                    let powerMultiplier = Game.player.skills.shoot / 100; 
+                    
+                    this.ball.vx = dx * (0.1 + powerMultiplier);
+                    this.ball.vy = dy * (0.1 + powerMultiplier);
+                };
+
+                this.canvas.onmousedown = startDrag;
+                this.canvas.ontouchstart = startDrag;
+                this.canvas.onmousemove = doDrag;
+                this.canvas.ontouchmove = doDrag;
+                this.canvas.onmouseup = endDrag;
+                this.canvas.ontouchend = endDrag;
+            },
+
+            loop: function() {
+                if(document.getElementById('match-layer').style.display === 'none') return; // Motoru durdur
+
+                this.updatePhysics();
+                this.draw();
+                requestAnimationFrame(() => this.loop());
+            },
+
+            updatePhysics: function() {
+                if(this.isShot) {
+                    this.ball.x += this.ball.vx;
+                    this.ball.y += this.ball.vy;
+
+                    // Sürtünme
+                    this.ball.vx *= 0.98;
+                    this.ball.vy *= 0.98;
+
+                    // Duvarlara çarpma (Sağ/Sol)
+                    if(this.ball.x - this.ball.radius < 0 || this.ball.x + this.ball.radius > this.canvas.width) {
+                        this.ball.vx *= -0.8;
+                    }
+
+                    // Gol Kontrolü
+                    if(this.ball.y - this.ball.radius <= this.goal.y + this.goal.height) {
+                        if(this.ball.x > this.goal.x && this.ball.x < this.goal.x + this.goal.width) {
+                            this.ball.vy = 0; this.ball.vx = 0;
+                            Game.endMatch(true); // Gol oldu!
+                            this.isShot = false; // Çift tetiklemeyi önle
+                        } else if(this.ball.y < 0) {
+                            Game.endMatch(false); // Dışarı gitti
+                            this.isShot = false;
+                        }
+                    }
+                    
+                    // Hız çok düşerse ve gol olmadıysa kaçtı say
+                    if(Math.abs(this.ball.vy) < 0.5 && Math.abs(this.ball.vx) < 0.5 && this.ball.y > this.goal.y + 50) {
+                        Game.endMatch(false);
+                        this.isShot = false;
+                    }
+                }
+            },
+
+            draw: function() {
+                // Sahayı temizle ve çiz
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                
+                // Ceza sahası çizgileri
+                this.ctx.strokeStyle = "rgba(255,255,255,0.3)";
+                this.ctx.lineWidth = 2;
+                this.ctx.strokeRect((this.canvas.width - 240)/2, 0, 240, 150);
+                this.ctx.beginPath();
+                this.ctx.arc(this.canvas.width/2, 150, 60, 0, Math.PI);
+                this.ctx.stroke();
+
+                // Kale
+                this.ctx.fillStyle = "rgba(200, 200, 200, 0.8)";
+                this.ctx.fillRect(this.goal.x, this.goal.y, this.goal.width, this.goal.height);
+                this.ctx.strokeStyle = "white";
+                this.ctx.lineWidth = 4;
+                this.ctx.strokeRect(this.goal.x, this.goal.y, this.goal.width, this.goal.height);
+
+                // Topu Çeken Çizgi (Sapan Hedefi)
+                if(this.ball.isDragging && this.dragCurrent) {
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(this.ball.x, this.ball.y);
+                    let dx = this.dragStart.x - this.dragCurrent.x;
+                    let dy = this.dragStart.y - this.dragCurrent.y;
+                    this.ctx.lineTo(this.ball.x + dx, this.ball.y + dy);
+                    this.ctx.strokeStyle = "rgba(255, 255, 255, 0.5)";
+                    this.ctx.setLineDash([5, 5]);
+                    this.ctx.stroke();
+                    this.ctx.setLineDash([]);
+                }
+
+                // Top
+                this.ctx.beginPath();
+                this.ctx.arc(this.ball.x, this.ball.y, this.ball.radius, 0, Math.PI * 2);
+                this.ctx.fillStyle = "white";
+                this.ctx.fill();
+                this.ctx.strokeStyle = "black";
+                this.ctx.lineWidth = 2;
+                this.ctx.stroke();
+            }
+        };
+
+        // Başlat
+        Game.updateUI();
+    </script>
+</body>
+</html>
